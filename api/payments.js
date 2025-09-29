@@ -207,7 +207,7 @@ async function handleCreatePayment(body) {
         paymentData.confirmation = { type: 'redirect', return_url: 'https://bikepark54bot.vercel.app/' };
     }
 
-    const authString = Buffer.from(`1107459:live_oTnWf7sfV0ePngXm7eGdeoXewCYCbW2RXfn0PacBlrE`).toString('base64');
+    const authString = Buffer.from(`${process.env.YOOKASSA_SHOP_ID}:${process.env.YOOKASSA_SECRET_KEY}`).toString('base64');
     const response = await fetch('https://api.yookassa.ru/v3/payments', {
         method: 'POST',
         headers: {

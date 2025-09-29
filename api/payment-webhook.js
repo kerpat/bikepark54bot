@@ -81,7 +81,7 @@ async function processSucceededPayment(notification) {
         if (!availableBikes || availableBikes.length === 0) {
             console.error(`[КРИТИЧЕСКАЯ ОШИБКА] Нет свободных велосипедов для тарифа ${tariffId}! Инициирую возврат.`);
             // Если велосипедов нет, нужно вернуть деньги
-            const auth = Buffer.from(`1107459:live_oTnWf7sfV0ePngXm7eGdeoXewCYCbW2RXfn0PacBlrE`).toString('base64');
+            const auth = Buffer.from(`${process.env.YOOKASSA_SHOP_ID}:${process.env.YOOKASSA_SECRET_KEY}`).toString('base64');
             await fetch('https://api.yookassa.ru/v3/refunds', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Basic ${auth}`, 'Idempotence-Key': crypto.randomUUID() },

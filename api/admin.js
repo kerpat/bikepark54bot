@@ -246,7 +246,7 @@ async function handleCreateInvoice({ userId, amount, description }) {
     }
 
     const idempotenceKey = crypto.randomUUID();
-    const auth = Buffer.from(`1107459:live_oTnWf7sfV0ePngXm7eGdeoXewCYCbW2RXfn0PacBlrE`).toString('base64');
+    const auth = Buffer.from(`${process.env.YOOKASSA_SHOP_ID}:${process.env.YOOKASSA_SECRET_KEY}`).toString('base64');
     const yookassaBody = {
         amount: { value: amountToCharge.toFixed(2), currency: 'RUB' },
         capture: true,
@@ -314,7 +314,7 @@ async function handleCreateRefund({ payment_id, amount, reason }) {
     const supabaseAdmin = createSupabaseAdmin();
 
     const idempotenceKey = crypto.randomUUID();
-    const auth = Buffer.from(`1107459:live_oTnWf7sfV0ePngXm7eGdeoXewCYCbW2RXfn0PacBlrE`).toString('base64');
+    const auth = Buffer.from(`${process.env.YOOKASSA_SHOP_ID}:${process.env.YOOKASSA_SECRET_KEY}`).toString('base64');
     const yookassaBody = {
         payment_id,
         amount: { value: value.toFixed(2), currency: 'RUB' },
@@ -599,7 +599,7 @@ async function handleChargeForDamages({ userId, rentalId, amount, description, d
         headers: {
             'Content-Type': 'application/json',
             'Idempotence-Key': idempotenceKey,
-            'Authorization': 'Basic ' + Buffer.from(`1107459:live_oTnWf7sfV0ePngXm7eGdeoXewCYCbW2RXfn0PacBlrE`).toString('base64')
+            'Authorization': 'Basic ' + Buffer.from(`${process.env.YOOKASSA_SHOP_ID}:${process.env.YOOKASSA_SECRET_KEY}`).toString('base64')
         },
         body: JSON.stringify({
             amount: { value: chargeAmount.toFixed(2), currency: 'RUB' },
