@@ -36,7 +36,7 @@ async function handleChargeFromBalance({ userId, tariffId, bikeCode }) {
         return { status: 400, body: { error: 'userId and tariffId are required' } };
     }
 
-    const supabaseAdmin = createClient('https://gbabrtcnegjhherbczuj.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdiYWJydGNuZWdqaGhlcmJjenVqIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1OTEzNDQxMCwiZXhwIjoyMDc0NzEwNDEwfQ.UEsU_2fIR-K0UgeZecggsKuUM4WgwRNgm40cu8i4UGk');
+    const supabaseAdmin = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
     const [tariffResult, clientResult] = await Promise.all([
         supabaseAdmin.from('tariffs').select('price_rub, duration_days').eq('id', tariffId).single(),
         supabaseAdmin.from('clients').select('balance_rub').eq('id', userId).single()
@@ -165,7 +165,7 @@ async function handleCreatePayment(body) {
     const { userId, bikeCode, tariffId, amount: amountFromClient, type, rentalId } = body;
     if (!userId) throw new Error('Client ID (userId) is required.');
 
-    const supabase = createClient('https://gbabrtcnegjhherbczuj.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdiYWJydGNuZWdqaGhlcmJjenVqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkxMzQ0MTAsImV4cCI6MjA3NDcxMDQxMH0.muedJjHjqZsCUv6wtiiGoTao9t1T69lTl6p5G57_otU');
+    const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
     const { data: clientData, error: clientError } = await supabase.from('clients').select('phone, yookassa_payment_method_id').eq('id', userId).single();
     if (clientError || !clientData) throw new Error(`Client with id ${userId} not found in Supabase.`);
 
@@ -204,7 +204,7 @@ async function handleCreatePayment(body) {
     if (clientData.yookassa_payment_method_id) {
         paymentData.payment_method_id = clientData.yookassa_payment_method_id;
     } else {
-        paymentData.confirmation = { type: 'redirect', return_url: 'https://bikepark54bot.vercel.app/' };
+        paymentData.confirmation = { type: 'redirect', return_url: 'https://prizmalol-neon.vercel.app/' };
     }
 
     const authString = Buffer.from(`${process.env.YOOKASSA_SHOP_ID}:${process.env.YOOKASSA_SECRET_KEY}`).toString('base64');
@@ -221,29 +221,14 @@ async function handleCreatePayment(body) {
     const paymentResult = await response.json();
     if (!response.ok) {
         console.error('YooKassa API Error:', paymentResult);
-
-        // Handle invalid payment method - clear it from database
-        if (paymentResult.description && paymentResult.description.includes("payment_method_id doesn't exist")) {
-            console.log(`Clearing invalid payment method for user ${userId}`);
-            const supabaseAdmin = createClient('https://gbabrtcnegjhherbczuj.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdiYWJydGNuZWdqaGhlcmJjenVqIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1OTEzNDQxMCwiZXhwIjoyMDc0NzEwNDEwfQ.UEsU_2fIR-K0UgeZecggsKuUM4WgwRNgm40cu8i4UGk');
-            await supabaseAdmin.from('clients').update({
-                yookassa_payment_method_id: null,
-                autopay_enabled: false
-            }).eq('id', userId);
-            throw new Error('Сохраненная карта больше недействительна. Пожалуйста, привяжите новую карту для оплаты.');
-        }
-
         throw new Error(`YooKassa error: ${paymentResult.description || 'Unknown error'}`);
     }
 
-    // Check if payment succeeded immediately or needs confirmation
-    if (paymentResult.status === 'succeeded') {
-        return { status: 200, body: { status: 'succeeded', message: 'Payment processed successfully.' } };
-    } else if (paymentResult.status === 'pending' && paymentResult.confirmation) {
-        return { status: 200, body: { confirmation_url: paymentResult.confirmation.confirmation_url } };
-    } else {
-        return { status: 200, body: { status: paymentResult.status, message: 'Payment initiated.' } };
+    if (clientData.yookassa_payment_method_id) {
+        return { status: 200, body: { status: paymentResult.status, message: 'Payment processed with saved method.' } };
     }
+
+    return { status: 200, body: { confirmation_url: paymentResult.confirmation?.confirmation_url } };
 }
 
 async function handleSaveCard({ userId }) {
@@ -257,7 +242,7 @@ async function handleSaveCard({ userId }) {
     if (!normalizedPhone) throw new Error(`Client ${userId} has no phone number for YooKassa receipts.`);
 
     const amount = 1.00; // Small amount for card verification
-    const description = 'Привязка карты для BikePark54';
+    const description = 'Привязка карты для Prizmatic';
     const idempotenceKey = crypto.randomUUID();
 
     const paymentData = {
@@ -266,7 +251,7 @@ async function handleSaveCard({ userId }) {
         description,
         metadata: { userId, payment_type: 'save_card' }, // Special metadata
         save_payment_method: true,
-        confirmation: { type: 'redirect', return_url: 'https://bikepark54bot.vercel.app/profile.html?card_saved=true' }, // Redirect back to profile
+        confirmation: { type: 'redirect', return_url: 'https://prizmalol-neon.vercel.app/profile.html?card_saved=true' }, // Redirect back to profile
         receipt: {
             customer: { phone: normalizedPhone },
             items: [{
