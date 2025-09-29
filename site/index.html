@@ -583,16 +583,21 @@
         const appHeader = document.querySelector('.app-header'); // Находим заголовок
         const mainContent = document.querySelector('.app-main');
     
+        console.log('loadUserData: userId from localStorage:', userId);
+    
         if (!userId) {
             // Removed redirection to registration.html
             return;
         }
     
         try {
+            console.log('loadUserData: querying Supabase for id:', userId);
             const { data: clients, error } = await supabase
                 .from('clients')
                 .select('verification_status, name, balance_rub, city') // <-- ИЗМЕНЕНИЕ 1
                 .eq('id', userId);
+    
+            console.log('loadUserData: Supabase response:', { data: clients, error });
     
             if (error) throw new Error(error.message);
             if (!clients || clients.length === 0) throw new Error("Клиент не найден.");
