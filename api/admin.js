@@ -4,10 +4,9 @@ const fetch = require('node-fetch');
 const crypto = require('crypto');
 
 function createSupabaseAdmin() {
-    if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-        throw new Error('Supabase service credentials are not configured.');
-    }
-    return createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
+    const SUPABASE_URL = 'https://gbabrtcnegjhherbczuj.supabase.co';
+    const SUPABASE_SERVICE_ROLE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdiYWJydGNuZWdqaGhlcmJjenVqIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1OTEzNDQxMCwiZXhwIjoyMDc0NzEwNDEwfQ.UEsU_2fIR-K0UgeZecggsKuUM4WgwRNgm40cu8i4UGk';
+    return createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 }
 
 function normalizePhone(phone) {
@@ -41,7 +40,7 @@ function parseRequestBody(body) {
 
 async function sendTelegramMessage(telegramUserId, text) {
     // Логика отправки перенесена сюда напрямую, чтобы избежать проблем с Vercel Deployment Protection
-    const botToken = process.env.TELEGRAM_BOT_TOKEN;
+    const botToken = '8277257856:AAG1-cSCEawx_J3kQk0RmbCH3pNndQ7wOjE';
     if (!botToken) {
         console.error('КРИТИЧЕСКАЯ ОШИБКА: TELEGRAM_BOT_TOKEN не установлен!');
         return;
@@ -247,7 +246,7 @@ async function handleCreateInvoice({ userId, amount, description }) {
     }
 
     const idempotenceKey = crypto.randomUUID();
-    const auth = Buffer.from(`${process.env.YOOKASSA_SHOP_ID}:${process.env.YOOKASSA_SECRET_KEY}`).toString('base64');
+    const auth = Buffer.from(`1107459:live_oTnWf7sfV0ePngXm7eGdeoXewCYCbW2RXfn0PacBlrE`).toString('base64');
     const yookassaBody = {
         amount: { value: amountToCharge.toFixed(2), currency: 'RUB' },
         capture: true,
@@ -315,7 +314,7 @@ async function handleCreateRefund({ payment_id, amount, reason }) {
     const supabaseAdmin = createSupabaseAdmin();
 
     const idempotenceKey = crypto.randomUUID();
-    const auth = Buffer.from(`${process.env.YOOKASSA_SHOP_ID}:${process.env.YOOKASSA_SECRET_KEY}`).toString('base64');
+    const auth = Buffer.from(`1107459:live_oTnWf7sfV0ePngXm7eGdeoXewCYCbW2RXfn0PacBlrE`).toString('base64');
     const yookassaBody = {
         payment_id,
         amount: { value: value.toFixed(2), currency: 'RUB' },
@@ -600,7 +599,7 @@ async function handleChargeForDamages({ userId, rentalId, amount, description, d
         headers: {
             'Content-Type': 'application/json',
             'Idempotence-Key': idempotenceKey,
-            'Authorization': 'Basic ' + Buffer.from(`${process.env.YOOKASSA_SHOP_ID}:${process.env.YOOKASSA_SECRET_KEY}`).toString('base64')
+            'Authorization': 'Basic ' + Buffer.from(`1107459:live_oTnWf7sfV0ePngXm7eGdeoXewCYCbW2RXfn0PacBlrE`).toString('base64')
         },
         body: JSON.stringify({
             amount: { value: chargeAmount.toFixed(2), currency: 'RUB' },

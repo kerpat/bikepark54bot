@@ -31,16 +31,16 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '8277257856:AAG1-cSCEawx_J3kQk0RmbCH3pNndQ7wOjE')
+TOKEN = '8277257856:AAG1-cSCEawx_J3kQk0RmbCH3pNndQ7wOjE'
 WEBAPP_REGISTER_API = 'https://bikepark54bot.vercel.app/api/telegram-register'
 BOT_REGISTER_API = 'https://bikepark54bot.vercel.app/api/auth'
 ADMIN_SECRET_KEY = 'your_super_secret_admin_key' # Секрет для уведомлений от админки
 WEB_APP_URL = 'https://bikepark54bot.vercel.app/' # URL вашего основного веб-приложения
 
 # Supabase settings
-SUPABASE_URL = os.getenv('SUPABASE_URL')
-SUPABASE_SERVICE_KEY = os.getenv('SUPABASE_SERVICE_ROLE_KEY')
-GEMINI_API_KEY = os.getenv('GOOGLE_API_KEY')
+SUPABASE_URL = 'https://gbabrtcnegjhherbczuj.supabase.co'
+SUPABASE_SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdiYWJydGNuZWdqaGhlcmJjenVqIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1OTEzNDQxMCwiZXhwIjoyMDc0NzEwNDEwfQ.UEsU_2fIR-K0UgeZecggsKuUM4WgwRNgm40cu8i4UGk'
+GEMINI_API_KEY = 'AIzaSyAUay_xvRT_gcMYs3-7i8Pcli680Or5Zwk'
 if not GEMINI_API_KEY:
     logger.critical("!!! Ключ GOOGLE_API_KEY не найден. Проверьте ваш .env файл и его расположение.")
 else:

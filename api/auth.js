@@ -5,10 +5,9 @@ const axios = require('axios');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 function createSupabaseAdmin() {
-    if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-        throw new Error('Supabase service credentials are not configured.');
-    }
-    return createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
+    const SUPABASE_URL = 'https://gbabrtcnegjhherbczuj.supabase.co';
+    const SUPABASE_SERVICE_ROLE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdiYWJydGNuZWdqaGhlcmJjenVqIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1OTEzNDQxMCwiZXhwIjoyMDc0NzEwNDEwfQ.UEsU_2fIR-K0UgeZecggsKuUM4WgwRNgm40cu8i4UGk';
+    return createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 }
 
 function validateTelegramData(initData, botToken) {
@@ -39,8 +38,8 @@ function validateTelegramData(initData, botToken) {
 
 async function triggerOCRProcessing(userId, fileIds) {
     try {
-        const ocrWorkerUrl = process.env.OCR_WORKER_URL;
-        const internalSecret = process.env.INTERNAL_SECRET;
+        const ocrWorkerUrl = 'https://832a1274ed7e.ngrok-free.app';
+        const internalSecret = 'MySuperSecretKeyForBikeAppOCR123!';
 
         if (!ocrWorkerUrl || !internalSecret) {
             console.warn('OCR Worker not configured, skipping OCR processing');
@@ -68,11 +67,12 @@ async function triggerOCRProcessing(userId, fileIds) {
 
 // +++ НОВАЯ ФУНКЦИЯ ДЛЯ РАСПОЗНАВАНИЯ +++
 async function recognizeDocumentsWithGemini(supabaseAdmin, filePaths, countryCode) {
-    if (!process.env.GOOGLE_API_KEY) {
+    const GOOGLE_API_KEY = 'AIzaSyAUay_xvRT_gcMYs3-7i8Pcli680Or5Zwk';
+    if (!GOOGLE_API_KEY) {
         throw new Error('GOOGLE_API_KEY is not configured on the server.');
     }
     // Инициализируем Gemini
-    const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
+    const genAI = new GoogleGenerativeAI(GOOGLE_API_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     // Скачиваем все файлы из Supabase
@@ -149,7 +149,7 @@ async function handler(req, res) {
             res.setHeader('Allow', 'POST, OPTIONS');
             return res.status(405).json({ error: 'Method Not Allowed' });
         }
-        const botToken = process.env.TELEGRAM_BOT_TOKEN;
+        const botToken = '8277257856:AAG1-cSCEawx_J3kQk0RmbCH3pNndQ7wOjE';
         if (!botToken) {
             throw new Error('TELEGRAM_BOT_TOKEN is not configured');
         }

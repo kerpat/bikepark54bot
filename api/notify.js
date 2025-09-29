@@ -3,7 +3,7 @@ const axios = require('axios');
 async function handler(req, res) {
     // Проверяем секретный ключ, чтобы только ваша админка могла вызывать этот API
     const internalSecret = req.headers['x-internal-secret'];
-    if (internalSecret !== process.env.INTERNAL_SECRET) {
+    if (internalSecret !== 'MySuperSecretKeyForBikeAppOCR123!') {
         return res.status(401).json({ error: 'Unauthorized' });
     }
 
@@ -18,7 +18,7 @@ async function handler(req, res) {
             return res.status(400).json({ error: 'user_id and text are required.' });
         }
 
-        const botToken = process.env.TELEGRAM_BOT_TOKEN;
+        const botToken = '8277257856:AAG1-cSCEawx_J3kQk0RmbCH3pNndQ7wOjE';
         const telegramApiUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
 
         // Отправляем запрос к Telegram API для отправки сообщения

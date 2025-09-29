@@ -1,21 +1,20 @@
 const express = require('express');
 const axios = require('axios');
 const { createClient } = require('@supabase/supabase-js');
-require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 
 app.use(express.json({ limit: '50mb' }));
 
 const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
+  'https://gbabrtcnegjhherbczuj.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdiYWJydGNuZWdqaGhlcmJjenVqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkxMzQ0MTAsImV4cCI6MjA3NDcxMDQxMH0.muedJjHjqZsCUv6wtiiGoTao9t1T69lTl6p5G57_otU'
 );
 
 const checkInternalSecret = (req, res, next) => {
   const secret = req.headers['x-internal-secret'];
-  if (!secret || secret !== process.env.INTERNAL_SECRET) {
+  if (!secret || secret !== 'MySuperSecretKeyForBikeAppOCR123!') {
     return res.status(401).json({ error: 'Unauthorized' });
   }
   next();
@@ -40,7 +39,7 @@ async function downloadFromUrl(url) {
 // Process OCR with Gemini (this function remains unchanged)
 async function processWithGemini(files) {
   try {
-    const geminiApiKey = process.env.GEMINI_API_KEY;
+    const geminiApiKey = 'AIzaSyAUay_xvRT_gcMYs3-7i8Pcli680Or5Zwk';
     const parts = files.map(file => ({
       inlineData: {
         data: file.data.toString('base64'),

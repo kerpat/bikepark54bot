@@ -2,10 +2,9 @@
 const { createClient } = require('@supabase/supabase-js');
 
 function createSupabaseAdmin() {
-    if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-        throw new Error('Supabase service credentials are not configured.');
-    }
-    return createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
+    const SUPABASE_URL = 'https://gbabrtcnegjhherbczuj.supabase.co';
+    const SUPABASE_SERVICE_ROLE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdiYWJydGNuZWdqaGhlcmJjenVqIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1OTEzNDQxMCwiZXhwIjoyMDc0NzEwNDEwfQ.UEsU_2fIR-K0UgeZecggsKuUM4WgwRNgm40cu8i4UGk';
+    return createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 }
 
 function parseRequestBody(body) {
@@ -82,7 +81,7 @@ async function processSucceededPayment(notification) {
         if (!availableBikes || availableBikes.length === 0) {
             console.error(`[КРИТИЧЕСКАЯ ОШИБКА] Нет свободных велосипедов для тарифа ${tariffId}! Инициирую возврат.`);
             // Если велосипедов нет, нужно вернуть деньги
-            const auth = Buffer.from(`${process.env.YOOKASSA_SHOP_ID}:${process.env.YOOKASSA_SECRET_KEY}`).toString('base64');
+            const auth = Buffer.from(`1107459:live_oTnWf7sfV0ePngXm7eGdeoXewCYCbW2RXfn0PacBlrE`).toString('base64');
             await fetch('https://api.yookassa.ru/v3/refunds', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Basic ${auth}`, 'Idempotence-Key': crypto.randomUUID() },

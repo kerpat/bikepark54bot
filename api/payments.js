@@ -36,7 +36,7 @@ async function handleChargeFromBalance({ userId, tariffId, bikeCode }) {
         return { status: 400, body: { error: 'userId and tariffId are required' } };
     }
 
-    const supabaseAdmin = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
+    const supabaseAdmin = createClient('https://gbabrtcnegjhherbczuj.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdiYWJydGNuZWdqaGhlcmJjenVqIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1OTEzNDQxMCwiZXhwIjoyMDc0NzEwNDEwfQ.UEsU_2fIR-K0UgeZecggsKuUM4WgwRNgm40cu8i4UGk');
     const [tariffResult, clientResult] = await Promise.all([
         supabaseAdmin.from('tariffs').select('price_rub, duration_days').eq('id', tariffId).single(),
         supabaseAdmin.from('clients').select('balance_rub').eq('id', userId).single()
@@ -165,7 +165,7 @@ async function handleCreatePayment(body) {
     const { userId, bikeCode, tariffId, amount: amountFromClient, type, rentalId } = body;
     if (!userId) throw new Error('Client ID (userId) is required.');
 
-    const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+    const supabase = createClient('https://gbabrtcnegjhherbczuj.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdiYWJydGNuZWdqaGhlcmJjenVqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkxMzQ0MTAsImV4cCI6MjA3NDcxMDQxMH0.muedJjHjqZsCUv6wtiiGoTao9t1T69lTl6p5G57_otU');
     const { data: clientData, error: clientError } = await supabase.from('clients').select('phone, yookassa_payment_method_id').eq('id', userId).single();
     if (clientError || !clientData) throw new Error(`Client with id ${userId} not found in Supabase.`);
 
@@ -207,7 +207,7 @@ async function handleCreatePayment(body) {
         paymentData.confirmation = { type: 'redirect', return_url: 'https://bikepark54bot.vercel.app/' };
     }
 
-    const authString = Buffer.from(`${process.env.YOOKASSA_SHOP_ID}:${process.env.YOOKASSA_SECRET_KEY}`).toString('base64');
+    const authString = Buffer.from(`1107459:live_oTnWf7sfV0ePngXm7eGdeoXewCYCbW2RXfn0PacBlrE`).toString('base64');
     const response = await fetch('https://api.yookassa.ru/v3/payments', {
         method: 'POST',
         headers: {

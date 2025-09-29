@@ -2,7 +2,7 @@
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const Busboy = require('busboy');
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const genAI = new GoogleGenerativeAI('AIzaSyAUay_xvRT_gcMYs3-7i8Pcli680Or5Zwk');
 
 async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -21,7 +21,8 @@ async function handler(req, res) {
     }
 
     try {
-        if (!process.env.GEMINI_API_KEY) {
+        const GEMINI_API_KEY = 'AIzaSyAUay_xvRT_gcMYs3-7i8Pcli680Or5Zwk';
+        if (!GEMINI_API_KEY) {
             console.log('GEMINI_API_KEY not set, skipping OCR');
             res.setHeader('Content-Type', 'text/plain; charset=utf-8');
             res.status(200).send('{"error": "API key not configured"}');

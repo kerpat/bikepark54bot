@@ -4,10 +4,9 @@ const fetch = require('node-fetch');
 const crypto = require('crypto');
 
 function createSupabaseAdmin() {
-    if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-        throw new Error('Supabase service credentials are not configured.');
-    }
-    return createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
+    const SUPABASE_URL = 'https://gbabrtcnegjhherbczuj.supabase.co';
+    const SUPABASE_SERVICE_ROLE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdiYWJydGNuZWdqaGhlcmJjenVqIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1OTEzNDQxMCwiZXhwIjoyMDc0NzEwNDEwfQ.UEsU_2fIR-K0UgeZecggsKuUM4WgwRNgm40cu8i4UGk';
+    return createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 }
 
 async function processRenewals() {
@@ -48,7 +47,7 @@ async function processRenewals() {
         }
 
         const idempotenceKey = crypto.randomUUID();
-        const authString = Buffer.from(`${process.env.YOOKASSA_SHOP_ID}:${process.env.YOOKASSA_SECRET_KEY}`).toString('base64');
+        const authString = Buffer.from(`1107459:live_oTnWf7sfV0ePngXm7eGdeoXewCYCbW2RXfn0PacBlrE`).toString('base64');
 
         const response = await fetch('https://api.yookassa.ru/v3/payments', {
             method: 'POST',
