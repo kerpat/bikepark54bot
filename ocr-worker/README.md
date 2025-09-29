@@ -38,7 +38,7 @@ cp .env.example .env
 Добавьте следующие переменные в настройках Render:
 
 ```
-SUPABASE_URL=https://avamqfmuhiwtlumjkzmv.supabase.co
+SUPABASE_URL=https://gbabrtcnegjhherbczuj.supabase.co
 SUPABASE_ANON_KEY=ваш_ключ
 TELEGRAM_BOT_TOKEN=ваш_токен_бота
 GEMINI_API_KEY=ваш_gemini_ключ

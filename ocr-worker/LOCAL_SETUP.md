@@ -29,7 +29,7 @@ cp .env.example .env
 
 ```env
 # Supabase (используйте SERVICE_ROLE_KEY для записи)
-SUPABASE_URL=https://avamqfmuhiwtlumjkzmv.supabase.co
+SUPABASE_URL=https://gbabrtcnegjhherbczuj.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=ваш_service_role_key_из_supabase
 
 # Telegram Bot
