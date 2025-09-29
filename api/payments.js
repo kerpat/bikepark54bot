@@ -236,11 +236,14 @@ async function handleCreatePayment(body) {
         throw new Error(`YooKassa error: ${paymentResult.description || 'Unknown error'}`);
     }
 
-    if (clientData.yookassa_payment_method_id) {
-        return { status: 200, body: { status: paymentResult.status, message: 'Payment processed with saved method.' } };
+    // Check if payment succeeded immediately or needs confirmation
+    if (paymentResult.status === 'succeeded') {
+        return { status: 200, body: { status: 'succeeded', message: 'Payment processed successfully.' } };
+    } else if (paymentResult.status === 'pending' && paymentResult.confirmation) {
+        return { status: 200, body: { confirmation_url: paymentResult.confirmation.confirmation_url } };
+    } else {
+        return { status: 200, body: { status: paymentResult.status, message: 'Payment initiated.' } };
     }
-
-    return { status: 200, body: { confirmation_url: paymentResult.confirmation?.confirmation_url } };
 }
 
 async function handleSaveCard({ userId }) {
