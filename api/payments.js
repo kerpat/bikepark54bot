@@ -221,6 +221,18 @@ async function handleCreatePayment(body) {
     const paymentResult = await response.json();
     if (!response.ok) {
         console.error('YooKassa API Error:', paymentResult);
+
+        // Handle invalid payment method - clear it from database
+        if (paymentResult.description && paymentResult.description.includes("payment_method_id doesn't exist")) {
+            console.log(`Clearing invalid payment method for user ${userId}`);
+            const supabaseAdmin = createClient('https://gbabrtcnegjhherbczuj.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdiYWJydGNuZWdqaGhlcmJjenVqIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1OTEzNDQxMCwiZXhwIjoyMDc0NzEwNDEwfQ.UEsU_2fIR-K0UgeZecggsKuUM4WgwRNgm40cu8i4UGk');
+            await supabaseAdmin.from('clients').update({
+                yookassa_payment_method_id: null,
+                autopay_enabled: false
+            }).eq('id', userId);
+            throw new Error('Сохраненная карта больше недействительна. Пожалуйста, привяжите новую карту для оплаты.');
+        }
+
         throw new Error(`YooKassa error: ${paymentResult.description || 'Unknown error'}`);
     }
 
