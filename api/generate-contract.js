@@ -1,8 +1,8 @@
 const { createClient } = require('@supabase/supabase-js');
 const htmlToDocx = require('html-to-docx');
 
-const SUPABASE_URL = 'https://gbabrtcnegjhherbczuj.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdiYWJydGNuZWdqaGhlcmJjenVqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkxMzQ0MTAsImV4cCI6MjA3NDcxMDQxMH0.muedJjHjqZsCUv6wtiiGoTao9t1T69lTl6p5G57_otU';
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 module.exports = async (req, res) => {

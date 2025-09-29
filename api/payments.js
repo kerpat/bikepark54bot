@@ -204,7 +204,7 @@ async function handleCreatePayment(body) {
     if (clientData.yookassa_payment_method_id) {
         paymentData.payment_method_id = clientData.yookassa_payment_method_id;
     } else {
-        paymentData.confirmation = { type: 'redirect', return_url: 'https://prizmalol-neon.vercel.app/' };
+        paymentData.confirmation = { type: 'redirect', return_url: 'https://bikepark54bot.vercel.app' };
     }
 
     const authString = Buffer.from(`${process.env.YOOKASSA_SHOP_ID}:${process.env.YOOKASSA_SECRET_KEY}`).toString('base64');
@@ -251,7 +251,7 @@ async function handleSaveCard({ userId }) {
         description,
         metadata: { userId, payment_type: 'save_card' }, // Special metadata
         save_payment_method: true,
-        confirmation: { type: 'redirect', return_url: 'https://prizmalol-neon.vercel.app/profile.html?card_saved=true' }, // Redirect back to profile
+        confirmation: { type: 'redirect', return_url: `https://bikepark54bot.vercel.app/profile.html?card_saved=true` }, // Redirect back to profile
         receipt: {
             customer: { phone: normalizedPhone },
             items: [{

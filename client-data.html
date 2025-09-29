@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Данные клиента</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .client-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .client-header {
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .client-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        .client-status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .status-approved {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .info-section {
+            margin-bottom: 20px;
+        }
+        .info-section h3 {
+            color: #007bff;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 5px;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        .info-item {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #495057;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        .info-value {
+            color: #212529;
+            word-break: break-word;
+        }
+        .passport-data {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        .balance {
+            font-size: 18px;
+            font-weight: bold;
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="client-card">
+        <div class="client-header">
+            <div class="client-name">Тест Патрушев</div>
+            <span class="client-status status-approved">Одобрен</span>
+        </div>
+
+        <div class="info-section">
+            <h3>Основная информация</h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">ID</div>
+                    <div class="info-value">f1bc1c40-4443-49df-9756-aad70e1eb2a0</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Телефон</div>
+                    <div class="info-value">+79223670081</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Город</div>
+                    <div class="info-value">Москва</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Баланс</div>
+                    <div class="info-value balance">0 ₽</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Дата создания</div>
+                    <div class="info-value">2025-09-29 11:54:46</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Telegram ID</div>
+                    <div class="info-value">752012766</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h3>Паспортные данные</h3>
+            <div class="passport-data">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">ФИО</div>
+                        <div class="info-value">ПАТРУШЕВ КИРИЛЛ МАКСИМОВИЧ</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Серия и номер</div>
+                        <div class="info-value">40 24 884016</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Дата рождения</div>
+                        <div class="info-value">06.04.2004</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Место рождения</div>
+                        <div class="info-value">г. ПЕРМЬ</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Дата выдачи</div>
+                        <div class="info-value">03.07.2024</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Кем выдан</div>
+                        <div class="info-value">ГУ МВД РОССИИ ПО Г. САНКТ-ПЕТЕРБУРГУ И ЛЕНИНГРАДСКОЙ ОБЛАСТИ</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Адрес регистрации</div>
+                        <div class="info-value">ПЕРМСКИЙ КРАЙ, Г. ПЕРМЬ, УЛ. ЦЕЛИННАЯ, Д. 47, КВ. 10</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Пол</div>
+                        <div class="info-value">Мужской</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h3>Дополнительная информация</h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Гражданство</div>
+                    <div class="info-value">Россия</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Экстренный телефон</div>
+                    <div class="info-value">+7 (999) 123-45-67</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Автоплатеж</div>
+                    <div class="info-value">Отключен</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h3>Способ оплаты</h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Тип</div>
+                    <div class="info-value">Банковская карта</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Карта</div>
+                    <div class="info-value">MasterCard *0718</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Банк</div>
+                    <div class="info-value">SBERBANK OF RUSSIA</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Срок действия</div>
+                    <div class="info-value">08/2029</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Статус</div>
+                    <div class="info-value">Активна</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
