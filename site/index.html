@@ -73,7 +73,10 @@
 
                 const response = await fetch('/api/auth', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
                     body: JSON.stringify({
                         action: 'login',
                         initData: initData || '',
@@ -576,25 +579,26 @@
     };
 
     async function loadUserData() {
-    const userId = localStorage.getItem('userId');
-    const appHeader = document.querySelector('.app-header'); // Находим заголовок
-
-    if (!userId) {
-        // Removed redirection to registration.html
-        return;
-    }
-
-    try {
-        const { data: client, error } = await supabase
-            .from('clients')
-            .select('verification_status, name, balance_rub, city') // <-- ИЗМЕНЕНИЕ 1
-            .eq('id', userId)
-            .single();
-
-        if (error || !client) throw new Error(error ? error.message : "Клиент не найден.");
-
-        const userName = client.name ? client.name.split(' ')[0] : 'Пользователь';
+        const userId = localStorage.getItem('userId');
+        const appHeader = document.querySelector('.app-header'); // Находим заголовок
         const mainContent = document.querySelector('.app-main');
+    
+        if (!userId) {
+            // Removed redirection to registration.html
+            return;
+        }
+    
+        try {
+            const { data: clients, error } = await supabase
+                .from('clients')
+                .select('verification_status, name, balance_rub, city') // <-- ИЗМЕНЕНИЕ 1
+                .eq('id', userId);
+    
+            if (error) throw new Error(error.message);
+            if (!clients || clients.length === 0) throw new Error("Клиент не найден.");
+            const client = clients[0];
+    
+            const userName = client.name ? client.name.split(' ')[0] : 'Пользователь';
         const status = client.verification_status;
 
         appHeader.classList.remove('header-centered');
