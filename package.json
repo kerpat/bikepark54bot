@@ -1,5 +1,5 @@
 {
-  "name": "BikePark54-vercel-app",
+  "name": "bikepark54-vercel-app",
   "version": "1.0.0",
   "description": "BikePark54 Web App and Telegram Bot for Vercel",
   "main": "telegram-bot.js",
