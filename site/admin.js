@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         ymaps.ready(() => {
             myMap = new ymaps.Map("admin-map-container", {
-                center: [55.76, 37.64], // Москва
+                center: [55.028682, 82.903748], // Новосибирск
                 zoom: 10,
                 controls: [] // Отключаем все стандартные элементы управления
             });
@@ -981,6 +981,7 @@ document.addEventListener('DOMContentLoaded', () => {
             bikeFormTitle.textContent = 'Новый велосипед';
             bikeForm.reset();
             bikeIdInput.value = '';
+            bikeCitySelect.value = 'Новосибирск'; // default city
             bikeFrameNumberInput.value = '';
             bikeBatteryNumbersInput.value = '';
             bikeRegistrationNumberInput.value = '';
