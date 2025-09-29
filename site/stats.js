@@ -2,8 +2,8 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- ИНИЦИАЛИЗАЦИЯ SUPABASE ---
-    const SUPABASE_URL = 'https://gbabrtcnegjhherbczuj.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdiYWJydGNuZWdqaGhlcmJjenVqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkxMzQ0MTAsImV4cCI6MjA3NDcxMDQxMH0.muedJjHjqZsCUv6wtiiGoTao9t1T69lTl6p5G57_otU';
+    const SUPABASE_URL = window.APP_CONFIG.SUPABASE_URL;
+    const SUPABASE_ANON_KEY = window.APP_CONFIG.SUPABASE_ANON_KEY;
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     // --- ЭЛЕМЕНТЫ DOM ---
