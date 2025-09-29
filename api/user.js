@@ -28,10 +28,11 @@ async function handleUpdateLocation({ userId, latitude, longitude }) {
         return { status: 400, body: { error: 'userId, latitude, and longitude are required.' } };
     }
     const supabaseAdmin = createSupabaseAdmin();
-    const locationString = `POINT(${longitude} ${latitude})`;
+    // Сохраняем как JSON объект с координатами
+    const locationData = { latitude, longitude, timestamp: new Date().toISOString() };
     const { error } = await supabaseAdmin
         .from('clients')
-        .update({ last_location: locationString })
+        .update({ last_location: locationData })
         .eq('id', userId);
 
     if (error) {

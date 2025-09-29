@@ -1,0 +1,2 @@
+secret_key=live_Vj-DWbVylbzgTcVT_-yG3ZJWiheScXRhItBAc5Ya_II
+shop_id=1148314
