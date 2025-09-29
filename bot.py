@@ -35,7 +35,7 @@ TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '8277257856:AAG1-cSCEawx_J3kQk0RmbCH3pNn
 WEBAPP_REGISTER_API = 'https://bikepark54bot.vercel.app/api/telegram-register'
 BOT_REGISTER_API = 'https://bikepark54bot.vercel.app/api/auth'
 ADMIN_SECRET_KEY = 'your_super_secret_admin_key' # Секрет для уведомлений от админки
-WEB_APP_URL = 'https://bikepark54bot.vercel.app' # URL вашего основного веб-приложения
+WEB_APP_URL = 'https://bikepark54bot.vercel.app/' # URL вашего основного веб-приложения
 
 # Supabase settings
 SUPABASE_URL = os.getenv('SUPABASE_URL')

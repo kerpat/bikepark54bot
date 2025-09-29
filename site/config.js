@@ -15,5 +15,5 @@ window.APP_CONFIG = {
   APP_BASE_URL: 'https://bikepark54bot.vercel.app',
 
   // URL for the separate server handling contracts (PDF generation)
-  CONTRACTS_API_URL: 'https://serverdogovor.onrender.com'
+  CONTRACTS_API_URL: 'https://dogovorbikepark54.onrender.com'
 };
