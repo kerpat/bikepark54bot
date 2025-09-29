@@ -1515,7 +1515,7 @@ clientsTableBody.addEventListener('click', async (e) => {
         if (metricsContainer) {
             metricsContainer.innerHTML = '<p>Загрузка метрик...</p>';
             try {
-                const { data, error } = await supabase.from('bikes').select('status');
+                const { data, error } = await supabase.from('bikes').select('status').eq('city', 'Новосибирск');
                 if (error) throw error;
 
                 const stats = data.reduce((acc, bike) => {
