@@ -272,7 +272,9 @@
     // --- Подключение к Supabase ---
     const SUPABASE_URL = window.APP_CONFIG.SUPABASE_URL;
     const SUPABASE_ANON_KEY = window.APP_CONFIG.SUPABASE_ANON_KEY;
+    console.log('[STATS] Инициализация Supabase:', { SUPABASE_URL, hasKey: !!SUPABASE_ANON_KEY });
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    console.log('[STATS] Supabase клиент создан');
 
     document.addEventListener('DOMContentLoaded', () => {
         // --- ОБЩАЯ ЛОГИКА АНИМАЦИИ ПЕРЕХОДОВ ---
@@ -307,11 +309,19 @@
 
 
         // --- ЛОГИКА, СПЕЦИФИЧНАЯ ДЛЯ stats.html ---
+        console.log('[STATS] Инициализация страницы статистики');
+
         const historyContainer = document.getElementById('history-list-container');
         const totalTopupsEl = document.getElementById('total-topups');
         const totalExpensesEl = document.getElementById('total-expenses');
 
         let allPayments = []; // Глобальная переменная для хранения платежей
+
+        console.log('[STATS] Элементы DOM получены:', {
+            historyContainer: !!historyContainer,
+            totalTopupsEl: !!totalTopupsEl,
+            totalExpensesEl: !!totalExpensesEl
+        });
 
         const icons = {
             initial: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>`,
@@ -361,8 +371,10 @@
 
             // --- ШАГ 2: Проверка пользователя (без изменений) ---
             const userId = localStorage.getItem('userId');
+            console.log('[STATS] Проверка пользователя:', { userId: userId ? 'найден' : 'не найден', userId });
+
             if (!userId) {
-                console.error("User ID not found, can't load history.");
+                console.error("[STATS] User ID not found, can't load history.");
                 historyContainer.innerHTML = '<p class="empty-history">Не удалось определить пользователя.</p>';
                 totalTopupsEl.textContent = '0 ₽';
                 totalExpensesEl.textContent = '0 ₽';
@@ -370,6 +382,7 @@
             }
 
             // --- ШАГ 3: Загрузка данных (без изменений) ---
+            console.log('[STATS] Начинаем загрузку данных из Supabase');
             historyContainer.innerHTML = '<p class="empty-history">Загрузка истории...</p>';
 
             const { data: payments, error } = await supabase
@@ -379,13 +392,20 @@
                 .eq('status', 'succeeded')
                 .order('created_at', { ascending: false });
 
+            console.log('[STATS] Результат запроса к Supabase:', {
+                error: error ? error.message : null,
+                paymentsCount: payments ? payments.length : 0,
+                payments: payments
+            });
+
             if (error) {
-                console.error('Ошибка загрузки истории:', error);
+                console.error('[STATS] Ошибка загрузки истории:', error);
                 historyContainer.innerHTML = '<p class="empty-history">Не удалось загрузить историю платежей.</p>';
                 return;
             }
 
             if (!payments || payments.length === 0) {
+                console.log('[STATS] Нет платежей для отображения');
                 allPayments = [];
                 historyContainer.innerHTML = '<p class="empty-history">Здесь будет отображаться история ваших платежей.</p>';
                 totalTopupsEl.textContent = '0 ₽';
@@ -393,6 +413,7 @@
                 return;
             }
 
+            console.log('[STATS] Найдено платежей:', payments.length);
             allPayments = payments;
 
             // --- ОБНОВЛЕНИЕ ГРАФИКА (ЛОГИКА ИЗМЕНЕНА НА ПОДСЧЕТ КОЛИЧЕСТВА ОПЕРАЦИЙ) ---
@@ -428,21 +449,26 @@
             });
 
             // --- ОТОБРАЖЕНИЕ СТАТИСТИКИ И СПИСКА (без изменений) ---
+            console.log('[STATS] Рассчитываем статистику');
             let totalTopups = 0;
             let totalExpenses = 0;
             payments.forEach(payment => {
                 const amount = parseFloat(payment.amount_rub) || 0;
+                console.log('[STATS] Обработка платежа:', { id: payment.id, amount, type: payment.payment_type });
                 if (amount > 0) {
                     totalTopups += amount;
                 } else {
                     totalExpenses += Math.abs(amount);
                 }
             });
+
+            console.log('[STATS] Итоговая статистика:', { totalTopups, totalExpenses });
             totalTopupsEl.textContent = `${totalTopups.toLocaleString('ru-RU')} ₽`;
             totalExpensesEl.textContent = `${totalExpenses.toLocaleString('ru-RU')} ₽`;
 
             const expenseTypes = ['initial', 'renewal', 'balance_debit', 'invoice']; // Убедись, что этот массив есть выше в коде
 
+            console.log('[STATS] Отрисовываем список платежей');
             historyContainer.innerHTML = '';
             payments.forEach(payment => {
                 const typeLabel = paymentTypeLabels[payment.payment_type] || payment.payment_type;
@@ -454,6 +480,15 @@
                 const sign = isExpense ? '−' : '+'; // Используем красивый минус
                 const amountDisplay = Math.abs(amount).toLocaleString('ru-RU');
                 const costClass = isExpense ? 'negative' : 'positive'; // Класс для возможной стилизации (например, красный/зеленый)
+
+                console.log('[STATS] Отрисовка платежа:', {
+                    id: payment.id,
+                    type: payment.payment_type,
+                    amount,
+                    isExpense,
+                    typeLabel,
+                    desc: desc.substring(0, 50) + '...'
+                });
 
                 const historyItemHTML = `
                     <div class="history-item" data-payment-id="${payment.id}" style="cursor: pointer;">
@@ -471,6 +506,8 @@
                 `;
                 historyContainer.insertAdjacentHTML('beforeend', historyItemHTML);
             });
+
+            console.log('[STATS] Завершена отрисовка списка платежей');
         }
         // Запускаем загрузку истории
         loadPaymentHistory();
@@ -482,6 +519,8 @@
 
         // Функция для отображения детальной информации о платеже
         function showPaymentDetails(payment) {
+            console.log('[STATS] Открываем детали платежа:', payment);
+
             const typeLabel = paymentTypeLabels[payment.payment_type] || payment.payment_type;
             const statusLabel = paymentStatusLabels[payment.status] || payment.status;
 
@@ -499,6 +538,8 @@
             const amount = parseFloat(payment.amount_rub) || 0;
             const date = new Date(payment.created_at).toLocaleString('ru-RU', { dateStyle: 'short', timeStyle: 'short' }).replace(',', '');
             const desc = payment.description || 'Без описания';
+
+            console.log('[STATS] Сформированные детали:', { typeLabel, statusLabel, method, amount, date, desc });
 
             const detailsHTML = `
                 <div class="payment-details">
@@ -538,10 +579,22 @@
         // Обработчик кликов по элементам истории
         historyContainer.addEventListener('click', (e) => {
             const historyItem = e.target.closest('.history-item');
+            console.log('[STATS] Клик по элементу истории:', {
+                target: e.target.tagName,
+                historyItem: !!historyItem,
+                paymentId: historyItem?.dataset?.paymentId
+            });
+
             if (historyItem && historyItem.dataset.paymentId) {
                 const paymentId = historyItem.dataset.paymentId;
                 // Находим платеж в глобальном массиве allPayments
                 const payment = allPayments.find(p => p.id == paymentId);
+                console.log('[STATS] Найден платеж для деталей:', {
+                    paymentId,
+                    paymentFound: !!payment,
+                    payment: payment
+                });
+
                 if (payment) {
                     showPaymentDetails(payment);
                 }
