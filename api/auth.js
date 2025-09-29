@@ -169,7 +169,7 @@ async function handler(req, res) {
             const { data: client, error } = await supabaseAdmin
                 .from('clients')
                 .select('*')
-                .eq('extra->telegram_user_id', telegramUserId)
+                .eq('telegram_user_id', telegramUserId)
                 .single();
             if (error || !client) {
                 return res.status(404).json({ error: 'User not found. Please register first.' });
