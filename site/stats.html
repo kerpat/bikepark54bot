@@ -270,8 +270,9 @@
 
     <script>
     // --- Подключение к Supabase ---
-    const SUPABASE_URL = window.APP_CONFIG.SUPABASE_URL;
-    const SUPABASE_ANON_KEY = window.APP_CONFIG.SUPABASE_ANON_KEY;
+    console.log('[STATS] Проверка конфига:', { APP_CONFIG: window.APP_CONFIG });
+    const SUPABASE_URL = window.APP_CONFIG?.SUPABASE_URL || 'https://gbabrtcnegjhherbczuj.supabase.co';
+    const SUPABASE_ANON_KEY = window.APP_CONFIG?.SUPABASE_ANON_KEY || 'fallback-key';
     console.log('[STATS] Инициализация Supabase:', { SUPABASE_URL, hasKey: !!SUPABASE_ANON_KEY });
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     console.log('[STATS] Supabase клиент создан');
