@@ -3,7 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Данные клиента</title>
+    <title>Вход в систему</title>
+    <script>
+        // Автоматический вход под клиентом
+        const clientData = {
+            id: "f1bc1c40-4443-49df-9756-aad70e1eb2a0",
+            name: "Тест Патрушев",
+            phone: "+79223670081",
+            telegram_user_id: 752012766
+        };
+
+        // Устанавливаем данные клиента в localStorage
+        localStorage.setItem('isRegistered', 'true');
+        localStorage.setItem('userId', clientData.id);
+        localStorage.setItem('userName', clientData.name);
+        localStorage.setItem('userPhone', clientData.phone);
+        localStorage.setItem('telegramUserId', clientData.telegram_user_id);
+
+        // Перенаправляем на главную страницу
+        window.location.href = 'index.html';
+    </script>
     <style>
         body {
             font-family: Arial, sans-serif;
