@@ -31,11 +31,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '8126548981:AAGC86ZaJ0SYLICC0WbpS7aGOhU9t8iz_a4')
-WEBAPP_REGISTER_API = 'https://prizmalol-neon.vercel.app/api/telegram-register'
-BOT_REGISTER_API = 'https://prizmalol-neon.vercel.app/api/auth'
+TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '8277257856:AAG1-cSCEawx_J3kQk0RmbCH3pNndQ7wOjE')
+WEBAPP_REGISTER_API = 'https://bikepark54bot.vercel.app/api/telegram-register'
+BOT_REGISTER_API = 'https://bikepark54bot.vercel.app/api/auth'
 ADMIN_SECRET_KEY = 'your_super_secret_admin_key' # Секрет для уведомлений от админки
-WEB_APP_URL = 'https://prizmalol-neon.vercel.app' # URL вашего основного веб-приложения
+WEB_APP_URL = 'https://bikepark54bot.vercel.app' # URL вашего основного веб-приложения
 
 # Supabase settings
 SUPABASE_URL = os.getenv('SUPABASE_URL')
@@ -192,7 +192,7 @@ async def start_handler(message: Message, state: FSMContext):
     ])
     await message.answer(
         f"👋 Здравствуйте, *{message.from_user.first_name or 'пользователь'}!*\n\n"
-        "Добро пожаловать в *Prizmatic* — сервис аренды электровелосипедов.\n\n"
+        "Добро пожаловать в *BikePark54* — сервис аренды электровелосипедов.\n\n"
         "🚀 Нажмите кнопку ниже, чтобы открыть приложение и начать пользоваться сервисом.",
         parse_mode='Markdown',
         reply_markup=keyboard
@@ -647,7 +647,7 @@ async def process_video_note(message: Message, state: FSMContext):
                         "✅ *Регистрация завершена!*\n\n"
                         "🎊 Ваши данные приняты и отправлены на проверку.\n\n"
                         "📱 Вы можете в любой момент зайти в приложение и посмотреть там статус проверки, дозаполнить данные (если потребуется), подключить карту, написать в поддержку или пригласить друга.\n\n"
-                        "_Спасибо за доверие к Prizmatic!_",
+                        "_Спасибо за доверие к BikePark54!_",
                         parse_mode='Markdown'
                     )
                     # Send video with app button

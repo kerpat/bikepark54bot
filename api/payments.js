@@ -204,7 +204,7 @@ async function handleCreatePayment(body) {
     if (clientData.yookassa_payment_method_id) {
         paymentData.payment_method_id = clientData.yookassa_payment_method_id;
     } else {
-        paymentData.confirmation = { type: 'redirect', return_url: 'https://prizmalol-neon.vercel.app/' };
+        paymentData.confirmation = { type: 'redirect', return_url: 'https://bikepark54bot.vercel.app/' };
     }
 
     const authString = Buffer.from(`${process.env.YOOKASSA_SHOP_ID}:${process.env.YOOKASSA_SECRET_KEY}`).toString('base64');
@@ -242,7 +242,7 @@ async function handleSaveCard({ userId }) {
     if (!normalizedPhone) throw new Error(`Client ${userId} has no phone number for YooKassa receipts.`);
 
     const amount = 1.00; // Small amount for card verification
-    const description = 'Привязка карты для Prizmatic';
+    const description = 'Привязка карты для BikePark54';
     const idempotenceKey = crypto.randomUUID();
 
     const paymentData = {
@@ -251,7 +251,7 @@ async function handleSaveCard({ userId }) {
         description,
         metadata: { userId, payment_type: 'save_card' }, // Special metadata
         save_payment_method: true,
-        confirmation: { type: 'redirect', return_url: 'https://prizmalol-neon.vercel.app/profile.html?card_saved=true' }, // Redirect back to profile
+        confirmation: { type: 'redirect', return_url: 'https://bikepark54bot.vercel.app/profile.html?card_saved=true' }, // Redirect back to profile
         receipt: {
             customer: { phone: normalizedPhone },
             items: [{
