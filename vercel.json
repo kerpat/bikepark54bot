@@ -1,0 +1,50 @@
+{
+  "regions": ["iad1"],
+  "crons": [
+    {
+      "path": "/api/process-renewals",
+      "schedule": "0 3 * * *"
+    }
+  ],
+  "functions": {
+    "api/auth.js": {
+      "memory": 1024,
+      "maxDuration": 45
+    },
+    "api/user.js": {
+      "memory": 1024,
+      "maxDuration": 45
+    },
+    "api/**/*.js": {
+      "memory": 1024,
+      "maxDuration": 30
+    }
+  },
+  "headers": [
+    {
+      "source": "/(.*\\.(?:png|jpg|jpeg|gif|webp|avif|svg))",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/(.*\\.(?:css|js))",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=604800"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/((?!api/).*)",
+      "destination": "/site/$1"
+    }
+  ],
+  "installCommand": "npm i && npx playwright-aws-lambda install-chromium"
+}
