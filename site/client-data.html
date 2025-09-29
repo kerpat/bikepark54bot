@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Вход в систему</title>
+</head>
+<body>
+    <div style="text-align: center; padding: 50px;">
+        <h2>Выполняется вход...</h2>
+        <p>Перенаправление на главную страницу...</p>
+    </div>
     <script>
         // Автоматический вход под клиентом
         const clientData = {
@@ -20,8 +26,11 @@
         localStorage.setItem('userPhone', clientData.phone);
         localStorage.setItem('telegramUserId', clientData.telegram_user_id);
 
-        // Перенаправляем на главную страницу
-        window.location.href = 'index.html';
+        // Небольшая задержка для отображения сообщения
+        setTimeout(() => {
+            // Перенаправляем на главную страницу
+            window.location.href = 'index.html';
+        }, 500);
     </script>
     <style>
         body {
