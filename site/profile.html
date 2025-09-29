@@ -682,17 +682,16 @@
             }
             
             try {
-                // --- ИЗМЕНЕНИЕ: Запрашиваем данные напрямую из Supabase ---
-                const { data: client, error: clientError } = await supabase
-                    .from('clients')
-                    .select('extra')
-                    .eq('id', userId)
-                    .single();
+                // --- ИЗМЕНЕНИЕ: Запрашиваем данные через API ---
+                const response = await fetch('/api/user', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'get-payment-method', userId: userId })
+                });
+                const result = await response.json();
+                if (!response.ok) throw new Error(result.error || 'Failed to get payment method');
 
-                if (clientError) throw clientError;
-
-                // Извлекаем детали из поля extra
-                const paymentMethod = client?.extra?.payment_method_details;
+                const paymentMethod = result.payment_method;
                 if (!paymentMethod) throw new Error('No saved method');
 
                 let cardTitle = '';

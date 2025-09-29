@@ -12,7 +12,7 @@ window.APP_CONFIG = {
   YANDEX_MAPS_API_KEY: 'a32fae3e-06f9-4231-87a0-f225b5d7a04a',
 
   // Base URL of the main Vercel deployment, used for redirects
-  APP_BASE_URL: 'https://bikepark54bot.vercel.app',
+  APP_BASE_URL: 'https://bikepark54bot.vercel.app/',
 
   // URL for the separate server handling contracts (PDF generation)
   CONTRACTS_API_URL: 'https://dogovorbikepark54.onrender.com'

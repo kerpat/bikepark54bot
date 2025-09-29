@@ -293,7 +293,7 @@ async function handleGetPaymentMethod({ userId }) {
         .single();
 
     if (clientError) throw new Error('Failed to get client data: ' + clientError.message);
-    
+
     const paymentMethodDetails = client?.extra?.payment_method_details;
 
     if (!paymentMethodDetails) {
@@ -301,6 +301,32 @@ async function handleGetPaymentMethod({ userId }) {
     }
 
     return { status: 200, body: { payment_method: paymentMethodDetails } };
+}
+
+async function handleUnbindPaymentMethod({ userId }) {
+    if (!userId) {
+        return { status: 400, body: { error: 'userId is required.' } };
+    }
+    const supabaseAdmin = createSupabaseAdmin();
+    const { data: client, error: clientError } = await supabaseAdmin
+        .from('clients')
+        .select('extra')
+        .eq('id', userId)
+        .single();
+
+    if (clientError) throw new Error('Failed to get client data: ' + clientError.message);
+
+    const extra = client?.extra || {};
+    delete extra.payment_method_details;
+
+    const { error: updateError } = await supabaseAdmin
+        .from('clients')
+        .update({ extra: extra })
+        .eq('id', userId);
+
+    if (updateError) throw new Error('Failed to unbind payment method: ' + updateError.message);
+
+    return { status: 200, body: { message: 'Payment method unbound successfully.' } };
 }
 
 
@@ -337,6 +363,9 @@ async function handler(req, res) {
                 break;
             case 'get-payment-method':
                 result = await handleGetPaymentMethod(body);
+                break;
+            case 'unbind-payment-method':
+                result = await handleUnbindPaymentMethod(body);
                 break;
             default:
                 result = { status: 400, body: { error: 'Invalid action' } };
