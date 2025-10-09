@@ -709,11 +709,11 @@
 
                 cardViewContainer.innerHTML = `
                     <div id="card-display-view">
-                        <div class="card-preview">
-                            <div class="card-number">${cardTitle}</div>
-                            <div class="card-details">
+                        <div class="card-preview" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 12px; color: white; margin-bottom: 20px;">
+                            <div class="card-number" style="font-size: 18px; font-weight: 600; margin-bottom: 8px; letter-spacing: 2px;">${cardTitle}</div>
+                            <div class="card-details" style="display: flex; justify-content: space-between; font-size: 14px; opacity: 0.95;">
                                 <span>${cardSubtitle}</span>
-                                <span>Привязана</span>
+                                <span style="background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 20px; font-size: 12px;">Привязана</span>
                             </div>
                         </div>
                         <button class="btn btn-secondary" id="unbind-card-btn" style="margin-top: 20px;">Отвязать карту</button>
