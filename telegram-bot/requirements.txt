@@ -1,0 +1,7 @@
+aiogram
+aiohttp
+python-dotenv
+supabase
+google-generativeai
+Pillow
+aiofiles
