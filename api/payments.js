@@ -166,27 +166,54 @@ async function handleCreatePayment(body) {
     if (!userId) throw new Error('Client ID (userId) is required.');
 
     const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+    const supabaseAdmin = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
+    
     const { data: clientData, error: clientError } = await supabase.from('clients').select('phone, yookassa_payment_method_id').eq('id', userId).single();
     if (clientError || !clientData) throw new Error(`Client with id ${userId} not found in Supabase.`);
 
     const normalizedPhone = normalizePhone(clientData.phone);
     if (!normalizedPhone) throw new Error(`Client ${userId} has no phone number for YooKassa receipts.`);
 
-    const amount = amountFromClient ? Number.parseFloat(amountFromClient) : 3750.0;
+    // Если передан tariffId, получаем цену из тарифа
+    let amount;
+    if (tariffId) {
+        const { data: tariffData, error: tariffError } = await supabaseAdmin
+            .from('tariffs')
+            .select('price_rub')
+            .eq('id', tariffId)
+            .single();
+        
+        if (tariffError || !tariffData) {
+            throw new Error('Tariff not found.');
+        }
+        
+        amount = Number.parseFloat(tariffData.price_rub);
+    } else {
+        amount = amountFromClient ? Number.parseFloat(amountFromClient) : 3750.0;
+    }
+    
     if (!Number.isFinite(amount) || amount <= 0) {
         throw new Error('Invalid amount specified.');
     }
 
     let description = 'Account top-up';
-    if (bikeCode) description = `Bike rental payment #${bikeCode}`;
-    if (body.type === 'renewal') description = `Продление аренды #${body.rentalId}`;
+    let payment_type = 'top-up';
+    
+    if (bikeCode && tariffId) {
+        description = `Аренда велосипеда #${bikeCode}`;
+        payment_type = 'rental';
+    } else if (body.type === 'renewal') {
+        description = `Продление аренды #${body.rentalId}`;
+        payment_type = 'renewal';
+    }
+    
     const idempotenceKey = crypto.randomUUID();
 
     const paymentData = {
         amount: { value: amount.toFixed(2), currency: 'RUB' },
         capture: true,
         description,
-        metadata: { userId, bikeCode, tariffId, type: body.type, rentalId: body.rentalId, days: body.days },
+        metadata: { userId, bikeCode, tariffId, payment_type, type: body.type, rentalId: body.rentalId, days: body.days },
         save_payment_method: true,
         receipt: {
             customer: { phone: normalizedPhone },
