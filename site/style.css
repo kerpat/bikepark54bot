@@ -1003,6 +1003,35 @@ body:has(.map-page-container) #map {
   padding: 18px;
 }
 
+/* === СТИЛИ ДЛЯ УВЕДОМЛЕНИЙ === */
+.notifications-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.notification-item {
+  width: 100%;
+  padding: 15px;
+  background-color: #FFF5F2;
+  border-left: 4px solid var(--icon-orange);
+  border-radius: 8px;
+  text-align: left;
+}
+
+.notification-item p {
+  color: var(--dark-text);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0 0 10px 0;
+  font-weight: 500;
+}
+
+.notification-item .btn {
+  width: 100%;
+}
+
 /* === СТИЛИ ДЛЯ УВЕДОМЛЕНИЯ (ТОСТА) === */
 .toast-container {
   position: fixed;
