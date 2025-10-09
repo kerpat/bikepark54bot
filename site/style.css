@@ -1008,28 +1008,60 @@ body:has(.map-page-container) #map {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px;
+  gap: 20px;
+  text-align: center;
+}
+
+.notifications-content .icon-wrapper {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, #FF6B35 0%, #FF8F5C 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.notifications-content .icon-wrapper svg {
+  width: 32px;
+  height: 32px;
+  stroke: white;
+}
+
+#notifications-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+#notifications-list > p {
+  color: var(--dark-text);
+  font-size: 0.95rem;
+  margin: 0;
 }
 
 .notification-item {
   width: 100%;
-  padding: 15px;
-  background-color: #FFF5F2;
-  border-left: 4px solid var(--icon-orange);
-  border-radius: 8px;
-  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
 }
 
 .notification-item p {
   color: var(--dark-text);
   font-size: 0.95rem;
   line-height: 1.5;
-  margin: 0 0 10px 0;
+  margin: 0;
   font-weight: 500;
+  text-align: center;
 }
 
 .notification-item .btn {
   width: 100%;
+  max-width: 280px;
 }
 
 /* === СТИЛИ ДЛЯ УВЕДОМЛЕНИЯ (ТОСТА) === */
