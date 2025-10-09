@@ -2334,7 +2334,7 @@ clientsTableBody.addEventListener('click', async (e) => {
                 if (rentalFetchError) throw new Error('Не удалось получить данные аренды для отправки акта.');
                 const userId = rental.user_id;
 
-                const pdfServerUrl = 'https://dogovorbikepark54.onrender.com/api/user';
+                const pdfServerUrl = `${window.APP_CONFIG.CONTRACTS_API_URL}/api/user`;
                 const pdfResponse = await fetch(pdfServerUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
