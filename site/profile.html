@@ -308,9 +308,9 @@
                 <!-- Новый пункт меню для настроек оплаты -->
                 <div class="menu-item" data-modal-target="payment-settings-modal" style="cursor: pointer;">
                     <div class="menu-item-left">
-                        <!-- Иконка настроек оплаты -->
-                        <svg class="menu-item-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v4"></path><path d="M12 19v4"></path><path d="M4.22 4.22l2.83 2.83"></path><path d="M16.95 16.95l2.83 2.83"></path><path d="M1 12h4"></path><path d="M19 12h4"></path><path d="M4.22 19.78l2.83-2.83"></path><path d="M16.95 7.05l2.83-2.83"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                        <span class="menu-item-text">Настройки оплаты</span>
+                        <!-- Иконка города -->
+                        <svg class="menu-item-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        <span class="menu-item-text">Город</span>
                     </div>
                     <svg class="menu-item-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                 </div>
@@ -434,38 +434,18 @@
     </div>
 </div>
 
-    <!-- Модальное окно для настроек оплаты -->
+    <!-- Модальное окно для выбора города -->
     <div id="payment-settings-modal" class="modal-overlay hidden">
         <div class="modal-content">
             <button class="modal-close">&times;</button>
-            <h2>Настройки оплаты</h2>
+            <h2>Город</h2>
             <form id="payment-settings-form">
                 <div class="modal-form-group">
                     <label for="city-select">Город</label>
                     <select id="city-select" class="form-input">
-                        <option value="Москва">Москва</option>
-                        <option value="Санкт-Петербург">Санкт-Петербург</option>
-                        <option value="Казань">Казань</option>
-                        <option value="Новосибирск">Новосибирск</option>
-                        <option value="Екатеринбург">Екатеринбург</option>
+                        <option value="Новосибирск" selected>Новосибирск</option>
                     </select>
                 </div>
-                <div class="modal-form-group">
-                    <label>Способ оплаты</label>
-                    <div class="payment-radio-group">
-                        <!-- Делаем QR-опцию неактивной -->
-                        <span style="opacity: 0.5; cursor: not-allowed;">
-                            <input type="radio" name="provider" value="qr" disabled> QR
-                        </span>
-                        <!-- Опция BikePark54 выбрана по умолчанию и является единственной активной -->
-                        <label><input type="radio" name="provider" value="BikePark54" checked> BikePark54</label>
-                    </div>
-                </div>
-                <!--
-                    Тарифы BikePark54 удалены из формы настроек оплаты по требованию: 
-                    пользователь выбирает провайдера (QR или BikePark54) без выбора тарифа. 
-                    Выбор конкретного тарифа происходит непосредственно при аренде на главном экране.
-                -->
                 <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Сохранить</button>
             </form>
         </div>
