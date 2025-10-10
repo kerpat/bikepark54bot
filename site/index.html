@@ -1313,8 +1313,9 @@ function initializeMainScreenEventListeners() {
 
         if (data.autoPayment) {
             // Карта привязана - платеж обрабатывается автоматически
-            alert('Оплата обрабатывается! Перейдите в уведомления в профиле для подписания договора.');
-            window.location.reload();
+            // Показываем модальное окно для подписания договора
+            document.getElementById('post-rental-prompt-modal').classList.remove('hidden');
+            loadUserData(); // Обновляем интерфейс
         } else if (data.confirmation_url) {
             window.location.href = data.confirmation_url;
         } else {
@@ -1429,8 +1430,12 @@ function initializeMainScreenEventListeners() {
 
                     if (data.autoPayment) {
                         // Карта привязана - платеж обрабатывается автоматически
-                        alert('Оплата обрабатывается! Перейдите в уведомления в профиле для подписания договора.');
-                        window.location.reload();
+                        // Закрываем модалки выбора тарифа
+                        document.getElementById('tariff-detail-modal')?.classList.add('hidden');
+                        document.getElementById('tariff-modal')?.classList.add('hidden');
+                        // Показываем модальное окно для подписания договора
+                        document.getElementById('post-rental-prompt-modal').classList.remove('hidden');
+                        loadUserData(); // Обновляем интерфейс
                     } else if (data.confirmation_url) {
                         window.location.href = data.confirmation_url;
                     } else {
