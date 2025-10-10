@@ -376,6 +376,70 @@
         </div>
     </div>
 </div>
+
+<!-- Модалка для загрузки фото/видео при возврате велосипеда -->
+<div id="return-media-modal" class="modal-overlay hidden">
+    <div class="modal-content">
+        <button class="modal-close">&times;</button>
+        <h2>Сдача велосипеда</h2>
+        <p style="text-align: center; color: var(--dark-text); margin-bottom: 20px;">
+            Загрузите 4 фото велосипеда с разных сторон и видео обзор
+        </p>
+        
+        <div class="media-upload-grid">
+            <div class="upload-item">
+                <label>Фото спереди</label>
+                <label class="file-input-label" for="file-photo-front">Выбрать фото</label>
+                <input type="file" id="file-photo-front" accept="image/*" data-type="photo_front">
+                <div class="preview" id="preview-photo_front">
+                    <span class="placeholder">Фото не загружено</span>
+                </div>
+            </div>
+            
+            <div class="upload-item">
+                <label>Фото сзади</label>
+                <label class="file-input-label" for="file-photo-back">Выбрать фото</label>
+                <input type="file" id="file-photo-back" accept="image/*" data-type="photo_back">
+                <div class="preview" id="preview-photo_back">
+                    <span class="placeholder">Фото не загружено</span>
+                </div>
+            </div>
+            
+            <div class="upload-item">
+                <label>Фото слева</label>
+                <label class="file-input-label" for="file-photo-left">Выбрать фото</label>
+                <input type="file" id="file-photo-left" accept="image/*" data-type="photo_left">
+                <div class="preview" id="preview-photo_left">
+                    <span class="placeholder">Фото не загружено</span>
+                </div>
+            </div>
+            
+            <div class="upload-item">
+                <label>Фото справа</label>
+                <label class="file-input-label" for="file-photo-right">Выбрать фото</label>
+                <input type="file" id="file-photo-right" accept="image/*" data-type="photo_right">
+                <div class="preview" id="preview-photo_right">
+                    <span class="placeholder">Фото не загружено</span>
+                </div>
+            </div>
+            
+            <div class="upload-item full-width">
+                <label>Видео обзор (снимите велосипед по кругу)</label>
+                <label class="file-input-label" for="file-video">Выбрать видео</label>
+                <input type="file" id="file-video" accept="video/*" data-type="video">
+                <div class="preview" id="preview-video">
+                    <span class="placeholder">Видео не загружено</span>
+                </div>
+            </div>
+        </div>
+        
+        <button class="btn btn-primary" id="submit-return-btn" disabled style="width: 100%; margin-top: 10px;">
+            Сдать велосипед
+        </button>
+        <p id="upload-progress" style="text-align: center; color: var(--icon-orange); margin-top: 10px; font-size: 0.9rem;"></p>
+    </div>
+</div>
+
 <div id="notification-toast" class="toast-container hidden"><p class="toast-message">На вашем счету недостаточно средств.</p></div>
 <div id="success-toast" class="toast-container toast-success hidden"><p class="toast-message">Баланс пополнен на <strong id="success-amount"></strong>!</p></div>
 <div id="rent-success-toast" class="toast-container toast-success hidden"><p class="toast-message">Успешно! Перейдите в уведомления в профиле, чтобы подписать договор.</p></div>
@@ -560,19 +624,185 @@
 
     // --- НОВЫЕ ФУНКЦИИ РЕНДЕРИНГА И ДЕЙСТВИЙ ---
     const returnBike = async (rentalId) => {
-        if (!rentalId || !confirm("Вы уверены, что хотите сдать велосипед?")) return;
+        if (!rentalId) return;
         
-        const { error } = await supabase
-            .from('rentals')
-            .update({ status: 'pending_return' })
-            .eq('id', rentalId);
-            
-        if (error) {
-            alert("Ошибка: " + error.message);
-        } else {
-            window.location.reload();
+        // Открываем модалку для загрузки фото/видео
+        const modal = document.getElementById('return-media-modal');
+        if (modal) {
+            // Сохраняем rentalId для последующего использования
+            modal.dataset.rentalId = rentalId;
+            modal.classList.remove('hidden');
+            // Сбрасываем состояние модалки
+            resetReturnMediaModal();
         }
     };
+
+    // === ЛОГИКА ЗАГРУЗКИ МЕДИА ПРИ ВОЗВРАТЕ ===
+    const uploadedMediaUrls = {};
+    
+    function resetReturnMediaModal() {
+        // Сбросить все загруженные URL
+        Object.keys(uploadedMediaUrls).forEach(key => delete uploadedMediaUrls[key]);
+        
+        // Очистить превью
+        ['photo_front', 'photo_back', 'photo_left', 'photo_right', 'video'].forEach(type => {
+            const preview = document.getElementById(`preview-${type}`);
+            if (preview) {
+                preview.innerHTML = '<span class="placeholder">Фото не загружено</span>';
+                preview.classList.remove('has-media');
+            }
+            const input = document.querySelector(`input[data-type="${type}"]`);
+            if (input) input.value = '';
+        });
+        
+        // Отключить кнопку отправки
+        const submitBtn = document.getElementById('submit-return-btn');
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Сдать велосипед';
+        }
+        
+        // Очистить прогресс
+        const progress = document.getElementById('upload-progress');
+        if (progress) progress.textContent = '';
+    }
+    
+    async function uploadReturnMedia(file, mediaType, rentalId) {
+        const userId = localStorage.getItem('userId');
+        if (!userId) throw new Error('User not logged in');
+        
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('rentalId', rentalId);
+        formData.append('mediaType', mediaType);
+        formData.append('userId', userId);
+        
+        const response = await fetch('/api/upload-return-media', {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error || 'Ошибка загрузки файла');
+        }
+        
+        const result = await response.json();
+        return result.publicUrl;
+    }
+    
+    function checkAllMediaUploaded() {
+        const requiredTypes = ['photo_front', 'photo_back', 'photo_left', 'photo_right', 'video'];
+        const allUploaded = requiredTypes.every(type => uploadedMediaUrls[type]);
+        
+        const submitBtn = document.getElementById('submit-return-btn');
+        if (submitBtn) {
+            submitBtn.disabled = !allUploaded;
+        }
+        
+        const progress = document.getElementById('upload-progress');
+        if (progress) {
+            const uploadedCount = Object.keys(uploadedMediaUrls).length;
+            progress.textContent = `Загружено ${uploadedCount} из 5 файлов`;
+            if (allUploaded) {
+                progress.textContent = '✅ Все файлы загружены! Можете сдать велосипед.';
+            }
+        }
+    }
+    
+    // Обработчики загрузки файлов
+    document.addEventListener('DOMContentLoaded', () => {
+        ['photo_front', 'photo_back', 'photo_left', 'photo_right', 'video'].forEach(type => {
+            const input = document.querySelector(`input[data-type="${type}"]`);
+            const preview = document.getElementById(`preview-${type}`);
+            
+            if (input && preview) {
+                input.addEventListener('change', async (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    
+                    const modal = document.getElementById('return-media-modal');
+                    const rentalId = modal?.dataset.rentalId;
+                    if (!rentalId) {
+                        alert('Ошибка: не найден ID аренды');
+                        return;
+                    }
+                    
+                    // Показать индикатор загрузки
+                    preview.innerHTML = '<span class="loading">Загрузка...</span>';
+                    
+                    try {
+                        const publicUrl = await uploadReturnMedia(file, type, rentalId);
+                        uploadedMediaUrls[type] = publicUrl;
+                        
+                        // Показать превью
+                        preview.classList.add('has-media');
+                        if (type === 'video') {
+                            preview.innerHTML = `<video src="${publicUrl}" controls></video>`;
+                        } else {
+                            preview.innerHTML = `<img src="${publicUrl}" alt="${type}">`;
+                        }
+                        
+                        checkAllMediaUploaded();
+                    } catch (error) {
+                        console.error('Upload error:', error);
+                        preview.innerHTML = `<span class="placeholder" style="color: red;">Ошибка: ${error.message}</span>`;
+                        alert('Ошибка загрузки: ' + error.message);
+                    }
+                });
+            }
+        });
+        
+        // Обработчик кнопки "Сдать велосипед"
+        const submitBtn = document.getElementById('submit-return-btn');
+        if (submitBtn) {
+            submitBtn.addEventListener('click', async () => {
+                const modal = document.getElementById('return-media-modal');
+                const rentalId = modal?.dataset.rentalId;
+                if (!rentalId) return;
+                
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Отправка...';
+                
+                try {
+                    // Получить текущие extra_data
+                    const { data: rental, error: fetchError } = await supabase
+                        .from('rentals')
+                        .select('extra_data')
+                        .eq('id', rentalId)
+                        .single();
+                    
+                    if (fetchError) throw fetchError;
+                    
+                    // Обновить extra_data с медиа-файлами и статус на pending_return
+                    const updatedExtraData = {
+                        ...(rental.extra_data || {}),
+                        return_media: uploadedMediaUrls
+                    };
+                    
+                    const { error } = await supabase
+                        .from('rentals')
+                        .update({ 
+                            status: 'pending_return',
+                            extra_data: updatedExtraData
+                        })
+                        .eq('id', rentalId);
+                    
+                    if (error) throw error;
+                    
+                    // Закрыть модалку и обновить страницу
+                    modal.classList.add('hidden');
+                    alert('Велосипед успешно сдан! Ожидайте приемки администратором.');
+                    window.location.reload();
+                } catch (error) {
+                    console.error('Return error:', error);
+                    alert('Ошибка при сдаче велосипеда: ' + error.message);
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Сдать велосипед';
+                }
+            });
+        }
+    });
     
     const retryPayment = () => {
         alert("Пожалуйста, пополните привязанную карту. Система автоматически попытается списать средства в ближайшие часы.");

@@ -2098,6 +2098,9 @@ clientsTableBody.addEventListener('click', async (e) => {
                     if(bikeStatusRadios.length > 0) bikeStatusRadios[0].checked = true;
                     if(serviceReasonGroup) serviceReasonGroup.classList.add('hidden');
 
+                    // 2.5 Загрузить и отобразить медиа-файлы возврата
+                    await loadReturnMedia(rentalId);
+
                     // 3. Показываем модальное окно
                     returnModal.classList.remove('hidden');
                 } else {
@@ -2313,6 +2316,73 @@ clientsTableBody.addEventListener('click', async (e) => {
             }
         });
     }
+
+    // === ФУНКЦИИ ДЛЯ РАБОТЫ С МЕДИА-ФАЙЛАМИ ВОЗВРАТА ===
+    
+    async function loadReturnMedia(rentalId) {
+        const container = document.getElementById('return-media-container');
+        if (!container) return;
+        
+        try {
+            // Загрузить данные аренды с extra_data
+            const { data: rental, error } = await supabase
+                .from('rentals')
+                .select('extra_data')
+                .eq('id', rentalId)
+                .single();
+            
+            if (error) throw error;
+            
+            const returnMedia = rental?.extra_data?.return_media;
+            
+            if (!returnMedia || Object.keys(returnMedia).length === 0) {
+                container.innerHTML = '<p style="color: #999; font-style: italic; margin: 10px 0;">Медиа-файлы не загружены</p>';
+                return;
+            }
+            
+            // Создать галерею
+            const mediaHTML = `
+                <div class="return-media-section">
+                    <h4>Фото и видео возврата</h4>
+                    <div class="media-gallery">
+                        ${returnMedia.photo_front ? `<div><img src="${returnMedia.photo_front}" alt="Спереди" onclick="openImageModal('${returnMedia.photo_front}')"><div class="media-label">Спереди</div></div>` : ''}
+                        ${returnMedia.photo_back ? `<div><img src="${returnMedia.photo_back}" alt="Сзади" onclick="openImageModal('${returnMedia.photo_back}')"><div class="media-label">Сзади</div></div>` : ''}
+                        ${returnMedia.photo_left ? `<div><img src="${returnMedia.photo_left}" alt="Слева" onclick="openImageModal('${returnMedia.photo_left}')"><div class="media-label">Слева</div></div>` : ''}
+                        ${returnMedia.photo_right ? `<div><img src="${returnMedia.photo_right}" alt="Справа" onclick="openImageModal('${returnMedia.photo_right}')"><div class="media-label">Справа</div></div>` : ''}
+                        ${returnMedia.video ? `<video src="${returnMedia.video}" controls></video>` : ''}
+                    </div>
+                </div>
+            `;
+            
+            container.innerHTML = mediaHTML;
+        } catch (error) {
+            console.error('Error loading return media:', error);
+            container.innerHTML = '<p style="color: red;">Ошибка загрузки медиа-файлов</p>';
+        }
+    }
+    
+    // Функция для открытия изображения в полном размере
+    window.openImageModal = function(src) {
+        const modal = document.getElementById('image-viewer-modal');
+        const img = document.getElementById('image-viewer-img');
+        const closeBtn = document.getElementById('image-viewer-close-btn');
+        
+        if (modal && img) {
+            img.src = src;
+            modal.classList.remove('hidden');
+        }
+        
+        if (closeBtn) {
+            closeBtn.onclick = () => modal.classList.add('hidden');
+        }
+        
+        // Закрытие по клику вне изображения
+        modal.onclick = (e) => {
+            if (e.target === modal) {
+                modal.classList.add('hidden');
+            }
+        };
+    };
 
     // --- New Return Processing Logic ---
     const returnProcessModal = document.getElementById('return-process-modal');
