@@ -174,9 +174,11 @@ async function handleCreatePayment(body) {
     const normalizedPhone = normalizePhone(clientData.phone);
     if (!normalizedPhone) throw new Error(`Client ${userId} has no phone number for YooKassa receipts.`);
 
-    // Если передан tariffId, получаем цену из тарифа
+    // Определяем сумму платежа
     let amount;
+    
     if (tariffId) {
+        // Если передан tariffId, получаем цену из тарифа
         const { data: tariffData, error: tariffError } = await supabaseAdmin
             .from('tariffs')
             .select('price_rub')
@@ -188,8 +190,12 @@ async function handleCreatePayment(body) {
         }
         
         amount = Number.parseFloat(tariffData.price_rub);
+    } else if (amountFromClient) {
+        // Если передана конкретная сумма (пополнение, продление и т.д.)
+        amount = Number.parseFloat(amountFromClient);
     } else {
-        amount = amountFromClient ? Number.parseFloat(amountFromClient) : 3750.0;
+        // Если ничего не передано - это ошибка, не проводим платеж
+        throw new Error('Amount or tariffId is required for payment.');
     }
     
     if (!Number.isFinite(amount) || amount <= 0) {
