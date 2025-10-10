@@ -252,7 +252,16 @@ async function handleCreatePayment(body) {
     }
 
     if (clientData.yookassa_payment_method_id) {
-        return { status: 200, body: { status: paymentResult.status, message: 'Payment processed with saved method.' } };
+        // Карта привязана - платеж обрабатывается автоматически
+        return { 
+            status: 200, 
+            body: { 
+                status: paymentResult.status, 
+                paymentId: paymentResult.id,
+                autoPayment: true,
+                message: 'Payment processed with saved method.' 
+            } 
+        };
     }
 
     return { status: 200, body: { confirmation_url: paymentResult.confirmation?.confirmation_url } };

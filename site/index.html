@@ -1311,7 +1311,11 @@ function initializeMainScreenEventListeners() {
             throw new Error(data.error || 'Неизвестная ошибка сервера');
         }
 
-        if (data.confirmation_url) {
+        if (data.autoPayment) {
+            // Карта привязана - платеж обрабатывается автоматически
+            alert('Оплата обрабатывается! Перейдите в уведомления в профиле для подписания договора.');
+            window.location.reload();
+        } else if (data.confirmation_url) {
             window.location.href = data.confirmation_url;
         } else {
             throw new Error('Не удалось получить ссылку на оплату.');
@@ -1423,7 +1427,11 @@ function initializeMainScreenEventListeners() {
                     const data = await response.json();
                     if (!response.ok) throw new Error(data.error || 'Неизвестная ошибка');
 
-                    if (data.confirmation_url) {
+                    if (data.autoPayment) {
+                        // Карта привязана - платеж обрабатывается автоматически
+                        alert('Оплата обрабатывается! Перейдите в уведомления в профиле для подписания договора.');
+                        window.location.reload();
+                    } else if (data.confirmation_url) {
                         window.location.href = data.confirmation_url;
                     } else {
                         throw new Error('Не удалось получить ссылку на оплату.');
@@ -1652,7 +1660,11 @@ function initializeMainScreenEventListeners() {
                     const data = await response.json();
                     if (!response.ok) throw new Error(data.error || 'Неизвестная ошибка');
 
-                    if (data.confirmation_url) {
+                    if (data.autoPayment) {
+                        // Карта привязана - платеж обрабатывается автоматически
+                        alert('Аренда продлена! Оплата обрабатывается автоматически.');
+                        window.location.reload();
+                    } else if (data.confirmation_url) {
                         window.location.href = data.confirmation_url;
                     } else {
                         throw new Error('Не удалось получить ссылку на оплату.');
