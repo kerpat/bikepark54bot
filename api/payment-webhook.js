@@ -65,6 +65,66 @@ async function processSucceededPayment(notification) {
         return;
     }
 
+    // --- Логика для продления аренды ---
+    if (payment_type === 'renewal' || metadata.type === 'renewal') {
+        console.log(`[ПРОДЛЕНИЕ] Обработка продления аренды. rentalId: ${metadata.rentalId}, days: ${metadata.days}`);
+        
+        const rentalId = metadata.rentalId;
+        const days = parseInt(metadata.days) || 0;
+        
+        if (!rentalId || !days) {
+            console.error('[ПРОДЛЕНИЕ] Отсутствуют необходимые данные: rentalId или days');
+            return;
+        }
+        
+        // 1. Получить текущую аренду
+        const { data: currentRental, error: rentalFetchError } = await supabaseAdmin
+            .from('rentals')
+            .select('id, current_period_ends_at, total_paid_rub')
+            .eq('id', rentalId)
+            .single();
+        
+        if (rentalFetchError || !currentRental) {
+            console.error(`[ПРОДЛЕНИЕ] Аренда #${rentalId} не найдена:`, rentalFetchError?.message);
+            return;
+        }
+        
+        // 2. Вычислить новую дату окончания
+        const newEndDate = new Date(currentRental.current_period_ends_at);
+        newEndDate.setDate(newEndDate.getDate() + days);
+        
+        // 3. Обновить аренду
+        const { error: updateError } = await supabaseAdmin
+            .from('rentals')
+            .update({
+                current_period_ends_at: newEndDate.toISOString(),
+                total_paid_rub: (currentRental.total_paid_rub || 0) + paymentAmount
+            })
+            .eq('id', rentalId);
+        
+        if (updateError) {
+            console.error(`[ПРОДЛЕНИЕ] Ошибка обновления аренды #${rentalId}:`, updateError.message);
+            return;
+        }
+        
+        // 4. Записать платеж
+        const { error: paymentError } = await supabaseAdmin.from('payments').insert({
+            client_id: userId,
+            rental_id: rentalId,
+            amount_rub: paymentAmount,
+            status: 'succeeded',
+            payment_type: 'renewal',
+            yookassa_payment_id: yookassaPaymentId
+        });
+        
+        if (paymentError) {
+            console.error(`[ПРОДЛЕНИЕ] Ошибка записи платежа:`, paymentError.message);
+        }
+        
+        console.log(`[ПРОДЛЕНИЕ] Аренда #${rentalId} успешно продлена на ${days} дней до ${newEndDate.toISOString()}`);
+        return;
+    }
+
     // --- Логика для аренды (если есть tariffId) ---
     if (tariffId) {
         console.log(`[АРЕНДА] userId: ${userId}, tariffId: ${tariffId}`);

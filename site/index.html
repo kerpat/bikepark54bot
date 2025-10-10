@@ -1667,8 +1667,11 @@ function initializeMainScreenEventListeners() {
 
                     if (data.autoPayment) {
                         // Карта привязана - платеж обрабатывается автоматически
-                        alert('Аренда продлена! Оплата обрабатывается автоматически.');
-                        window.location.reload();
+                        // Даем время webhook обработать платеж (1-2 секунды)
+                        setTimeout(async () => {
+                            showToast(rentSuccessToast);
+                            await loadUserData();
+                        }, 2000);
                     } else if (data.confirmation_url) {
                         window.location.href = data.confirmation_url;
                     } else {
