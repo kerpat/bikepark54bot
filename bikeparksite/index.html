@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="BikePark54 - Аренда электровелосипедов Wenbox Monster в Новосибирске. Скорость до 60 км/ч, мощность 1200W, выгодные тарифы.">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>BikePark54 - Аренда электровелосипедов</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-orange': '#FF5722',
+                        'secondary-orange': '#FF7043',
+                        'dark-orange': '#F4511E',
+                        'darker-text': '#263238',
+                        'accent-yellow': '#FFC93C',
+                        'light-bg': '#FFF8E7',
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        * {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .gradient-orange {
+            background: linear-gradient(135deg, #FF5722 0%, #FF7043 100%);
+        }
+        .btn-primary {
+            background: #FF5722;
+            box-shadow: 0 4px 20px rgba(255, 87, 34, 0.4);
+        }
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+        .big-orange-card {
+            background: linear-gradient(135deg, #FF5722 0%, #FF7043 100%);
+            border-radius: 32px;
+            padding: 40px 24px;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        .text-shadow-white {
+            text-shadow: 0 2px 20px rgba(255, 255, 255, 0.3);
+        }
+        .card-modern {
+            border-radius: 32px;
+            transition: all 0.3s ease;
+        }
+        .card-modern:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            color: #263238;
+            margin-bottom: 1rem;
+        }
+        .section-subtitle {
+            font-size: clamp(1rem, 3vw, 1.25rem);
+            color: #6b7280;
+        }
+        .btn-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 87, 34, 0.3);
+        }
+        .btn-hover:active {
+            transform: translateY(0);
+        }
+        input:focus, textarea:focus {
+            box-shadow: 0 0 0 3px rgba(255, 87, 34, 0.1);
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="bg-white overflow-x-hidden">
+
+    <!-- Header / Navigation -->
+    <header class="fixed top-0 w-full bg-white shadow-sm z-50">
+        <nav class="px-5 py-4">
+            <div class="flex items-center justify-between max-w-screen-xl mx-auto">
+                <div class="flex items-center space-x-3">
+                    <div class="w-14 h-14 gradient-orange rounded-2xl flex items-center justify-center text-white font-black text-xl shadow-lg">
+                        BP
+                    </div>
+                    <div>
+                        <div class="font-black text-xl text-gray-900">BikePark54</div>
+                        <div class="text-xs text-gray-500 font-semibold">Скорость до 60 км/ч</div>
+                    </div>
+                </div>
+                <a href="https://t.me/bikeparkk_54_bot" target="_blank" class="btn-primary btn-hover text-white px-5 py-2.5 rounded-full font-bold text-sm">
+                    В бот
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="pt-24 pb-8 px-5">
+        <div class="max-w-screen-xl mx-auto">
+            <!-- Big Orange Card -->
+            <div class="big-orange-card text-white mb-8">
+                <h1 class="text-4xl md:text-5xl font-black leading-tight mb-4 text-shadow-white">
+                    Ого! Это же электровелосипед BikePark54!
+                </h1>
+                <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-4 mb-6">
+                    <p class="text-white font-bold text-lg">С ним курьеры делают</p>
+                    <div class="flex items-center space-x-2 mt-2">
+                        <span class="text-3xl font-black">»»»»»</span>
+                        <span class="bg-white text-primary-orange px-4 py-2 rounded-full font-black text-xl">100+км ежедневно</span>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-3 mb-6">
+                    <div class="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+                        <div class="flex items-center space-x-2">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/>
+                            </svg>
+                            <div>
+                                <div class="text-xs opacity-90">Сутки всего от</div>
+                                <div class="font-black text-xl">250₽</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+                        <div class="flex items-center space-x-2">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"/>
+                            </svg>
+                            <div>
+                                <div class="text-xs opacity-90">Без залога</div>
+                                <div class="font-black text-xl">0₽</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="https://t.me/bikeparkk_54_bot" target="_blank" class="block w-full bg-white text-primary-orange text-center py-5 rounded-3xl font-black text-lg shadow-xl btn-hover">
+                    Хочу покататься 🚀
+                </a>
+            </div>
+
+            <!-- Bike Image -->
+            <div class="relative rounded-3xl overflow-hidden shadow-2xl bg-white">
+                <img src="bike-deliv1ery.png" alt="Электровелосипед BikePark54 Wenbox Monster" class="w-full h-auto object-cover">
+                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-darker-text/80 via-darker-text/40 to-transparent p-8 md:p-12">
+                    <p class="text-3xl md:text-4xl font-black text-white mb-2 text-shadow-white">Wenbox Monster</p>
+                    <p class="text-lg md:text-xl text-white/90 font-semibold">Мощный электровелосипед для работы и отдыха</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Requirements Section -->
+    <section id="requirements" class="py-20 px-5 bg-gray-50">
+        <div class="max-w-screen-xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="section-title">Что нужно для аренды</h2>
+                <p class="section-subtitle">Простые требования для начала</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                <!-- RF Citizens -->
+                <div class="card-modern bg-white p-8 shadow-lg">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-16 h-16 gradient-orange rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-2xl font-black text-darker-text mb-4">Граждане РФ</h3>
+                            <ul class="space-y-3">
+                                <li class="flex items-center text-gray-700 font-medium text-lg">
+                                    <span class="text-primary-orange mr-3 text-2xl">✓</span>
+                                    Паспорт гражданина РФ
+                                </li>
+                                <li class="flex items-center text-gray-700 font-medium text-lg">
+                                    <span class="text-primary-orange mr-3 text-2xl">✓</span>
+                                    Регистрация
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Foreigners -->
+                <div class="card-modern bg-white p-8 shadow-lg">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-2xl font-black text-darker-text mb-4">Иностранцы</h3>
+                            <ul class="space-y-3">
+                                <li class="flex items-center text-gray-700 font-medium text-lg">
+                                    <span class="text-primary-orange mr-3 text-2xl">✓</span>
+                                    Паспорт
+                                </li>
+                                <li class="flex items-center text-gray-700 font-medium text-lg">
+                                    <span class="text-primary-orange mr-3 text-2xl">✓</span>
+                                    Регистрация
+                                </li>
+                                <li class="flex items-center text-gray-700 font-medium text-lg">
+                                    <span class="text-primary-orange mr-3 text-2xl">✓</span>
+                                    Миграционная карта
+                                </li>
+                                <li class="flex items-center text-gray-700 font-medium text-lg">
+                                    <span class="text-primary-orange mr-3 text-2xl">✓</span>
+                                    Трудовой договор
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="prices" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="section-title">Наши цены</h2>
+                <p class="section-subtitle">Выгодные тарифы на аренду</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <!-- 2 недели -->
+                <div class="card-modern bg-gradient-to-br from-orange-50 to-white p-8 shadow-xl border-2 border-primary-orange">
+                    <div class="text-center mb-6">
+                        <div class="text-primary-orange font-bold text-lg mb-2">2 НЕДЕЛИ</div>
+                        <div class="text-5xl font-black text-darker-text mb-2">6 000 ₽</div>
+                        <div class="text-gray-500">С одним АКБ</div>
+                    </div>
+                    <div class="border-t-2 border-orange-200 pt-6 mb-6">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-darker-text mb-2">7 250 ₽</div>
+                            <div class="text-gray-500">С двумя АКБ</div>
+                        </div>
+                    </div>
+                    <ul class="space-y-3 mb-6">
+                        <li class="flex items-center text-gray-600">
+                            <svg class="w-5 h-5 text-primary-orange mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            14 дней аренды
+                        </li>
+                        <li class="flex items-center text-gray-600">
+                            <svg class="w-5 h-5 text-primary-orange mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Полная зарядка
+                        </li>
+                        <li class="flex items-center text-gray-600">
+                            <svg class="w-5 h-5 text-primary-orange mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Техподдержка 24/7
+                        </li>
+                    </ul>
+                    <a href="https://t.me/bikeparkk_54_bot" target="_blank" class="block w-full gradient-orange text-white text-center py-4 rounded-full font-bold btn-hover">
+                        Выбрать тариф
+                    </a>
+                </div>
+
+                <!-- 1 месяц -->
+                <div class="card-modern bg-gradient-to-br from-primary-orange to-secondary-orange p-8 shadow-xl text-white relative overflow-hidden">
+                    <div class="absolute top-4 right-4 bg-white text-primary-orange px-4 py-1 rounded-full text-sm font-bold">
+                        ПОПУЛЯРНО
+                    </div>
+                    <div class="text-center mb-6">
+                        <div class="text-white/90 font-bold text-lg mb-2">1 МЕСЯЦ</div>
+                        <div class="text-5xl font-black mb-2">11 000 ₽</div>
+                        <div class="text-white/80">С одним АКБ</div>
+                    </div>
+                    <div class="border-t-2 border-white/30 pt-6 mb-6">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold mb-2">13 000 ₽</div>
+                            <div class="text-white/80">С двумя АКБ</div>
+                        </div>
+                    </div>
+                    <ul class="space-y-3 mb-6">
+                        <li class="flex items-center text-white/90">
+                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            30 дней аренды
+                        </li>
+                        <li class="flex items-center text-white/90">
+                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Полная зарядка
+                        </li>
+                        <li class="flex items-center text-white/90">
+                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Техподдержка 24/7
+                        </li>
+                        <li class="flex items-center text-white/90">
+                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Выгоднее на 45%
+                        </li>
+                    </ul>
+                    <a href="https://t.me/bikeparkk_54_bot" target="_blank" class="block w-full bg-white text-primary-orange text-center py-4 rounded-full font-bold btn-hover hover:bg-gray-50">
+                        Выбрать тариф
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bonuses Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="section-title">Бонусы и акции</h2>
+                <p class="section-subtitle">Экономьте ещё больше с нашими предложениями</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div class="card-modern bg-white p-8 shadow-lg">
+                    <div class="w-16 h-16 bg-gradient-to-br from-accent-yellow to-yellow-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-darker-text mb-4">Бонус за оплату</h3>
+                    <p class="text-gray-600 text-lg leading-relaxed">
+                        Оплатите 30 дней аренды и получите <span class="font-bold text-primary-orange">1 день в подарок</span>!
+                    </p>
+                </div>
+                <div class="card-modern bg-white p-8 shadow-lg">
+                    <div class="w-16 h-16 gradient-orange rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-darker-text mb-4">Приведи друга</h3>
+                    <p class="text-gray-600 text-lg leading-relaxed">
+                        Порекомендуйте нас другу и получите <span class="font-bold text-primary-orange">1 день аренды бесплатно</span>!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Specifications Section -->
+    <section id="specs" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="section-title">Электровелосипед Wenbox Monster</h2>
+                <p class="section-subtitle">Технические характеристики</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                <!-- Spec Card 1 -->
+                <div class="card-modern bg-white p-6 shadow-lg border border-gray-100">
+                    <div class="flex items-start">
+                        <div class="w-12 h-12 gradient-orange rounded-xl flex items-center justify-center flex-shrink-0 mr-4">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-darker-text mb-1">Мощность</h4>
+                            <p class="text-gray-600">1 200 W мотор-колесо</p>
+                            <p class="text-sm text-gray-500">(декларируемые 240 W)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Spec Card 2 -->
+                <div class="card-modern bg-white p-6 shadow-lg border border-gray-100">
+                    <div class="flex items-start">
+                        <div class="w-12 h-12 gradient-orange rounded-xl flex items-center justify-center flex-shrink-0 mr-4">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-darker-text mb-1">Аккумулятор</h4>
+                            <p class="text-gray-600">60 V 30 Ah</p>
+                            <p class="text-sm text-gray-500">Железо-фосфатный, съёмный</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Spec Card 3 -->
+                <div class="card-modern bg-white p-6 shadow-lg border border-gray-100">
+                    <div class="flex items-start">
+                        <div class="w-12 h-12 gradient-orange rounded-xl flex items-center justify-center flex-shrink-0 mr-4">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-darker-text mb-1">Скорость</h4>
+                            <p class="text-gray-600">До 60 км/ч</p>
+                            <p class="text-sm text-gray-500">3 режима скорости</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Spec Card 4 -->
+                <div class="card-modern bg-white p-6 shadow-lg border border-gray-100">
+                    <div class="flex items-start">
+                        <div class="w-12 h-12 gradient-orange rounded-xl flex items-center justify-center flex-shrink-0 mr-4">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-darker-text mb-1">Колёса</h4>
+                            <p class="text-gray-600">Диаметр 16″</p>
+                            <p class="text-sm text-gray-500">Прочные и манёвренные</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Spec Card 5 -->
+                <div class="card-modern bg-white p-6 shadow-lg border border-gray-100">
+                    <div class="flex items-start">
+                        <div class="w-12 h-12 gradient-orange rounded-xl flex items-center justify-center flex-shrink-0 mr-4">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-darker-text mb-1">Тормоза</h4>
+                            <p class="text-gray-600">Гидравлические</p>
+                            <p class="text-sm text-gray-500">Передний и задний</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Spec Card 6 -->
+                <div class="card-modern bg-white p-6 shadow-lg border border-gray-100">
+                    <div class="flex items-start">
+                        <div class="w-12 h-12 gradient-orange rounded-xl flex items-center justify-center flex-shrink-0 mr-4">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-darker-text mb-1">Рама</h4>
+                            <p class="text-gray-600">Стальная, прочная</p>
+                            <p class="text-sm text-gray-500">Нагрузка до 200 кг</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Spec Card 7 -->
+                <div class="card-modern bg-white p-6 shadow-lg border border-gray-100">
+                    <div class="flex items-start">
+                        <div class="w-12 h-12 gradient-orange rounded-xl flex items-center justify-center flex-shrink-0 mr-4">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-darker-text mb-1">Подсветка</h4>
+                            <p class="text-gray-600">Полный комплект</p>
+                            <p class="text-sm text-gray-500">Прожектор, ходовые, поворотники</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Spec Card 8 -->
+                <div class="card-modern bg-white p-6 shadow-lg border border-gray-100">
+                    <div class="flex items-start">
+                        <div class="w-12 h-12 gradient-orange rounded-xl flex items-center justify-center flex-shrink-0 mr-4">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-darker-text mb-1">Дисплей</h4>
+                            <p class="text-gray-600">Большой цветной</p>
+                            <p class="text-sm text-gray-500">Все данные на экране</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Spec Card 9 -->
+                <div class="card-modern bg-white p-6 shadow-lg border border-gray-100">
+                    <div class="flex items-start">
+                        <div class="w-12 h-12 gradient-orange rounded-xl flex items-center justify-center flex-shrink-0 mr-4">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-darker-text mb-1">Сигнализация</h4>
+                            <p class="text-gray-600">С дистанционным запуском</p>
+                            <p class="text-sm text-gray-500">Защита от угона</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advantages Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="section-title">Наши преимущества</h2>
+                <p class="section-subtitle">Почему выбирают именно нас</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+                <div class="text-center">
+                    <div class="w-24 h-24 gradient-orange rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl">
+                        <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-darker-text mb-3">Мощность 1200W</h3>
+                    <p class="text-gray-600">Высокая скорость до 60 км/ч</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-24 h-24 bg-gradient-to-br from-green-500 to-green-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl">
+                        <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-darker-text mb-3">АКБ 60V 30Ah</h3>
+                    <p class="text-gray-600">Железо-фосфатный, съёмный</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-24 h-24 bg-gradient-to-br from-blue-500 to-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl">
+                        <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-darker-text mb-3">Гидравлические тормоза</h3>
+                    <p class="text-gray-600">Надёжное торможение</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-24 h-24 bg-gradient-to-br from-purple-500 to-purple-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl">
+                        <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-darker-text mb-3">Прочная рама</h3>
+                    <p class="text-gray-600">Нагрузка до 200 кг</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section id="reviews" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="section-title">Отзывы клиентов</h2>
+                <p class="section-subtitle">Что говорят наши клиенты</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <!-- Review 1 -->
+                <div class="card-modern bg-white p-8 shadow-lg border border-gray-100">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 gradient-orange rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
+                            И
+                        </div>
+                        <div>
+                            <div class="font-bold text-darker-text">Илья</div>
+                            <div class="flex text-yellow-400">
+                                ★★★★★
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 leading-relaxed">
+                        «С компанией сотрудничаем больше месяца. Предоставляют отличные велосипеды в аренду, в том числе с увеличенным акб. Состояние техники очень достойное. Обслуживание проходит без проблем. Для города и работы идеальный вариант!»
+                    </p>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="card-modern bg-white p-8 shadow-lg border border-gray-100">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 gradient-orange rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
+                            Э
+                        </div>
+                        <div>
+                            <div class="font-bold text-darker-text">Экер Натпит</div>
+                            <div class="flex text-yellow-400">
+                                ★★★★★
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 leading-relaxed">
+                        «Хороший качественный велик. На двух АКБ катаю 13+ часов в купере. Хороший вариант за свои деньги, АКБ в хорошем состоянии!»
+                    </p>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="card-modern bg-white p-8 shadow-lg border border-gray-100">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 gradient-orange rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
+                            Е
+                        </div>
+                        <div>
+                            <div class="font-bold text-darker-text">Евгений</div>
+                            <div class="flex text-yellow-400">
+                                ★★★★★
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 leading-relaxed">
+                        «Максимально серьезный подход к обслуживанию и инструктажу! Полный комплект для полноценной работы! Рекомендую!»
+                    </p>
+                </div>
+
+                <!-- Review 4 -->
+                <div class="card-modern bg-white p-8 shadow-lg border border-gray-100">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 gradient-orange rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
+                            А
+                        </div>
+                        <div>
+                            <div class="font-bold text-darker-text">Антон Ангелов</div>
+                            <div class="flex text-yellow-400">
+                                ★★★★★
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 leading-relaxed">
+                        «Самый лучший прокат в городе! Велосипеды новые! Договорились о встрече, приехал всё обсудили, объяснили. Рекомендую однозначно! Лучший продавец!»
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section id="contact" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="section-title">Связаться с нами</h2>
+                <p class="section-subtitle">Есть вопросы? Мы всегда на связи!</p>
+            </div>
+            <div class="max-w-2xl mx-auto">
+                <form id="contactForm" class="card-modern bg-white p-8 shadow-xl">
+                    <div class="mb-6">
+                        <label for="name" class="block text-darker-text font-semibold mb-2">Ваше имя</label>
+                        <input type="text" id="name" name="name" required class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary-orange focus:outline-none transition-colors duration-300" placeholder="Иван Иванов">
+                    </div>
+                    <div class="mb-6">
+                        <label for="email" class="block text-darker-text font-semibold mb-2">Ваш email</label>
+                        <input type="email" id="email" name="email" required class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary-orange focus:outline-none transition-colors duration-300" placeholder="example@mail.com">
+                    </div>
+                    <div class="mb-6">
+                        <label for="message" class="block text-darker-text font-semibold mb-2">Сообщение</label>
+                        <textarea id="message" name="message" rows="5" required class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary-orange focus:outline-none transition-colors duration-300" placeholder="Ваше сообщение..."></textarea>
+                    </div>
+                    <button type="submit" class="w-full gradient-orange text-white py-4 rounded-xl font-bold text-lg btn-hover">
+                        Отправить сообщение
+                    </button>
+                    <div id="formStatus" class="mt-4 text-center hidden"></div>
+                </form>
+                <div class="text-center mt-8">
+                    <p class="text-gray-600 mb-4">Или свяжитесь напрямую:</p>
+                    <a href="https://t.me/BKPK54" target="_blank" class="inline-flex items-center justify-center bg-gradient-to-r from-blue-500 to-blue-600 text-white px-8 py-4 rounded-full font-bold btn-hover">
+                        <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.962 6.502-1.359 8.627-.168.9-.5 1.201-.82 1.23-.697.064-1.226-.461-1.901-.903-1.056-.692-1.653-1.123-2.678-1.799-1.185-.781-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.139-5.062 3.345-.479.329-.913.489-1.302.481-.428-.008-1.252-.241-1.865-.44-.752-.244-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.831-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635.099-.002.321.023.465.141.121.099.155.232.171.325.016.093.036.305.02.471z"/>
+                        </svg>
+                        Написать в Telegram
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bot Preview Section -->
+    <section class="py-20 bg-gradient-to-br from-primary-orange to-secondary-orange text-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl lg:text-5xl font-black mb-4 text-shadow-white">Наш Telegram-бот</h2>
+                <p class="text-xl text-white/90">Удобная аренда прямо в мессенджере</p>
+            </div>
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-8 lg:p-12">
+                    <div class="grid lg:grid-cols-2 gap-8 items-center">
+                        <div class="text-center lg:text-left">
+                            <h3 class="text-3xl font-bold mb-6">Быстро и удобно</h3>
+                            <ul class="space-y-4 mb-8">
+                                <li class="flex items-start">
+                                    <svg class="w-6 h-6 mr-3 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <span class="text-lg">Регистрация за 2 минуты</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-6 h-6 mr-3 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <span class="text-lg">Выбор тарифа и оплата онлайн</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-6 h-6 mr-3 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <span class="text-lg">Отслеживание аренды</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-6 h-6 mr-3 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <span class="text-lg">Поддержка 24/7</span>
+                                </li>
+                            </ul>
+                            <a href="https://t.me/bikeparkk_54_bot" target="_blank" class="block lg:inline-block w-full lg:w-auto bg-white text-primary-orange text-center px-8 py-4 rounded-full font-bold text-lg btn-hover hover:bg-gray-50">
+                                Открыть бот 🤖
+                            </a>
+                        </div>
+                        <div class="flex justify-center lg:justify-start">
+                            <div class="relative w-80 sm:w-96 lg:w-[400px] mx-auto lg:mx-0">
+                                <!-- Phone Frame -->
+                                <div class="relative rounded-[3rem] overflow-hidden shadow-2xl" style="background: linear-gradient(145deg, #2c3e50, #34495e); padding: 16px;">
+                                    <!-- Phone Notch -->
+                                    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 z-10">
+                                        <div class="w-32 h-7 bg-darker-text rounded-b-3xl flex items-center justify-center">
+                                            <div class="w-12 h-1 bg-gray-700 rounded-full"></div>
+                                        </div>
+                                    </div>
+                                    <!-- Screen -->
+                                    <div class="rounded-[2.5rem] overflow-hidden bg-white">
+                                        <img src="839c34e7-9ba6-4b46-bb74-1b135bb96f1d.png" alt="Telegram-бот BikePark54" class="w-full h-auto">
+                                    </div>
+                                    <!-- Home Indicator -->
+                                    <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2">
+                                        <div class="w-24 h-1 bg-gray-600 rounded-full"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-darker-text text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-12 h-12 gradient-orange rounded-full flex items-center justify-center text-white font-bold text-xl">
+                            BP
+                        </div>
+                        <div class="font-bold text-xl">BikePark54</div>
+                    </div>
+                    <p class="text-gray-400">Аренда электровелосипедов в Новосибирске</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-lg mb-4">Быстрые ссылки</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#prices" class="hover:text-primary-orange transition-colors">Цены</a></li>
+                        <li><a href="#specs" class="hover:text-primary-orange transition-colors">Характеристики</a></li>
+                        <li><a href="#reviews" class="hover:text-primary-orange transition-colors">Отзывы</a></li>
+                        <li><a href="#contact" class="hover:text-primary-orange transition-colors">Контакты</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-lg mb-4">Контакты</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>
+                            <a href="https://t.me/BKPK54" target="_blank" class="hover:text-primary-orange transition-colors flex items-center">
+                                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.962 6.502-1.359 8.627-.168.9-.5 1.201-.82 1.23-.697.064-1.226-.461-1.901-.903-1.056-.692-1.653-1.123-2.678-1.799-1.185-.781-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.139-5.062 3.345-.479.329-.913.489-1.302.481-.428-.008-1.252-.241-1.865-.44-.752-.244-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.831-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635.099-.002.321.023.465.141.121.099.155.232.171.325.016.093.036.305.02.471z"/>
+                                </svg>
+                                @BKPK54
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://t.me/bikeparkk_54_bot" target="_blank" class="hover:text-primary-orange transition-colors flex items-center">
+                                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.962 6.502-1.359 8.627-.168.9-.5 1.201-.82 1.23-.697.064-1.226-.461-1.901-.903-1.056-.692-1.653-1.123-2.678-1.799-1.185-.781-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.139-5.062 3.345-.479.329-.913.489-1.302.481-.428-.008-1.252-.241-1.865-.44-.752-.244-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.831-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635.099-.002.321.023.465.141.121.099.155.232.171.325.016.093.036.305.02.471z"/>
+                                </svg>
+                                Бот @bikeparkk_54_bot
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 BikePark54 | Все права защищены</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Contact form submission
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                message: document.getElementById('message').value
+            };
+
+            const statusDiv = document.getElementById('formStatus');
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            
+            // Disable button during submission
+            submitButton.disabled = true;
+            submitButton.textContent = 'Отправка...';
+
+            try {
+                // Отправка в Telegram через Bot API
+                const botToken = '7814728088:AAH4nMbNyLXqPwNwqXq4TZdQRDzPqN6-d7Q';
+                const chatId = '@BKPK54';
+                const telegramMessage = `🔔 Новое сообщение с сайта BikePark54\n\n👤 Имя: ${formData.name}\n📧 Email: ${formData.email}\n💬 Сообщение:\n${formData.message}`;
+                
+                const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: telegramMessage,
+                        parse_mode: 'HTML'
+                    })
+                });
+
+                if (response.ok) {
+                    statusDiv.className = 'mt-4 text-center text-green-600 font-semibold';
+                    statusDiv.textContent = '✅ Сообщение успешно отправлено! Мы свяжемся с вами в ближайшее время.';
+                    statusDiv.classList.remove('hidden');
+                    e.target.reset();
+                } else {
+                    throw new Error('Failed to send message');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                statusDiv.className = 'mt-4 text-center text-red-600 font-semibold';
+                statusDiv.textContent = '❌ Произошла ошибка. Пожалуйста, свяжитесь с нами напрямую в Telegram: @BKPK54';
+                statusDiv.classList.remove('hidden');
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Отправить сообщение';
+                
+                // Hide status after 5 seconds
+                setTimeout(() => {
+                    statusDiv.classList.add('hidden');
+                }, 5000);
+            }
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections for fade-in animation
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
+

@@ -673,11 +673,12 @@
         
         const formData = new FormData();
         formData.append('file', file);
+        formData.append('uploadType', 'return_media');
         formData.append('rentalId', rentalId);
         formData.append('mediaType', mediaType);
         formData.append('userId', userId);
         
-        const response = await fetch('/api/upload-return-media', {
+        const response = await fetch('/api/upload', {
             method: 'POST',
             body: formData
         });
