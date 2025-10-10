@@ -380,7 +380,7 @@
 <!-- Модалка для загрузки фото/видео при возврате велосипеда (ПОШАГОВАЯ) -->
 <div id="return-media-modal" class="modal-overlay hidden">
     <div class="modal-content">
-        <button class="modal-close">&times;</button>
+        <button class="modal-close" id="return-media-close-btn">&times;</button>
         <h2>Сдача велосипеда</h2>
         <p id="step-instruction" style="text-align: center; color: var(--dark-text); margin-bottom: 10px; font-size: 1.1rem; font-weight: 600;">
             Шаг 1 из 5: Сделайте фото спереди
@@ -660,7 +660,7 @@
         container.innerHTML = `
             <div class="upload-item" style="width: 100%; max-width: 400px; margin: 0 auto;">
                 <label class="file-input-label" for="current-file-input" style="width: 100%; font-size: 1rem; padding: 15px;">
-                    ${isVideo ? '📹 Выбрать видео' : '📷 Сделать фото'}
+                    ${isVideo ? 'Выбрать видео' : 'Сделать фото'}
                 </label>
                 <input type="file" id="current-file-input" accept="${step.accept}" style="display: none;">
                 <div class="preview" id="current-preview" style="height: 200px; margin-top: 15px;">
@@ -807,27 +807,27 @@
                         ...(rental.extra_data || {}),
                         return_media: uploadedMediaUrls
                     };
-                    
-                    const { error } = await supabase
-                        .from('rentals')
+        
+        const { error } = await supabase
+            .from('rentals')
                         .update({ 
                             status: 'pending_return',
                             extra_data: updatedExtraData
                         })
-                        .eq('id', rentalId);
-                    
+            .eq('id', rentalId);
+            
                     if (error) throw error;
                     
                     // Закрыть модалку и обновить страницу
                     modal.classList.add('hidden');
                     alert('Велосипед успешно сдан! Ожидайте приемки администратором.');
-                    window.location.reload();
+            window.location.reload();
                 } catch (error) {
                     console.error('Return error:', error);
                     alert('Ошибка при сдаче велосипеда: ' + error.message);
                     submitBtn.disabled = false;
                     submitBtn.textContent = 'Сдать велосипед';
-                }
+        }
             });
         }
     });
@@ -2385,6 +2385,20 @@ document.addEventListener('DOMContentLoaded', () => {
         goToProfileBtn.addEventListener('click', () => {
             window.location.href = 'profile.html#notifications'; // Перенаправляем в раздел уведомлений
             closeModal(); // Закрываем модальное окно
+        });
+    }
+    
+    // Обработчик закрытия модалки сдачи велосипеда
+    const returnMediaCloseBtn = document.getElementById('return-media-close-btn');
+    const returnMediaModal = document.getElementById('return-media-modal');
+    if (returnMediaCloseBtn) {
+        returnMediaCloseBtn.addEventListener('click', () => {
+            if (returnMediaModal) returnMediaModal.classList.add('hidden');
+        });
+    }
+    if (returnMediaModal) {
+        returnMediaModal.addEventListener('click', (e) => {
+            if (e.target === returnMediaModal) returnMediaModal.classList.add('hidden');
         });
     }
 });
