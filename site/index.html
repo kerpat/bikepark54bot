@@ -377,66 +377,33 @@
     </div>
 </div>
 
-<!-- Модалка для загрузки фото/видео при возврате велосипеда -->
+<!-- Модалка для загрузки фото/видео при возврате велосипеда (ПОШАГОВАЯ) -->
 <div id="return-media-modal" class="modal-overlay hidden">
     <div class="modal-content">
         <button class="modal-close">&times;</button>
         <h2>Сдача велосипеда</h2>
-        <p style="text-align: center; color: var(--dark-text); margin-bottom: 20px;">
-            Загрузите 4 фото велосипеда с разных сторон и видео обзор
+        <p id="step-instruction" style="text-align: center; color: var(--dark-text); margin-bottom: 10px; font-size: 1.1rem; font-weight: 600;">
+            Шаг 1 из 5: Сделайте фото спереди
+        </p>
+        <p style="text-align: center; color: #999; margin-bottom: 20px; font-size: 0.9rem;">
+            Фотографируйте велосипед так, чтобы была видна вся конструкция
         </p>
         
-        <div class="media-upload-grid">
-            <div class="upload-item">
-                <label>Фото спереди</label>
-                <label class="file-input-label" for="file-photo-front">Выбрать фото</label>
-                <input type="file" id="file-photo-front" accept="image/*" data-type="photo_front">
-                <div class="preview" id="preview-photo_front">
-                    <span class="placeholder">Фото не загружено</span>
-                </div>
-            </div>
-            
-            <div class="upload-item">
-                <label>Фото сзади</label>
-                <label class="file-input-label" for="file-photo-back">Выбрать фото</label>
-                <input type="file" id="file-photo-back" accept="image/*" data-type="photo_back">
-                <div class="preview" id="preview-photo_back">
-                    <span class="placeholder">Фото не загружено</span>
-                </div>
-            </div>
-            
-            <div class="upload-item">
-                <label>Фото слева</label>
-                <label class="file-input-label" for="file-photo-left">Выбрать фото</label>
-                <input type="file" id="file-photo-left" accept="image/*" data-type="photo_left">
-                <div class="preview" id="preview-photo_left">
-                    <span class="placeholder">Фото не загружено</span>
-                </div>
-            </div>
-            
-            <div class="upload-item">
-                <label>Фото справа</label>
-                <label class="file-input-label" for="file-photo-right">Выбрать фото</label>
-                <input type="file" id="file-photo-right" accept="image/*" data-type="photo_right">
-                <div class="preview" id="preview-photo_right">
-                    <span class="placeholder">Фото не загружено</span>
-                </div>
-            </div>
-            
-            <div class="upload-item full-width">
-                <label>Видео обзор (снимите велосипед по кругу)</label>
-                <label class="file-input-label" for="file-video">Выбрать видео</label>
-                <input type="file" id="file-video" accept="video/*" data-type="video">
-                <div class="preview" id="preview-video">
-                    <span class="placeholder">Видео не загружено</span>
-                </div>
-            </div>
+        <!-- Прогресс бар -->
+        <div style="width: 100%; height: 8px; background: #f0f0f0; border-radius: 10px; margin-bottom: 20px; overflow: hidden;">
+            <div id="progress-bar" style="width: 20%; height: 100%; background: linear-gradient(90deg, #FF6B35, #FF8F5C); transition: width 0.3s ease;"></div>
         </div>
         
-        <button class="btn btn-primary" id="submit-return-btn" disabled style="width: 100%; margin-top: 10px;">
+        <!-- Контейнер для текущего шага -->
+        <div id="current-step-container">
+            <!-- Динамически загружается -->
+        </div>
+        
+        <p id="upload-status" style="text-align: center; color: var(--icon-orange); margin-top: 15px; font-size: 0.9rem;"></p>
+        
+        <button class="btn btn-primary hidden" id="submit-return-btn" style="width: 100%; margin-top: 20px;">
             Сдать велосипед
         </button>
-        <p id="upload-progress" style="text-align: center; color: var(--icon-orange); margin-top: 10px; font-size: 0.9rem;"></p>
     </div>
 </div>
 
@@ -637,34 +604,155 @@
         }
     };
 
-    // === ЛОГИКА ЗАГРУЗКИ МЕДИА ПРИ ВОЗВРАТЕ ===
+    // === ПОШАГОВАЯ ЛОГИКА ЗАГРУЗКИ МЕДИА ПРИ ВОЗВРАТЕ ===
     const uploadedMediaUrls = {};
+    let currentStep = 0;
+    
+    const steps = [
+        { type: 'photo_front', title: 'Сделайте фото спереди', accept: 'image/*' },
+        { type: 'photo_back', title: 'Сделайте фото сзади', accept: 'image/*' },
+        { type: 'photo_left', title: 'Сделайте фото слева', accept: 'image/*' },
+        { type: 'photo_right', title: 'Сделайте фото справа', accept: 'image/*' },
+        { type: 'video', title: 'Снимите видео обзор (по кругу)', accept: 'video/*' }
+    ];
     
     function resetReturnMediaModal() {
         // Сбросить все загруженные URL
         Object.keys(uploadedMediaUrls).forEach(key => delete uploadedMediaUrls[key]);
         
-        // Очистить превью
-        ['photo_front', 'photo_back', 'photo_left', 'photo_right', 'video'].forEach(type => {
-            const preview = document.getElementById(`preview-${type}`);
-            if (preview) {
-                preview.innerHTML = '<span class="placeholder">Фото не загружено</span>';
-                preview.classList.remove('has-media');
-            }
-            const input = document.querySelector(`input[data-type="${type}"]`);
-            if (input) input.value = '';
-        });
+        // Сбросить шаг
+        currentStep = 0;
         
-        // Отключить кнопку отправки
+        // Показать первый шаг
+        renderCurrentStep();
+        
+        // Скрыть кнопку отправки
         const submitBtn = document.getElementById('submit-return-btn');
         if (submitBtn) {
-            submitBtn.disabled = true;
+            submitBtn.classList.add('hidden');
             submitBtn.textContent = 'Сдать велосипед';
         }
         
-        // Очистить прогресс
-        const progress = document.getElementById('upload-progress');
-        if (progress) progress.textContent = '';
+        // Очистить статус
+        const status = document.getElementById('upload-status');
+        if (status) status.textContent = '';
+    }
+    
+    function renderCurrentStep() {
+        const step = steps[currentStep];
+        const container = document.getElementById('current-step-container');
+        const instruction = document.getElementById('step-instruction');
+        const progressBar = document.getElementById('progress-bar');
+        
+        // Обновить заголовок
+        if (instruction) {
+            instruction.textContent = `Шаг ${currentStep + 1} из ${steps.length}: ${step.title}`;
+        }
+        
+        // Обновить прогресс бар
+        if (progressBar) {
+            const progress = ((currentStep + 1) / steps.length) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+        
+        // Отрисовать интерфейс загрузки
+        const isVideo = step.type === 'video';
+        container.innerHTML = `
+            <div class="upload-item" style="width: 100%; max-width: 400px; margin: 0 auto;">
+                <label class="file-input-label" for="current-file-input" style="width: 100%; font-size: 1rem; padding: 15px;">
+                    ${isVideo ? '📹 Выбрать видео' : '📷 Сделать фото'}
+                </label>
+                <input type="file" id="current-file-input" accept="${step.accept}" style="display: none;">
+                <div class="preview" id="current-preview" style="height: 200px; margin-top: 15px;">
+                    <span class="placeholder">${isVideo ? 'Видео не загружено' : 'Фото не загружено'}</span>
+                </div>
+            </div>
+        `;
+        
+        // Добавить обработчик
+        const input = document.getElementById('current-file-input');
+        const preview = document.getElementById('current-preview');
+        
+        if (input && preview) {
+            input.addEventListener('change', async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const modal = document.getElementById('return-media-modal');
+                const rentalId = modal?.dataset.rentalId;
+                if (!rentalId) {
+                    alert('Ошибка: не найден ID аренды');
+                    return;
+                }
+                
+                // Показать индикатор загрузки
+                preview.innerHTML = '<span class="loading">Загрузка...</span>';
+                const status = document.getElementById('upload-status');
+                if (status) status.textContent = 'Загружаем файл...';
+                
+                try {
+                    const publicUrl = await uploadReturnMedia(file, step.type, rentalId);
+                    uploadedMediaUrls[step.type] = publicUrl;
+                    
+                    // Показать превью
+                    preview.classList.add('has-media');
+                    if (isVideo) {
+                        preview.innerHTML = `<video src="${publicUrl}" controls style="max-width: 100%; max-height: 100%;"></video>`;
+                    } else {
+                        preview.innerHTML = `<img src="${publicUrl}" alt="${step.type}" style="max-width: 100%; max-height: 100%; object-fit: contain;">`;
+                    }
+                    
+                    if (status) status.textContent = '✅ Загружено!';
+                    
+                    // Переход к следующему шагу через 1 секунду
+                    setTimeout(() => {
+                        if (currentStep < steps.length - 1) {
+                            currentStep++;
+                            renderCurrentStep();
+                        } else {
+                            // Все шаги завершены
+                            showFinalStep();
+                        }
+                    }, 1000);
+                    
+                } catch (error) {
+                    console.error('Upload error:', error);
+                    preview.innerHTML = `<span class="placeholder" style="color: red;">Ошибка: ${error.message}</span>`;
+                    if (status) status.textContent = '❌ Ошибка загрузки. Попробуйте еще раз.';
+                }
+            });
+        }
+    }
+    
+    function showFinalStep() {
+        const container = document.getElementById('current-step-container');
+        const instruction = document.getElementById('step-instruction');
+        const status = document.getElementById('upload-status');
+        const submitBtn = document.getElementById('submit-return-btn');
+        
+        if (instruction) {
+            instruction.textContent = '✅ Все файлы загружены!';
+        }
+        
+        if (status) {
+            status.textContent = 'Теперь можете сдать велосипед';
+        }
+        
+        // Показать все загруженные медиа
+        container.innerHTML = `
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 20px 0;">
+                ${uploadedMediaUrls.photo_front ? `<img src="${uploadedMediaUrls.photo_front}" style="width: 100%; height: 100px; object-fit: cover; border-radius: 8px;">` : ''}
+                ${uploadedMediaUrls.photo_back ? `<img src="${uploadedMediaUrls.photo_back}" style="width: 100%; height: 100px; object-fit: cover; border-radius: 8px;">` : ''}
+                ${uploadedMediaUrls.photo_left ? `<img src="${uploadedMediaUrls.photo_left}" style="width: 100%; height: 100px; object-fit: cover; border-radius: 8px;">` : ''}
+                ${uploadedMediaUrls.photo_right ? `<img src="${uploadedMediaUrls.photo_right}" style="width: 100%; height: 100px; object-fit: cover; border-radius: 8px;">` : ''}
+            </div>
+            ${uploadedMediaUrls.video ? `<video src="${uploadedMediaUrls.video}" controls style="width: 100%; max-height: 200px; border-radius: 8px;"></video>` : ''}
+        `;
+        
+        // Показать кнопку отправки
+        if (submitBtn) {
+            submitBtn.classList.remove('hidden');
+        }
     }
     
     async function uploadReturnMedia(file, mediaType, rentalId) {
@@ -692,69 +780,8 @@
         return result.publicUrl;
     }
     
-    function checkAllMediaUploaded() {
-        const requiredTypes = ['photo_front', 'photo_back', 'photo_left', 'photo_right', 'video'];
-        const allUploaded = requiredTypes.every(type => uploadedMediaUrls[type]);
-        
-        const submitBtn = document.getElementById('submit-return-btn');
-        if (submitBtn) {
-            submitBtn.disabled = !allUploaded;
-        }
-        
-        const progress = document.getElementById('upload-progress');
-        if (progress) {
-            const uploadedCount = Object.keys(uploadedMediaUrls).length;
-            progress.textContent = `Загружено ${uploadedCount} из 5 файлов`;
-            if (allUploaded) {
-                progress.textContent = '✅ Все файлы загружены! Можете сдать велосипед.';
-            }
-        }
-    }
-    
-    // Обработчики загрузки файлов
+    // Обработчик кнопки "Сдать велосипед"
     document.addEventListener('DOMContentLoaded', () => {
-        ['photo_front', 'photo_back', 'photo_left', 'photo_right', 'video'].forEach(type => {
-            const input = document.querySelector(`input[data-type="${type}"]`);
-            const preview = document.getElementById(`preview-${type}`);
-            
-            if (input && preview) {
-                input.addEventListener('change', async (e) => {
-                    const file = e.target.files[0];
-                    if (!file) return;
-                    
-                    const modal = document.getElementById('return-media-modal');
-                    const rentalId = modal?.dataset.rentalId;
-                    if (!rentalId) {
-                        alert('Ошибка: не найден ID аренды');
-                        return;
-                    }
-                    
-                    // Показать индикатор загрузки
-                    preview.innerHTML = '<span class="loading">Загрузка...</span>';
-                    
-                    try {
-                        const publicUrl = await uploadReturnMedia(file, type, rentalId);
-                        uploadedMediaUrls[type] = publicUrl;
-                        
-                        // Показать превью
-                        preview.classList.add('has-media');
-                        if (type === 'video') {
-                            preview.innerHTML = `<video src="${publicUrl}" controls></video>`;
-                        } else {
-                            preview.innerHTML = `<img src="${publicUrl}" alt="${type}">`;
-                        }
-                        
-                        checkAllMediaUploaded();
-                    } catch (error) {
-                        console.error('Upload error:', error);
-                        preview.innerHTML = `<span class="placeholder" style="color: red;">Ошибка: ${error.message}</span>`;
-                        alert('Ошибка загрузки: ' + error.message);
-                    }
-                });
-            }
-        });
-        
-        // Обработчик кнопки "Сдать велосипед"
         const submitBtn = document.getElementById('submit-return-btn');
         if (submitBtn) {
             submitBtn.addEventListener('click', async () => {
