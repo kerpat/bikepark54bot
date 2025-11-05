@@ -2049,21 +2049,89 @@ body:has(.map-page-container) .app-screen {
     color: #22c55e;
 }
 
+/* Выравнивание бейджа Bad Fox в шапке профиля */
+.profile-header #profile-subscription-status {
+    text-align: left !important;
+    align-self: flex-start;
+    width: 100%;
+}
+
+.profile-header #profile-subscription-status .subscription-badge {
+    margin-left: 0;
+    display: inline-block;
+}
+
+/* Специальные стили для модального окна подписки на мобильных */
+.subscription-modal-content {
+    max-width: 420px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.subscription-modal-header {
+    flex-shrink: 0;
+    padding-bottom: 10px;
+    position: relative;
+}
+
+.subscription-modal-header .modal-close {
+    position: absolute;
+    top: -5px;
+    right: 0;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #c8d3d1;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.subscription-content {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+/* Стили для прокрутки */
+.subscription-content::-webkit-scrollbar {
+    width: 4px;
+}
+
+.subscription-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 2px;
+}
+
+.subscription-content::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 2px;
+}
+
+.subscription-content::-webkit-scrollbar-thumb:hover {
+    background: #999;
+}
+
 /* Адаптивность */
 @media (max-width: 480px) {
     .subscription-content {
         padding: 0;
+        max-height: 80vh;
+        overflow-y: auto;
     }
     
     .subscription-header {
         padding: 15px;
         margin: 0 -10px 20px -10px;
         border-radius: 0;
+        flex-shrink: 0;
     }
     
     .benefit-item {
         padding: 12px;
         gap: 12px;
+        margin-bottom: 15px;
     }
     
     .benefit-icon {
@@ -2073,5 +2141,20 @@ body:has(.map-page-container) .app-screen {
     
     .price-amount {
         font-size: 2rem;
+    }
+    
+    .subscription-benefits {
+        margin-bottom: 15px;
+        flex-shrink: 0;
+    }
+    
+    .subscription-trial {
+        margin-bottom: 15px;
+        flex-shrink: 0;
+    }
+    
+    .subscription-actions {
+        margin-top: 15px;
+        flex-shrink: 0;
     }
 }

@@ -278,8 +278,8 @@
                 <img src="avatar.png" alt="Аватар пользователя" class="avatar">
                 <h2 class="user-name" id="user-name-placeholder">Имя пользователя</h2>
                 <p class="user-id">ID: 11071998</p>
-                <div id="profile-subscription-status" style="display: none; margin-top: 10px;">
-                    <span class="subscription-badge active">🔥 Bad Fox</span>
+                <div id="profile-subscription-status" style="display: none; margin-top: 10px; text-align: left;">
+                    <span class="subscription-badge active">Bad Fox</span>
                     <p style="font-size: 0.9rem; color: #556f6b; margin-top: 5px;">Статус: Подписка активна до <span id="profile-subscription-expiry">дата</span></p>
                 </div>
             </div>
@@ -465,9 +465,9 @@
 
     <!-- Модальное окно подписки Bad Fox -->
     <div id="subscription-modal" class="modal-overlay hidden">
-        <div class="modal-content" style="max-width: 420px;">
+        <div class="modal-content subscription-modal-content">
             <button class="modal-close">&times;</button>
-            <h2 style="color: var(--icon-orange); margin-bottom: 15px;">🔥 Bad Fox</h2>
+            <h2 style="color: var(--icon-orange); margin-bottom: 15px;">Bad Fox</h2>
             <div class="subscription-content">
                 <div class="subscription-header">
                     <div class="subscription-price">
@@ -533,10 +533,9 @@
                             <p>Можете арендовать велосипед на 1 день или дольше без ограничений</p>
                         </div>
                     </div>
-                </div>
 
                 <div class="subscription-trial">
-                    <p style="color: var(--icon-orange); font-weight: 600; margin-bottom: 15px;">🎉 Первые 3 дня — бесплатно!</p>
+                    <p style="color: var(--icon-orange); font-weight: 600; margin-bottom: 15px;">Первые 3 дня — бесплатно!</p>
                     <p style="font-size: 0.85rem; color: #556f6b; margin-bottom: 20px;">Подписка автоматически продлевается. Можно отменить в любой момент в Личном кабинете.</p>
                 </div>
 
@@ -1432,11 +1431,11 @@
 
             updateSubscriptionUI(subscriptionData);
             
-            showToast('🎉 Подписка Bad Fox активирована! Первые 3 дня бесплатно.');
+            showToast('Подписка Bad Fox активирована! Первые 3 дня бесплатно.');
             
         } catch (error) {
             console.error('Ошибка подписки:', error);
-            showToast('❌ Ошибка активации подписки. Попробуйте еще раз.', 'error');
+            showToast('Ошибка активации подписки. Попробуйте еще раз.', 'error');
         } finally {
             isSubscriptionUpdating = false;
             if (subscribeBtn) {
@@ -1475,7 +1474,7 @@
             
         } catch (error) {
             console.error('Ошибка отмены подписки:', error);
-            showToast('❌ Ошибка отмены подписки. Попробуйте еще раз.', 'error');
+            showToast('Ошибка отмены подписки. Попробуйте еще раз.', 'error');
         } finally {
             isSubscriptionUpdating = false;
             if (cancelBtn) {
