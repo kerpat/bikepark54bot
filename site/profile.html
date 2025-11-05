@@ -318,7 +318,7 @@
                     <svg class="menu-item-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                 </div>
                 <hr class="menu-divider">
-                <div class="menu-item" data-modal-target="rewards-modal" style="cursor: pointer;">
+                <div class="menu-item rewards-menu-item" data-modal-target="rewards-modal" style="cursor: pointer;">
                     <div class="menu-item-left">
                         <svg class="menu-item-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                         <span class="menu-item-text">Мои награды</span>
@@ -825,12 +825,20 @@
 
         const openModal = (modalId) => {
             const modal = document.getElementById(modalId);
-            if (!modal) return;
+            if (!modal) {
+                console.error('Modal not found:', modalId);
+                return;
+            }
 
+            console.log('Opening modal:', modalId);
+            
             if (modalId === 'card-modal') updateCardView();
             if (modalId === 'payment-settings-modal') updatePaymentSettingsView();
             if (modalId === 'notifications-modal') loadNotifications();
-            if (modalId === 'rewards-modal') initializeRewards();
+            if (modalId === 'rewards-modal') {
+                console.log('Initializing rewards...');
+                initializeRewards();
+            }
             if (modalId === 'support-modal') initializeSupportChat();
 
             modal.classList.remove('hidden');
@@ -840,9 +848,44 @@
             if (modal) modal.classList.add('hidden');
         };
 
-        modalTriggers.forEach(trigger => trigger.addEventListener('click', (e) => { e.preventDefault(); openModal(trigger.dataset.modalTarget); }));
+        modalTriggers.forEach(trigger => trigger.addEventListener('click', (e) => {
+            e.preventDefault();
+            const target = trigger.dataset.modalTarget;
+            console.log('Modal trigger clicked:', target);
+            console.log('Trigger element:', trigger);
+            openModal(target);
+        }));
         modalCloses.forEach(button => button.addEventListener('click', () => closeModal(button.closest('.modal-overlay'))));
         modals.forEach(modal => modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(modal); }));
+
+        // Тестовая диагностика
+        console.log('=== ДИАГНОСТИКА МОДАЛЬНЫХ ОКОН ===');
+        console.log('Modal triggers found:', modalTriggers.length);
+        console.log('All modal triggers:', modalTriggers);
+        console.log('Rewards modal exists:', !!document.getElementById('rewards-modal'));
+        console.log('Rewards modal element:', document.getElementById('rewards-modal'));
+        const rewardsItem = document.querySelector('[data-modal-target="rewards-modal"]');
+        console.log('Rewards menu item:', rewardsItem);
+        
+        // Детальная диагностика элементов
+        if (rewardsItem) {
+            console.log('✅ Кнопка "Мои награды" найдена');
+            console.log('Element details:', {
+                tagName: rewardsItem.tagName,
+                className: rewardsItem.className,
+                dataset: rewardsItem.dataset
+            });
+            // Проверяем обработчик события
+            console.log('Event listeners:', getEventListeners ? getEventListeners(rewardsItem) : 'Event listener detection not available');
+        } else {
+            console.log('❌ Кнопка "Мои награды" НЕ НАЙДЕНА');
+            // Ищем альтернативные селекторы
+            const alternative1 = document.querySelector('.rewards-menu-item');
+            const alternative2 = document.querySelector('.menu-item:last-child');
+            console.log('Alternative searches:', { alternative1, alternative2 });
+        }
+        
+        console.log('=== КОНЕЦ ДИАГНОСТИКИ ===');
 
         // --- ПРОВЕРКА АВТОРИЗАЦИИ И ДАННЫЕ ПОЛЬЗОВАТЕЛЯ ---
         if (localStorage.getItem('isRegistered') !== 'true') {

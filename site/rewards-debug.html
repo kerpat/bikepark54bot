@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест системы наград</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .btn {
+            background: #FF6B35;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .debug-log {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🔍 Диагностика системы наград</h1>
+        
+        <h2>Быстрый тест:</h2>
+        <button class="btn" onclick="testRewardsModal()">Тест модального окна наград</button>
+        <button class="btn" onclick="testModalTriggers()">Тест обработчиков модальных окон</button>
+        <button class="btn" onclick="checkElements()">Проверить элементы</button>
+        
+        <div id="debug-log" class="debug-log">
+            Нажмите кнопки для диагностики...
+        </div>
+
+        <h2>Статус системы:</h2>
+        <div id="status-check">
+            <p><strong>Модальное окно наград:</strong> <span id="modal-status">Проверяется...</span></p>
+            <p><strong>Кнопка наград в меню:</strong> <span id="button-status">Проверяется...</span></p>
+            <p><strong>Обработчики событий:</strong> <span id="handler-status">Проверяется...</span></p>
+        </div>
+    </div>
+
+    <!-- Модальное окно наград для тестирования -->
+    <div id="rewards-modal-test" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000;">
+        <div class="modal-content" style="background: white; margin: 50px auto; padding: 30px; border-radius: 20px; width: 90%; max-width: 500px; position: relative;">
+            <button class="modal-close" onclick="closeTestModal()" style="position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
+            <h2>🎮 Система наград работает!</h2>
+            <p>Модальное окно успешно открылось.</p>
+            <button class="btn" onclick="closeTestModal()">Закрыть</button>
+        </div>
+    </div>
+
+    <script>
+        function log(message) {
+            const logDiv = document.getElementById('debug-log');
+            const timestamp = new Date().toLocaleTimeString();
+            logDiv.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function testRewardsModal() {
+            log('🔍 Тестирование модального окна наград...');
+            const modal = document.getElementById('rewards-modal-test');
+            if (modal) {
+                modal.style.display = 'flex';
+                log('✅ Модальное окно найдено и открыто');
+                updateStatus('modal-status', 'Найдено', 'success');
+            } else {
+                log('❌ Модальное окно не найдено');
+                updateStatus('modal-status', 'Не найдено', 'error');
+            }
+        }
+
+        function testModalTriggers() {
+            log('🔍 Тестирование обработчиков модальных окон...');
+            
+            // Ищем элементы с data-modal-target
+            const triggers = document.querySelectorAll('[data-modal-target]');
+            log(`Найдено триггеров модальных окон: ${triggers.length}`);
+            
+            if (triggers.length > 0) {
+                updateStatus('handler-status', 'Найдены', 'success');
+                log('✅ Обработчики модальных окон найдены');
+                triggers.forEach((trigger, index) => {
+                    log(`Триггер ${index + 1}: ${trigger.dataset.modalTarget} - ${trigger.textContent.trim()}`);
+                });
+            } else {
+                updateStatus('handler-status', 'Не найдены', 'error');
+                log('❌ Обработчики модальных окон не найдены');
+            }
+        }
+
+        function checkElements() {
+            log('🔍 Проверка элементов...');
+            
+            // Проверяем модальное окно наград
+            const rewardsModal = document.getElementById('rewards-modal');
+            if (rewardsModal) {
+                log('✅ Модальное окно #rewards-modal найдено');
+                updateStatus('modal-status', 'Найдено', 'success');
+            } else {
+                log('❌ Модальное окно #rewards-modal не найдено');
+                updateStatus('modal-status', 'Не найдено', 'error');
+            }
+            
+            // Проверяем кнопку наград
+            const rewardsButton = document.querySelector('[data-modal-target="rewards-modal"]');
+            if (rewardsButton) {
+                log('✅ Кнопка наград найдена');
+                updateStatus('button-status', 'Найдена', 'success');
+                
+                // Проверяем атрибуты
+                log(`Текст кнопки: "${rewardsButton.textContent.trim()}"`);
+                log(`data-modal-target: "${rewardsButton.dataset.modalTarget}"`);
+                
+                // Тестируем клик
+                const clickEvent = new MouseEvent('click', {
+                    view: window,
+                    bubbles: true,
+                    cancelable: true
+                });
+                
+                setTimeout(() => {
+                    rewardsButton.dispatchEvent(clickEvent);
+                    log('✅ Клик отправлен на кнопку наград');
+                }, 500);
+                
+            } else {
+                log('❌ Кнопка наград не найдена');
+                updateStatus('button-status', 'Не найдена', 'error');
+            }
+        }
+
+        function updateStatus(elementId, status, type) {
+            const element = document.getElementById(elementId);
+            const colors = {
+                'success': '#22c55e',
+                'error': '#ef4444',
+                'warning': '#f59e0b'
+            };
+            element.textContent = status;
+            element.style.color = colors[type] || '#000';
+        }
+
+        function closeTestModal() {
+            const modal = document.getElementById('rewards-modal-test');
+            if (modal) {
+                modal.style.display = 'none';
+                log('🔒 Модальное окно закрыто');
+            }
+        }
+
+        // Инициализация
+        window.addEventListener('load', () => {
+            log('🚀 Страница диагностики загружена');
+            updateStatus('modal-status', 'Ожидает проверки', 'warning');
+            updateStatus('button-status', 'Ожидает проверки', 'warning');
+            updateStatus('handler-status', 'Ожидает проверки', 'warning');
+        });
+    </script>
+</body>
+</html>

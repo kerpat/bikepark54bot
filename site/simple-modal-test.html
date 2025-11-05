@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Простой тест модальных окон</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .btn { 
+            background: #007bff; color: white; padding: 10px 20px; 
+            border: none; border-radius: 5px; cursor: pointer; margin: 10px;
+        }
+        .modal-overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.5); display: none; z-index: 1000;
+        }
+        .modal-content { 
+            background: white; margin: 50px auto; padding: 30px; 
+            border-radius: 10px; width: 300px; position: relative;
+        }
+        .modal-close { position: absolute; top: 10px; right: 15px; background: none; border: none; font-size: 24px; cursor: pointer; }
+        .hidden { display: none !important; }
+        #debug-log { 
+            background: #f5f5f5; padding: 15px; border: 1px solid #ddd; 
+            margin: 20px 0; height: 200px; overflow-y: auto; font-family: monospace; font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Простой тест модальных окон</h1>
+    
+    <!-- Кнопка "Мои награды" как в реальном профиле -->
+    <div class="menu-item" data-modal-target="rewards-modal" style="cursor: pointer; padding: 15px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px; margin: 10px 0;">
+        <div class="menu-item-left">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            <span class="menu-item-text" style="margin-left: 10px;">Мои награды</span>
+        </div>
+    </div>
+
+    <!-- Другие кнопки для тестирования -->
+    <button class="btn" onclick="openModal('test-modal')">Тест простое окно</button>
+    <button class="btn" onclick="testDiagnostics()">Запустить диагностику</button>
+    <button class="btn" onclick="testClick()">Проверить клик по кнопке наград</button>
+
+    <!-- Простое модальное окно -->
+    <div id="test-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('test-modal')">&times;</button>
+            <h3>Простое тестовое окно</h3>
+            <p>Если видите это, модальные окна работают!</p>
+        </div>
+    </div>
+
+    <!-- Модальное окно наград как в профиле -->
+    <div id="rewards-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('rewards-modal')">&times;</button>
+            <h3>🏆 Мои награды</h3>
+            <p>Модальное окно наград успешно открылось!</p>
+            <p><strong>Статистика:</strong></p>
+            <ul>
+                <li>Всего очков: 2,847</li>
+                <li>Уровень: 7 (Звездный курьер)</li>
+                <li>До следующего уровня: 1,653 очка</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="debug-log">
+        <strong>Лог диагностики:</strong><br>
+        <span id="log-content">Готов к тестированию...</span>
+    </div>
+
+    <script>
+        let logCounter = 1;
+
+        function addLog(message) {
+            const logContent = document.getElementById('log-content');
+            const timestamp = new Date().toLocaleTimeString();
+            logContent.innerHTML += `<br>[${timestamp}] ${logCounter}. ${message}`;
+            logCounter++;
+            document.getElementById('debug-log').scrollTop = document.getElementById('debug-log').scrollHeight;
+        }
+
+        function openModal(modalId) {
+            addLog(`Открываем модальное окно: ${modalId}`);
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'block';
+                addLog(`✅ Модальное окно ${modalId} успешно открыто`);
+            } else {
+                addLog(`❌ Модальное окно ${modalId} не найдено`);
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+                addLog(`✅ Модальное окно ${modalId} закрыто`);
+            }
+        }
+
+        function testDiagnostics() {
+            addLog('=== НАЧАЛО ДИАГНОСТИКИ ===');
+            
+            // Поиск всех элементов с data-modal-target
+            const modalTriggers = document.querySelectorAll('[data-modal-target]');
+            addLog(`Найдено элементов с data-modal-target: ${modalTriggers.length}`);
+            
+            modalTriggers.forEach((trigger, index) => {
+                addLog(`${index + 1}. Элемент: ${trigger.tagName}, селектор: ${trigger.dataset.modalTarget}`);
+                addLog(`   - Классы: ${trigger.className}`);
+                addLog(`   - Текст: ${trigger.textContent.trim()}`);
+            });
+
+            // Поиск модальных окон
+            const modals = document.querySelectorAll('.modal-overlay');
+            addLog(`Найдено модальных окон: ${modals.length}`);
+            
+            modals.forEach((modal, index) => {
+                addLog(`${index + 1}. Модальное окно ID: ${modal.id}, стиль display: ${modal.style.display}`);
+            });
+
+            // Конкретные проверки
+            const rewardsModal = document.getElementById('rewards-modal');
+            addLog(`rewards-modal найден: ${!!rewardsModal}`);
+            if (rewardsModal) {
+                addLog(`rewards-modal display: ${rewardsModal.style.display}`);
+                addLog(`rewards-modal класс: ${rewardsModal.className}`);
+            }
+
+            const rewardsButton = document.querySelector('[data-modal-target="rewards-modal"]');
+            addLog(`Кнопка наград найдена: ${!!rewardsButton}`);
+            if (rewardsButton) {
+                addLog(`Кнопка наград HTML: ${rewardsButton.outerHTML.substring(0, 100)}...`);
+            }
+
+            addLog('=== КОНЕЦ ДИАГНОСТИКИ ===');
+        }
+
+        function testClick() {
+            addLog('Тестируем клик по кнопке наград...');
+            const rewardsButton = document.querySelector('[data-modal-target="rewards-modal"]');
+            if (rewardsButton) {
+                addLog('✅ Кнопка найдена, симулируем клик...');
+                rewardsButton.click();
+                addLog('Клик выполнен');
+            } else {
+                addLog('❌ Кнопка не найдена!');
+            }
+        }
+
+        // Автоматически запускаем диагностику при загрузке
+        window.addEventListener('DOMContentLoaded', () => {
+            addLog('Страница загружена, запускаем диагностику...');
+            setTimeout(testDiagnostics, 500);
+        });
+
+        // Настройка обработчиков для элементов с data-modal-target
+        document.addEventListener('DOMContentLoaded', () => {
+            const modalTriggers = document.querySelectorAll('[data-modal-target]');
+            addLog(`Настраиваем обработчики для ${modalTriggers.length} элементов...`);
+            
+            modalTriggers.forEach(trigger => {
+                trigger.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const target = trigger.dataset.modalTarget;
+                    addLog(`Клик по триггеру: ${target}`);
+                    openModal(target);
+                });
+                addLog(`Обработчик добавлен для: ${trigger.dataset.modalTarget}`);
+            });
+        });
+    </script>
+</body>
+</html>
