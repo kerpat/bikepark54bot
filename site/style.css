@@ -2113,6 +2113,18 @@ body:has(.map-page-container) .app-screen {
     background: #999;
 }
 
+/* Исправление выравнивания бейджа в меню профиля */
+.menu-item-text {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.menu-item-text .subscription-badge {
+    margin-left: 8px;
+    flex-shrink: 0;
+}
+
 /* Адаптивность */
 @media (max-width: 480px) {
     .subscription-content {
