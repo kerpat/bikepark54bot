@@ -1878,3 +1878,200 @@ body:has(.map-page-container) .app-screen {
     /* Скругляем только верхние углы, а нижние оставляем прямыми (0) */
     border-radius: 6px 6px 0 0;
 }
+
+/* === СТИЛИ ДЛЯ ПОДПИСКИ BAD FOX === */
+
+/* Бейдж статуса подписки в меню */
+.subscription-badge {
+    background-color: #22c55e;
+    color: white;
+    border-radius: 12px;
+    padding: 4px 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-left: 8px;
+    white-space: nowrap;
+}
+
+.subscription-badge.inactive {
+    background-color: #ef4444;
+}
+
+/* Заголовок подписки */
+.subscription-content {
+    text-align: left;
+}
+
+.subscription-header {
+    text-align: center;
+    margin-bottom: 25px;
+    padding: 20px;
+    background: linear-gradient(135deg, #ff6b35 0%, #ff8f5c 100%);
+    border-radius: 16px;
+    color: white;
+}
+
+.subscription-price {
+    margin-bottom: 10px;
+}
+
+.price-amount {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: white;
+}
+
+.price-period {
+    font-size: 1.1rem;
+    font-weight: 500;
+    opacity: 0.9;
+    margin-left: 5px;
+}
+
+.price-yearly {
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.yearly-price {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--accent-yellow);
+    margin-right: 8px;
+}
+
+.yearly-note {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* Список преимуществ */
+.subscription-benefits {
+    margin-bottom: 25px;
+}
+
+.benefit-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    border: 2px solid #FFE5DC;
+    transition: all 0.2s ease;
+}
+
+.benefit-item:hover {
+    border-color: var(--icon-orange);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.1);
+}
+
+.benefit-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--icon-orange), var(--secondary-orange));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+}
+
+.benefit-text {
+    flex-grow: 1;
+}
+
+.benefit-text strong {
+    color: var(--dark-text);
+    font-size: 1rem;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.benefit-text p {
+    color: #556f6b;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* Блок пробного периода */
+.subscription-trial {
+    background: #f0f9ff;
+    border: 2px solid #0ea5e9;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Кнопки действий */
+.subscription-actions {
+    margin-top: 20px;
+}
+
+.subscription-actions .btn {
+    width: 100%;
+    padding: 18px;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+#cancel-subscription-btn {
+    background-color: white;
+    color: #e53e3e !important;
+    border: 2px solid #fcebeb !important;
+}
+
+#cancel-subscription-btn:hover {
+    background-color: #fcebeb;
+}
+
+/* Отображение статуса подписки */
+.subscription-status {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border: 2px solid #0ea5e9;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.subscription-status.active {
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    border-color: #22c55e;
+}
+
+.subscription-status.active strong {
+    color: #22c55e;
+}
+
+/* Адаптивность */
+@media (max-width: 480px) {
+    .subscription-content {
+        padding: 0;
+    }
+    
+    .subscription-header {
+        padding: 15px;
+        margin: 0 -10px 20px -10px;
+        border-radius: 0;
+    }
+    
+    .benefit-item {
+        padding: 12px;
+        gap: 12px;
+    }
+    
+    .benefit-icon {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .price-amount {
+        font-size: 2rem;
+    }
+}

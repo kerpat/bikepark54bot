@@ -278,6 +278,10 @@
                 <img src="avatar.png" alt="Аватар пользователя" class="avatar">
                 <h2 class="user-name" id="user-name-placeholder">Имя пользователя</h2>
                 <p class="user-id">ID: 11071998</p>
+                <div id="profile-subscription-status" style="display: none; margin-top: 10px;">
+                    <span class="subscription-badge active">🔥 Bad Fox</span>
+                    <p style="font-size: 0.9rem; color: #556f6b; margin-top: 5px;">Статус: Подписка активна до <span id="profile-subscription-expiry">дата</span></p>
+                </div>
             </div>
 
             <div class="profile-menu">
@@ -311,6 +315,14 @@
                         <!-- Иконка города -->
                         <svg class="menu-item-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                         <span class="menu-item-text">Город</span>
+                    </div>
+                    <svg class="menu-item-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </div>
+                <hr class="menu-divider">
+                <div class="menu-item" data-modal-target="subscription-modal" style="cursor: pointer;">
+                    <div class="menu-item-left">
+                        <svg class="menu-item-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                        <span class="menu-item-text">Подписка Bad Fox <span id="subscription-status" class="subscription-badge" style="display: none;">Активна</span></span>
                     </div>
                     <svg class="menu-item-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                 </div>
@@ -448,6 +460,108 @@
                 </div>
                 <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Сохранить</button>
             </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно подписки Bad Fox -->
+    <div id="subscription-modal" class="modal-overlay hidden">
+        <div class="modal-content" style="max-width: 420px;">
+            <button class="modal-close">&times;</button>
+            <h2 style="color: var(--icon-orange); margin-bottom: 15px;">🔥 Bad Fox</h2>
+            <div class="subscription-content">
+                <div class="subscription-header">
+                    <div class="subscription-price">
+                        <span class="price-amount">599₽</span>
+                        <span class="price-period">/месяц</span>
+                    </div>
+                    <div class="price-yearly">
+                        <span class="yearly-price">499₽/месяц</span>
+                        <span class="yearly-note">при годовой оплате</span>
+                    </div>
+                </div>
+                
+                <div class="subscription-benefits">
+                    <h3 style="margin: 20px 0 15px 0; color: var(--dark-text); font-size: 1.1rem;">Что входит в подписку:</h3>
+                    
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                        </div>
+                        <div class="benefit-text">
+                            <strong>Скидка 10% на всю аренду</strong>
+                            <p>Экономия на каждой секунде поездки на любом велосипеде и аренде любой АКБ</p>
+                        </div>
+                    </div>
+
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 6v6l4 2"/>
+                            </svg>
+                        </div>
+                        <div class="benefit-text">
+                            <strong>+25% бонусных очков</strong>
+                            <p>За каждую завершенную аренду, чистый возврат, отсутствие повреждений и своевременный возврат АКБ</p>
+                        </div>
+                    </div>
+
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 12l2 2 4-4"/>
+                                <circle cx="12" cy="12" r="10"/>
+                            </svg>
+                        </div>
+                        <div class="benefit-text">
+                            <strong>Приоритетный доступ</strong>
+                            <p>Свободные велосипеды отображаются на 5 минут раньше, значок "Bad Fox" в профиле</p>
+                        </div>
+                    </div>
+
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                            </svg>
+                        </div>
+                        <div class="benefit-text">
+                            <strong>Гибкие условия</strong>
+                            <p>Можете арендовать велосипед на 1 день или дольше без ограничений</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subscription-trial">
+                    <p style="color: var(--icon-orange); font-weight: 600; margin-bottom: 15px;">🎉 Первые 3 дня — бесплатно!</p>
+                    <p style="font-size: 0.85rem; color: #556f6b; margin-bottom: 20px;">Подписка автоматически продлевается. Можно отменить в любой момент в Личном кабинете.</p>
+                </div>
+
+                <div class="subscription-actions" id="subscription-actions">
+                    <button class="btn btn-primary" id="subscribe-btn" style="margin-bottom: 15px;">
+                        Подключить за 599₽/мес
+                    </button>
+                    <button class="btn btn-secondary" id="cancel-subscription-btn" style="display: none; color: #e53e3e; border-color: #fcebeb;">
+                        Отменить подписку
+                    </button>
+                </div>
+
+                <div class="subscription-status" id="subscription-status-display" style="display: none; background: #f0f9ff; border: 2px solid #0ea5e9; border-radius: 12px; padding: 15px; margin-bottom: 15px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="2">
+                            <path d="M9 12l2 2 4-4"/>
+                            <circle cx="12" cy="12" r="10"/>
+                        </svg>
+                        <div>
+                            <strong style="color: #0ea5e9;">Подписка активна</strong>
+                            <p style="margin: 5px 0 0 0; font-size: 0.9rem; color: #556f6b;">Действует до <span id="subscription-expiry">дата</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1177,6 +1291,230 @@
 
         // Первичный запуск функций при загрузке страницы
         updateNotificationsCount();
+        loadSubscriptionStatus();
+    });
+
+    // === ЛОГИКА ПОДПИСКИ BAD FOX ===
+    let isSubscriptionUpdating = false;
+
+    // Функция загрузки статуса подписки
+    async function loadSubscriptionStatus() {
+        const userId = localStorage.getItem('userId');
+        if (!userId) return;
+
+        try {
+            // Получаем статус подписки (в реальном приложении - запрос к API)
+            const subscriptionData = await getSubscriptionStatus(userId);
+            updateSubscriptionUI(subscriptionData);
+        } catch (error) {
+            console.error('Ошибка загрузки статуса подписки:', error);
+        }
+    }
+
+    // Функция получения статуса подписки (заглушка)
+    async function getSubscriptionStatus(userId) {
+        // В реальном приложении здесь был бы запрос к API
+        // const response = await fetch('/api/subscription', {...});
+        // return await response.json();
+        
+        // Для демо используем localStorage
+        const saved = localStorage.getItem(`bad_fox_subscription_${userId}`);
+        if (saved) {
+            const data = JSON.parse(saved);
+            if (new Date(data.expiryDate) > new Date()) {
+                return {
+                    isActive: true,
+                    expiryDate: data.expiryDate,
+                    startDate: data.startDate
+                };
+            }
+        }
+        
+        return { isActive: false };
+    }
+
+    // Обновление UI подписки
+    function updateSubscriptionUI(subscriptionData) {
+        const subscriptionStatus = document.getElementById('subscription-status');
+        const profileSubscriptionStatus = document.getElementById('profile-subscription-status');
+        const subscriptionExpiry = document.getElementById('subscription-expiry');
+        const profileSubscriptionExpiry = document.getElementById('profile-subscription-expiry');
+        const subscribeBtn = document.getElementById('subscribe-btn');
+        const cancelBtn = document.getElementById('cancel-subscription-btn');
+        const subscriptionStatusDisplay = document.getElementById('subscription-status-display');
+        const actionsContainer = document.getElementById('subscription-actions');
+
+        if (subscriptionData.isActive) {
+            // Подписка активна
+            if (subscriptionStatus) {
+                subscriptionStatus.textContent = 'Активна';
+                subscriptionStatus.style.display = 'inline-block';
+            }
+            
+            if (profileSubscriptionStatus) {
+                profileSubscriptionStatus.style.display = 'block';
+                if (subscriptionExpiry) {
+                    const expiryDate = new Date(subscriptionData.expiryDate);
+                    const formattedDate = expiryDate.toLocaleDateString('ru-RU', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric'
+                    });
+                    profileSubscriptionExpiry.textContent = formattedDate;
+                    subscriptionExpiry.textContent = formattedDate;
+                }
+            }
+
+            // Обновляем модальное окно
+            if (subscriptionStatusDisplay) {
+                subscriptionStatusDisplay.style.display = 'block';
+                subscriptionStatusDisplay.classList.add('active');
+            }
+            if (actionsContainer) {
+                actionsContainer.style.display = 'none';
+            }
+            if (subscribeBtn) subscribeBtn.style.display = 'none';
+            if (cancelBtn) cancelBtn.style.display = 'block';
+        } else {
+            // Подписка неактивна
+            if (subscriptionStatus) {
+                subscriptionStatus.style.display = 'none';
+            }
+            
+            if (profileSubscriptionStatus) {
+                profileSubscriptionStatus.style.display = 'none';
+            }
+
+            // Обновляем модальное окно
+            if (subscriptionStatusDisplay) {
+                subscriptionStatusDisplay.style.display = 'none';
+            }
+            if (actionsContainer) {
+                actionsContainer.style.display = 'block';
+            }
+            if (subscribeBtn) subscribeBtn.style.display = 'block';
+            if (cancelBtn) cancelBtn.style.display = 'none';
+        }
+    }
+
+    // Функция подписки
+    async function subscribeBadFox() {
+        const userId = localStorage.getItem('userId');
+        if (!userId) return;
+
+        const subscribeBtn = document.getElementById('subscribe-btn');
+        if (isSubscriptionUpdating || !subscribeBtn) return;
+
+        isSubscriptionUpdating = true;
+        subscribeBtn.textContent = 'Подключаем...';
+        subscribeBtn.disabled = true;
+
+        try {
+            // В реальном приложении здесь был бы запрос к платежной системе
+            // const response = await fetch('/api/subscription/subscribe', {...});
+            // const result = await response.json();
+            
+            // Для демо создаем пробную подписку на 3 дня
+            const startDate = new Date();
+            const expiryDate = new Date(startDate);
+            expiryDate.setDate(expiryDate.getDate() + 3); // 3 дня пробного периода
+
+            const subscriptionData = {
+                isActive: true,
+                startDate: startDate.toISOString(),
+                expiryDate: expiryDate.toISOString(),
+                type: 'bad_fox',
+                trialPeriod: true
+            };
+
+            // Сохраняем в localStorage для демо
+            localStorage.setItem(`bad_fox_subscription_${userId}`, JSON.stringify(subscriptionData));
+
+            updateSubscriptionUI(subscriptionData);
+            
+            showToast('🎉 Подписка Bad Fox активирована! Первые 3 дня бесплатно.');
+            
+        } catch (error) {
+            console.error('Ошибка подписки:', error);
+            showToast('❌ Ошибка активации подписки. Попробуйте еще раз.', 'error');
+        } finally {
+            isSubscriptionUpdating = false;
+            if (subscribeBtn) {
+                subscribeBtn.textContent = 'Подключить за 599₽/мес';
+                subscribeBtn.disabled = false;
+            }
+        }
+    }
+
+    // Функция отмены подписки
+    async function cancelSubscription() {
+        const userId = localStorage.getItem('userId');
+        if (!userId) return;
+
+        if (!confirm('Вы уверены, что хотите отменить подписку Bad Fox?\n\nПодписка будет действовать до конца оплаченного периода.')) {
+            return;
+        }
+
+        const cancelBtn = document.getElementById('cancel-subscription-btn');
+        if (isSubscriptionUpdating || !cancelBtn) return;
+
+        isSubscriptionUpdating = true;
+        cancelBtn.textContent = 'Отменяем...';
+        cancelBtn.disabled = true;
+
+        try {
+            // В реальном приложении здесь был бы запрос к API для отмены автопродления
+            // const response = await fetch('/api/subscription/cancel', {...});
+            
+            // Для демо просто удаляем подписку из localStorage
+            localStorage.removeItem(`bad_fox_subscription_${userId}`);
+
+            updateSubscriptionUI({ isActive: false });
+            
+            showToast('Подписка отменена. Она будет действовать до конца периода.');
+            
+        } catch (error) {
+            console.error('Ошибка отмены подписки:', error);
+            showToast('❌ Ошибка отмены подписки. Попробуйте еще раз.', 'error');
+        } finally {
+            isSubscriptionUpdating = false;
+            if (cancelBtn) {
+                cancelBtn.textContent = 'Отменить подписку';
+                cancelBtn.disabled = false;
+            }
+        }
+    }
+
+    // Функция показа уведомления
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = `toast-container toast-${type} hidden`;
+        toast.innerHTML = `<p class="toast-message">${message}</p>`;
+        
+        document.body.appendChild(toast);
+        
+        // Показываем уведомление
+        setTimeout(() => toast.classList.remove('hidden'), 100);
+        
+        // Скрываем через 4 секунды
+        setTimeout(() => {
+            toast.classList.add('hidden');
+            setTimeout(() => document.body.removeChild(toast), 400);
+        }, 4000);
+    }
+
+    // Инициализация обработчиков подписки
+    document.addEventListener('DOMContentLoaded', () => {
+        const subscribeBtn = document.getElementById('subscribe-btn');
+        const cancelBtn = document.getElementById('cancel-subscription-btn');
+
+        if (subscribeBtn) {
+            subscribeBtn.addEventListener('click', subscribeBadFox);
+        }
+
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', cancelSubscription);
+        }
     });
     </script>
 </body>

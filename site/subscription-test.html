@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест подписки Bad Fox</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+            margin: 0;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .test-button {
+            background: #FF6B35;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 10px 10px 10px 0;
+        }
+        .test-button:hover {
+            opacity: 0.9;
+        }
+        .demo-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 2px solid #FFE5DC;
+            border-radius: 12px;
+            background: #FFF8E7;
+        }
+        .status-display {
+            background: #f0f9ff;
+            border: 2px solid #0ea5e9;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            display: none;
+        }
+        .status-display.active {
+            background: #f0fdf4;
+            border-color: #22c55e;
+        }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        .feature-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .feature-list li:before {
+            content: "✅ ";
+            color: #22c55e;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🔥 Тест подписки Bad Fox</h1>
+        <p>Демонстрация реализованного функционала подписки Bad Fox для BikePark54</p>
+
+        <div class="demo-section">
+            <h2>📋 Реализованный функционал:</h2>
+            <ul class="feature-list">
+                <li>Пункт меню "Подписка Bad Fox" в профиле</li>
+                <li>Модальное окно с подробной информацией о тарифе</li>
+                <li>Стилизация в соответствии с дизайн-системой</li>
+                <li>Отображение статуса подписки в шапке профиля</li>
+                <li>Логика активации/деактивации подписки</li>
+                <li>Бейджи и индикаторы статуса</li>
+                <li>Пробный период 3 дня</li>
+                <li>Интеграция с существующими стилями</li>
+            </ul>
+        </div>
+
+        <div class="demo-section">
+            <h2>🧪 Демо статуса подписки:</h2>
+            <button class="test-button" onclick="simulateSubscription(true)">Активировать подписку</button>
+            <button class="test-button" onclick="simulateSubscription(false)">Деактивировать подписку</button>
+            <button class="test-button" onclick="checkExpiry()">Проверить срок действия</button>
+
+            <div id="subscription-status-demo" class="status-display">
+                <h3>🔥 Bad Fox - Активна</h3>
+                <p>Действует до: <span id="expiry-date">--</span></p>
+                <p>Тип: Пробный период (3 дня)</p>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>💰 Преимущества тарифа:</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div style="background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #FF6B35;">
+                    <h4>💸 Экономия</h4>
+                    <p>Скидка 10% на всю аренду</p>
+                </div>
+                <div style="background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #22c55e;">
+                    <h4>🏆 Бонусы</h4>
+                    <p>+25% бонусных очков</p>
+                </div>
+                <div style="background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #0ea5e9;">
+                    <h4>⚡ Приоритет</h4>
+                    <p>Ранний доступ к велосипедам</p>
+                </div>
+                <div style="background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #8b5cf6;">
+                    <h4>🆓 Пробный период</h4>
+                    <p>Первые 3 дня бесплатно</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>🔧 Интеграция:</h2>
+            <p><strong>Файлы:</strong></p>
+            <ul>
+                <li><code>site/profile.html</code> - основной файл профиля</li>
+                <li><code>site/style.css</code> - стили подписки</li>
+            </ul>
+            
+            <p><strong>Особенности реализации:</strong></p>
+            <ul>
+                <li>Использование существующих CSS переменных</li>
+                <li>Локальное хранение статуса для демо</li>
+                <li>Готовность к интеграции с API</li>
+                <li>Адаптивный дизайн</li>
+                <li>Согласованность с дизайн-системой</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function simulateSubscription(isActive) {
+            const statusDiv = document.getElementById('subscription-status-demo');
+            const expiryDate = document.getElementById('expiry-date');
+            
+            if (isActive) {
+                const now = new Date();
+                const expiry = new Date(now);
+                expiry.setDate(expiry.getDate() + 3);
+                
+                statusDiv.classList.add('active');
+                statusDiv.style.display = 'block';
+                expiryDate.textContent = expiry.toLocaleDateString('ru-RU');
+                
+                showMessage('🎉 Подписка Bad Fox активирована!', 'success');
+            } else {
+                statusDiv.style.display = 'none';
+                showMessage('❌ Подписка отменена', 'info');
+            }
+        }
+        
+        function checkExpiry() {
+            const statusDiv = document.getElementById('subscription-status-demo');
+            if (statusDiv.style.display !== 'none') {
+                const expiryText = document.getElementById('expiry-date').textContent;
+                const expiry = new Date(expiryText);
+                const now = new Date();
+                const diffTime = expiry - now;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                
+                if (diffDays > 0) {
+                    showMessage(`⏰ До окончания подписки: ${diffDays} дней`, 'info');
+                } else {
+                    showMessage('⏰ Подписка истекла', 'warning');
+                    statusDiv.style.display = 'none';
+                }
+            } else {
+                showMessage('❌ Подписка неактивна', 'info');
+            }
+        }
+        
+        function showMessage(text, type) {
+            const messageDiv = document.createElement('div');
+            messageDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#22c55e' : type === 'warning' ? '#f59e0b' : '#3b82f6'};
+                color: white;
+                padding: 15px 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+                z-index: 1000;
+                font-weight: 600;
+            `;
+            messageDiv.textContent = text;
+            
+            document.body.appendChild(messageDiv);
+            
+            setTimeout(() => {
+                messageDiv.style.opacity = '0';
+                messageDiv.style.transform = 'translateX(100%)';
+                setTimeout(() => document.body.removeChild(messageDiv), 300);
+            }, 3000);
+        }
+        
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', () => {
+            showMessage('🚀 Демо готово! Нажмите кнопки для тестирования', 'info');
+        });
+    </script>
+</body>
+</html>
