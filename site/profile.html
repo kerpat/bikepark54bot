@@ -480,6 +480,7 @@
             </form>
         </div>
     </div>
+    </div>
 
     <!-- Модальное окно подписки Bad Fox -->
     <div id="subscription-modal" class="modal-overlay hidden">
@@ -833,6 +834,13 @@
         const modalTriggers = document.querySelectorAll('[data-modal-target]');
         const modals = document.querySelectorAll('.modal-overlay');
         const modalCloses = document.querySelectorAll('.modal-close');
+
+        // Ensure modals are attached directly to body to avoid stacking issues
+        [...modals].forEach(modal => {
+            if (modal.parentElement !== document.body) {
+                document.body.appendChild(modal);
+            }
+        });
 
         const openModal = (modalId) => {
             console.log('Trying to open modal:', modalId);
