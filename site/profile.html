@@ -913,8 +913,16 @@
         console.log('=== КОНЕЦ ДИАГНОСТИКИ ===');
 
         // --- ПРОВЕРКА АВТОРИЗАЦИИ И ДАННЫЕ ПОЛЬЗОВАТЕЛЯ ---
-        if (localStorage.getItem('isRegistered') !== 'true') {
-            window.location.replace('start.html');
+        const isRegistered = localStorage.getItem('isRegistered') === 'true';
+        const registrationType = localStorage.getItem('registrationType');
+        
+        if (!isRegistered) {
+            // Перенаправляем на соответствующую страницу входа
+            if (window.Telegram?.WebApp?.initData) {
+                window.location.replace('start.html');
+            } else {
+                window.location.replace('browser-login.html');
+            }
             return;
         }
 
@@ -939,8 +947,24 @@
         if (logoutBtn) {
             logoutBtn.addEventListener('click', () => {
                 if (confirm('Вы уверены, что хотите выйти из аккаунта?')) {
-                    localStorage.clear();
-                    window.location.replace('start.html');
+                    // Определяем тип регистрации для правильного редиректа
+                    const registrationType = localStorage.getItem('registrationType');
+                    
+                    // Удаляем только данные текущей сессии
+                    const keysToRemove = [
+                        'isRegistered', 'userId', 'userName', 
+                        'userFirstName', 'userLastName', 'userPhone',
+                        'registrationType', 'registrationDate'
+                    ];
+                    
+                    keysToRemove.forEach(key => localStorage.removeItem(key));
+                    
+                    // Перенаправляем на соответствующую страницу
+                    if (registrationType === 'browser') {
+                        window.location.replace('browser-login.html');
+                    } else {
+                        window.location.replace('start.html');
+                    }
                 }
             });
         }

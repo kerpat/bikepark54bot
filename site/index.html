@@ -40,7 +40,21 @@
 
         const isInTelegram = window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData;
         const userId = localStorage.getItem('userId');
+        const isRegistered = localStorage.getItem('isRegistered') === 'true';
 
+        // Если не в Telegram и не авторизован - редирект на браузерную версию
+        if (!isInTelegram && !isRegistered) {
+            window.location.replace('index-browser.html');
+            return;
+        }
+
+        // Если в браузере и авторизован - показываем главную
+        if (!isInTelegram && isRegistered) {
+            // Просто показываем страницу
+            const appScreen = document.querySelector('.app-screen');
+            if (appScreen) appScreen.style.display = 'flex';
+            return;
+        }
 
         // Скрываем основной экран заранее, если нужно авторизоваться
         const appScreen = document.querySelector('.app-screen');

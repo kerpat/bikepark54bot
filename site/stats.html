@@ -269,6 +269,19 @@
     </div>
 
     <script>
+    // --- ПРОВЕРКА АВТОРИЗАЦИИ ---
+    const isRegistered = localStorage.getItem('isRegistered') === 'true';
+    const isInTelegram = window.Telegram?.WebApp?.initData;
+    
+    if (!isRegistered) {
+        // Перенаправляем на соответствующую страницу входа
+        if (isInTelegram) {
+            window.location.replace('start.html');
+        } else {
+            window.location.replace('browser-login.html');
+        }
+    }
+
     // --- Подключение к Supabase ---
     const SUPABASE_URL = 'https://gbabrtcnegjhherbczuj.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdiYWJydGNuZWdqaGhlcmJjenVqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkxMzQ0MTAsImV4cCI6MjA3NDcxMDQxMH0.muedJjHjqZsCUv6wtiiGoTao9t1T69lTl6p5G57_otU';
