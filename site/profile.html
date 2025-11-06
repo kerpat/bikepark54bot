@@ -848,6 +848,10 @@
                 console.log('Initializing rewards...');
                 initializeRewards();
             }
+            if (modalId === 'subscription-modal') {
+                loadSubscriptionStatus();
+                initSubscriptionHandlers();
+            }
             if (modalId === 'support-modal') initializeSupportChat();
 
             // Убираем класс hidden и добавляем явные стили
@@ -1941,17 +1945,28 @@
     }
 
     // Инициализация обработчиков подписки
-    document.addEventListener('DOMContentLoaded', () => {
+    function initSubscriptionHandlers() {
         const subscribeBtn = document.getElementById('subscribe-btn');
         const cancelBtn = document.getElementById('cancel-subscription-btn');
 
         if (subscribeBtn) {
-            subscribeBtn.addEventListener('click', subscribeBadFox);
+            // Удаляем старые обработчики (если есть) и добавляем новые
+            subscribeBtn.replaceWith(subscribeBtn.cloneNode(true));
+            const newSubscribeBtn = document.getElementById('subscribe-btn');
+            newSubscribeBtn.addEventListener('click', subscribeBadFox);
+            console.log('✅ Subscribe button handler attached');
         }
 
         if (cancelBtn) {
-            cancelBtn.addEventListener('click', cancelSubscription);
+            cancelBtn.replaceWith(cancelBtn.cloneNode(true));
+            const newCancelBtn = document.getElementById('cancel-subscription-btn');
+            newCancelBtn.addEventListener('click', cancelSubscription);
+            console.log('✅ Cancel button handler attached');
         }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        initSubscriptionHandlers();
     });
     </script>
 </body>
