@@ -1007,8 +1007,8 @@
                 className: rewardsItem.className,
                 dataset: rewardsItem.dataset
             });
-            // Проверяем обработчик события
-            console.log('Event listeners:', getEventListeners ? getEventListeners(rewardsItem) : 'Event listener detection not available');
+            // Note: getEventListeners is only available in Chrome DevTools Console, not in code
+            console.log('Event listeners: Use Chrome DevTools Console to check (getEventListeners is not available in code)');
         } else {
             console.log('❌ Кнопка "Мои награды" НЕ НАЙДЕНА');
             // Ищем альтернативные селекторы
