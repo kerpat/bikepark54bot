@@ -93,19 +93,6 @@
 
 
 <script type="text/javascript">
-    // --- ПРОВЕРКА АВТОРИЗАЦИИ ---
-    const isRegistered = localStorage.getItem('isRegistered') === 'true';
-    const isInTelegram = window.Telegram?.WebApp?.initData;
-    
-    if (!isRegistered) {
-        // Перенаправляем на соответствующую страницу входа
-        if (isInTelegram) {
-            window.location.replace('start.html');
-        } else {
-            window.location.replace('browser-login.html');
-        }
-    }
-
     document.addEventListener('DOMContentLoaded', () => {
         // --- ОБЩАЯ ЛОГИКА АНИМАЦИИ ПЕРЕХОДОВ (ДЛЯ ВСЕХ СТРАНИЦ) ---
         const appScreen = document.querySelector('.app-screen');
