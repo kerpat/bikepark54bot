@@ -461,7 +461,8 @@
                 <div class="modal-form-group">
                     <label for="city-select">Город</label>
                     <select id="city-select" class="form-input">
-                        <option value="Новосибирск" selected>Новосибирск</option>
+                        <option value="Москва" selected>Москва</option>
+                        <option value="Новосибирск">Новосибирск</option>
                     </select>
                 </div>
                 <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Сохранить</button>
@@ -936,13 +937,20 @@
 
         // --- ЛОГИКА КНОПКИ ВЫХОДА ---
         const logoutBtn = document.getElementById('logout-btn');
+        console.log('Logout button found:', logoutBtn);
         if (logoutBtn) {
-            logoutBtn.addEventListener('click', () => {
+            logoutBtn.addEventListener('click', (e) => {
+                console.log('Logout button clicked');
+                e.preventDefault();
                 if (confirm('Вы уверены, что хотите выйти из аккаунта?')) {
+                    console.log('Logout confirmed, clearing localStorage');
                     localStorage.clear();
                     window.location.replace('start.html');
                 }
             });
+            console.log('Logout button event listener attached');
+        } else {
+            console.error('❌ Logout button not found!');
         }
         
         // ===============================================================

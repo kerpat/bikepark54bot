@@ -151,6 +151,11 @@
 
     // City data
     const cityData = {
+        'Москва': {
+            coords: [55.746081, 37.882548],
+            address: 'Центр Москвы',
+            zoom: 14
+        },
         'Новосибирск': {
             coords: [55.028682, 82.903748],
             address: 'Центр Новосибирска',
@@ -160,7 +165,7 @@
 
     // --- ЛОГИКА КАРТЫ (ЗАПУСКАЕТСЯ, КОГДА API ГОТОВ) ---
     function initMapWithData(userCity) {
-        const cityInfo = cityData[userCity] || cityData['Новосибирск'];
+        const cityInfo = cityData[userCity] || cityData['Москва'];
         const bikePointData = {
             coords: cityInfo.coords,
             address: cityInfo.address,
@@ -282,7 +287,7 @@
         script.onload = () => {
             ymaps.ready(async function() {
                 const userId = localStorage.getItem('userId');
-                let userCity = 'Новосибирск'; // default
+                let userCity = 'Москва'; // default
 
                 if (userId && supabase) {
                     try {
