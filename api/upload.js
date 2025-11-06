@@ -73,6 +73,38 @@ async function handler(req, res) {
         return;
     }
 
+    // Проверяем Content-Type для определения типа запроса
+    const contentType = req.headers['content-type'] || '';
+    
+    // Если это JSON запрос (для signed URL)
+    if (contentType.includes('application/json')) {
+        try {
+            const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+            const { action, path: filePath } = body;
+
+            if (action === 'getSignedUploadUrl') {
+                if (!filePath) {
+                    return res.status(400).json({ error: 'File path is required.' });
+                }
+                const supabaseAdmin = createSupabaseAdmin();
+                const { data, error } = await supabaseAdmin.storage
+                    .from('passports')
+                    .createSignedUploadUrl(filePath);
+
+                if (error) {
+                    throw new Error(`Failed to create signed URL: ${error.message}`);
+                }
+                return res.status(200).json(data);
+            }
+            
+            return res.status(400).json({ error: 'Unknown action' });
+        } catch (error) {
+            console.error('Signed URL handler error:', error);
+            return res.status(500).json({ error: error.message });
+        }
+    }
+
+    // Иначе обрабатываем как multipart/form-data для загрузки файлов
     try {
         const { fields, files } = await parseMultipartForm(req);
 
