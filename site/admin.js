@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const paymentsSection = document.getElementById('payments-section');
     const bikesSection = document.getElementById('bikes-section');
     const assignmentsSection = document.getElementById('assignments-section');
+    const businessRequestsSection = document.getElementById('business-requests-section');
     const templatesSection = document.getElementById('templates-section');
 
     // Rentals elements
@@ -96,6 +97,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const assignBikeIotDeviceIdInput = document.getElementById('assign-bike-iot-device-id');
     const assignBikeAdditionalEquipmentInput = document.getElementById('assign-bike-additional-equipment');
     const bikeDetailsDiv = document.getElementById('bike-details');
+
+    // Business Requests elements
+    const businessRequestsTableBody = document.querySelector('#business-requests-table tbody');
+    const businessRequestModal = document.getElementById('business-request-modal');
+    const businessRequestContent = document.getElementById('business-request-content');
+    const businessRequestCloseBtn = document.getElementById('business-request-close-btn');
+    const businessApproveBtn = document.getElementById('business-approve-btn');
+    const businessRejectBtn = document.getElementById('business-reject-btn');
+    const businessSearchInput = document.getElementById('business-search');
+    const businessStatusFilter = document.getElementById('business-status-filter');
+    let currentBusinessRequestId = null;
 
     // Invoice elements
     const invoiceCreateBtn = document.getElementById('invoice-create-btn');
@@ -663,6 +675,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'payments': { element: paymentsSection, loader: loadPayments },
             'bikes': { element: bikesSection, loader: loadBikes },
             'assignments': { element: assignmentsSection, loader: loadAssignments },
+            'business-requests': { element: businessRequestsSection, loader: loadBusinessRequests },
             'templates': { element: templatesSection, loader: loadTemplates },
             'admin-map': { element: adminMapSection, loader: initAdminMap }, // <-- ИЗМЕНЕНИЕ
         };
@@ -2935,5 +2948,207 @@ clientsTableBody.addEventListener('click', async (e) => {
     clientViewTariffDetailModal?.addEventListener('click', (e) => {
         if (e.target === clientViewTariffDetailModal) clientViewTariffDetailModal.classList.add('hidden');
     });
+
+    // === BUSINESS REQUESTS LOGIC ===
+    
+    async function loadBusinessRequests() {
+        if (!businessRequestsTableBody) return;
+        businessRequestsTableBody.innerHTML = '<tr><td colspan="10">Загрузка...</td></tr>';
+        
+        try {
+            const { data, error } = await supabase
+                .from('business_requests')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) throw error;
+
+            if (!data || data.length === 0) {
+                businessRequestsTableBody.innerHTML = '<tr><td colspan="10">Нет заявок</td></tr>';
+                return;
+            }
+
+            businessRequestsTableBody.innerHTML = '';
+            data.forEach(req => {
+                const row = document.createElement('tr');
+                row.dataset.requestId = req.id;
+                row.dataset.status = req.status;
+                
+                const statusClass = req.status === 'approved' ? 'badge-success' : 
+                                  req.status === 'rejected' ? 'badge-danger' : 'badge-warning';
+                const statusText = req.status === 'approved' ? 'Одобрено' :
+                                 req.status === 'rejected' ? 'Отклонено' : 'Ожидает';
+
+                const date = new Date(req.created_at);
+                const dateStr = date.toLocaleDateString('ru-RU') + ' ' + date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+
+                row.innerHTML = `
+                    <td>${req.company_name || '-'}</td>
+                    <td>${req.contact_name || '-'}</td>
+                    <td>${req.phone || '-'}</td>
+                    <td>${req.email || '-'}</td>
+                    <td>${req.industry || '-'}</td>
+                    <td>${req.fleet_size || '-'}</td>
+                    <td>${req.purpose || '-'}</td>
+                    <td>${dateStr}</td>
+                    <td><span class="badge ${statusClass}">${statusText}</span></td>
+                    <td>
+                        <button class="admin-small-btn view-business-request-btn" data-id="${req.id}">Просмотр</button>
+                    </td>
+                `;
+                businessRequestsTableBody.appendChild(row);
+            });
+
+            // Attach event listeners to view buttons
+            document.querySelectorAll('.view-business-request-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const requestId = btn.dataset.id;
+                    viewBusinessRequest(requestId);
+                });
+            });
+
+        } catch (err) {
+            console.error('Error loading business requests:', err);
+            businessRequestsTableBody.innerHTML = '<tr><td colspan="10">Ошибка загрузки</td></tr>';
+        }
+    }
+
+    async function viewBusinessRequest(requestId) {
+        try {
+            const { data, error } = await supabase
+                .from('business_requests')
+                .select('*')
+                .eq('id', requestId)
+                .single();
+
+            if (error) throw error;
+
+            currentBusinessRequestId = requestId;
+
+            const statusClass = data.status === 'approved' ? 'badge-success' : 
+                              data.status === 'rejected' ? 'badge-danger' : 'badge-warning';
+            const statusText = data.status === 'approved' ? 'Одобрено' :
+                             data.status === 'rejected' ? 'Отклонено' : 'Ожидает';
+
+            const date = new Date(data.created_at);
+            const dateStr = date.toLocaleDateString('ru-RU') + ' ' + date.toLocaleTimeString('ru-RU');
+
+            businessRequestContent.innerHTML = `
+                <div style="margin-bottom: 20px;">
+                    <p style="margin: 8px 0;"><strong>Статус:</strong> <span class="badge ${statusClass}">${statusText}</span></p>
+                    <p style="margin: 8px 0;"><strong>Дата заявки:</strong> ${dateStr}</p>
+                </div>
+                <hr style="margin: 20px 0;">
+                <h4>Информация о компании</h4>
+                <p style="margin: 8px 0;"><strong>Название компании:</strong> ${data.company_name || '-'}</p>
+                <p style="margin: 8px 0;"><strong>ИНН:</strong> ${data.inn || 'Не указан'}</p>
+                <p style="margin: 8px 0;"><strong>Сфера деятельности:</strong> ${data.industry || '-'}</p>
+                <hr style="margin: 20px 0;">
+                <h4>Контактная информация</h4>
+                <p style="margin: 8px 0;"><strong>Контактное лицо:</strong> ${data.contact_name || '-'}</p>
+                <p style="margin: 8px 0;"><strong>Телефон:</strong> <a href="tel:${data.phone}">${data.phone || '-'}</a></p>
+                <p style="margin: 8px 0;"><strong>Email:</strong> <a href="mailto:${data.email}">${data.email || '-'}</a></p>
+                <hr style="margin: 20px 0;">
+                <h4>Детали заявки</h4>
+                <p style="margin: 8px 0;"><strong>Планируемый размер парка:</strong> ${data.fleet_size || '-'}</p>
+                <p style="margin: 8px 0;"><strong>Цель аренды:</strong> ${data.purpose || '-'}</p>
+                ${data.comment ? `<p style="margin: 8px 0;"><strong>Комментарий:</strong><br>${data.comment}</p>` : ''}
+                ${data.user_name ? `<hr style="margin: 20px 0;"><p style="margin: 8px 0; font-size: 0.9rem; color: #666;"><strong>Пользователь:</strong> ${data.user_name} (ID: ${data.user_id})</p>` : ''}
+            `;
+
+            // Show/hide approve/reject buttons based on status
+            if (data.status === 'pending') {
+                businessApproveBtn.style.display = 'inline-block';
+                businessRejectBtn.style.display = 'inline-block';
+            } else {
+                businessApproveBtn.style.display = 'none';
+                businessRejectBtn.style.display = 'none';
+            }
+
+            businessRequestModal.classList.remove('hidden');
+
+        } catch (err) {
+            console.error('Error viewing business request:', err);
+            alert('Ошибка загрузки заявки');
+        }
+    }
+
+    async function updateBusinessRequestStatus(status) {
+        if (!currentBusinessRequestId) return;
+
+        try {
+            const { error } = await supabase
+                .from('business_requests')
+                .update({ status: status })
+                .eq('id', currentBusinessRequestId);
+
+            if (error) throw error;
+
+            alert(status === 'approved' ? 'Заявка одобрена!' : 'Заявка отклонена');
+            businessRequestModal.classList.add('hidden');
+            loadBusinessRequests();
+
+        } catch (err) {
+            console.error('Error updating business request:', err);
+            alert('Ошибка обновления статуса');
+        }
+    }
+
+    // Business request modal event listeners
+    if (businessRequestCloseBtn) {
+        businessRequestCloseBtn.addEventListener('click', () => {
+            businessRequestModal.classList.add('hidden');
+        });
+    }
+
+    if (businessApproveBtn) {
+        businessApproveBtn.addEventListener('click', () => {
+            if (confirm('Одобрить эту заявку?')) {
+                updateBusinessRequestStatus('approved');
+            }
+        });
+    }
+
+    if (businessRejectBtn) {
+        businessRejectBtn.addEventListener('click', () => {
+            if (confirm('Отклонить эту заявку?')) {
+                updateBusinessRequestStatus('rejected');
+            }
+        });
+    }
+
+    if (businessRequestModal) {
+        businessRequestModal.addEventListener('click', (e) => {
+            if (e.target === businessRequestModal) {
+                businessRequestModal.classList.add('hidden');
+            }
+        });
+    }
+
+    // Search and filter for business requests
+    if (businessSearchInput) {
+        businessSearchInput.addEventListener('input', filterBusinessRequests);
+    }
+
+    if (businessStatusFilter) {
+        businessStatusFilter.addEventListener('change', filterBusinessRequests);
+    }
+
+    function filterBusinessRequests() {
+        if (!businessRequestsTableBody) return;
+        
+        const searchQuery = businessSearchInput?.value.toLowerCase() || '';
+        const statusFilter = businessStatusFilter?.value || '';
+
+        businessRequestsTableBody.querySelectorAll('tr').forEach(row => {
+            const text = row.textContent.toLowerCase();
+            const rowStatus = row.dataset.status || '';
+            
+            const matchesSearch = text.includes(searchQuery);
+            const matchesStatus = !statusFilter || rowStatus === statusFilter;
+
+            row.style.display = (matchesSearch && matchesStatus) ? '' : 'none';
+        });
+    }
 
 });

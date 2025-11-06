@@ -108,6 +108,7 @@
       <nav id="admin-nav">
         <button type="button" data-section="dashboard-main" class="active">Dashboard</button>
         <button type="button" data-section="assignments">Заявки</button>
+        <button type="button" data-section="business-requests">Бизнес</button>
         <button type="button" data-section="tariffs">Тарифы</button>
         <button type="button" data-section="clients">Клиенты</button>
         <button type="button" data-section="rentals">Аренды</button>
@@ -155,6 +156,39 @@
               <th>Тариф</th>
               <th>Тип</th>
               <th>Дата заявки</th>
+              <th>Действия</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <!-- Business Requests -->
+      <section id="business-requests-section" class="admin-section hidden">
+        <div class="section-header">
+          <h2>Заявки от бизнеса</h2>
+          <div class="section-toolbar">
+            <input type="search" id="business-search" class="toolbar-input" placeholder="Поиск по компании, контакту или email">
+            <select id="business-status-filter" class="toolbar-input" style="width: 150px; margin-left: 10px;">
+              <option value="">Все статусы</option>
+              <option value="pending">Ожидает</option>
+              <option value="approved">Одобрено</option>
+              <option value="rejected">Отклонено</option>
+            </select>
+          </div>
+        </div>
+        <table id="business-requests-table" class="admin-table">
+          <thead>
+            <tr>
+              <th>Компания</th>
+              <th>Контакт</th>
+              <th>Телефон</th>
+              <th>Email</th>
+              <th>Сфера</th>
+              <th>Размер парка</th>
+              <th>Цель</th>
+              <th>Дата заявки</th>
+              <th>Статус</th>
               <th>Действия</th>
             </tr>
           </thead>
@@ -922,6 +956,23 @@
         </div>
         <div class="modal-body" style="text-align: center;">
           <img id="image-viewer-img" src="" alt="Full size image" style="max-width: 100%; max-height: 80vh; object-fit: contain;">
+        </div>
+      </div>
+    </div>
+
+    <!-- Модальное окно для просмотра бизнес-заявки -->
+    <div id="business-request-modal" class="overlay hidden">
+      <div class="modal" style="max-width: 700px;">
+        <div class="modal-header">
+          <h3>Заявка от бизнеса</h3>
+          <button id="business-request-close-btn" class="close-btn">&times;</button>
+        </div>
+        <div class="modal-body" id="business-request-content">
+          <!-- Content will be loaded dynamically -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="business-approve-btn" class="btn btn-primary">Одобрить</button>
+          <button type="button" id="business-reject-btn" class="btn btn-secondary" style="background-color: #e53e3e; border-color: #e53e3e;">Отклонить</button>
         </div>
       </div>
     </div>

@@ -333,6 +333,14 @@
                     <svg class="menu-item-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                 </div>
                 <hr class="menu-divider">
+                <div class="menu-item" data-modal-target="business-modal" style="cursor: pointer;">
+                    <div class="menu-item-left">
+                        <svg class="menu-item-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                        <span class="menu-item-text">Для бизнеса</span>
+                    </div>
+                    <svg class="menu-item-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </div>
+                <hr class="menu-divider">
                 <a href="https://t.me/BikePark54_wello" target="_blank" class="menu-item">
                     <div class="menu-item-left">
                         <svg class="menu-item-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
@@ -758,6 +766,104 @@
         </div>
     </div>
 
+    <!-- Модальное окно "Для бизнеса" -->
+    <div id="business-modal" class="modal-overlay hidden">
+        <div class="modal-content" style="max-height: 90vh; overflow-y: auto;">
+            <button class="modal-close">&times;</button>
+            <h2 style="color: var(--dark-green); margin-bottom: 15px;">Для бизнеса</h2>
+            
+            <div class="business-intro" style="background: var(--card-bg); padding: 20px; border-radius: 12px; margin-bottom: 25px;">
+                <p style="color: var(--dark-green); font-size: 1rem; line-height: 1.6; margin-bottom: 15px;">
+                    Арендуйте парк электровелосипедов Bad Fox для доставки, курьеров и сотрудников. Получите современный транспорт без затрат на покупку и обслуживание.
+                </p>
+                <h3 style="color: var(--dark-green); font-size: 1.1rem; margin: 20px 0 15px 0;">Всё включено:</h3>
+                <ul style="color: #556f6b; font-size: 0.95rem; line-height: 1.8; padding-left: 20px;">
+                    <li><strong>Техника:</strong> Всегда исправные электровелосипеды</li>
+                    <li><strong>Сервис:</strong> Круглосуточная поддержка и ремонт</li>
+                    <li><strong>Отчетность:</strong> Понятный контроль расходов и пробега</li>
+                </ul>
+                <p style="color: #556f6b; font-size: 0.9rem; margin-top: 15px; font-style: italic;">
+                    Оставьте заявку, чтобы получить индивидуальный расчёт и специальные условия для вашей компании.
+                </p>
+            </div>
+
+            <form id="business-form">
+                <div class="modal-form-group">
+                    <label for="business-contact-name">Контактное лицо <span style="color: #e53e3e;">*</span></label>
+                    <input type="text" id="business-contact-name" class="form-input" placeholder="Иванов Иван Иванович" required>
+                </div>
+
+                <div class="modal-form-group">
+                    <label for="business-company-name">Название компании <span style="color: #e53e3e;">*</span></label>
+                    <input type="text" id="business-company-name" class="form-input" placeholder='ООО "Рога и копыта"' required>
+                </div>
+
+                <div class="modal-form-group">
+                    <label for="business-inn">ИНН компании</label>
+                    <input type="text" id="business-inn" class="form-input" placeholder="1234567890" pattern="[0-9]{10,12}">
+                </div>
+
+                <div class="modal-form-group">
+                    <label for="business-phone">Телефон для связи <span style="color: #e53e3e;">*</span></label>
+                    <input type="tel" id="business-phone" class="form-input" placeholder="+7 (999) 123-45-67" required>
+                </div>
+
+                <div class="modal-form-group">
+                    <label for="business-email">E-mail <span style="color: #e53e3e;">*</span></label>
+                    <input type="email" id="business-email" class="form-input" placeholder="example@company.com" required>
+                </div>
+
+                <div class="modal-form-group">
+                    <label for="business-industry">Сфера деятельности компании <span style="color: #e53e3e;">*</span></label>
+                    <select id="business-industry" class="form-input" required>
+                        <option value="">Выберите сферу</option>
+                        <option value="Доставка">Доставка</option>
+                        <option value="Логистика">Логистика</option>
+                        <option value="Туризм">Туризм</option>
+                        <option value="Ресторанный бизнес">Ресторанный бизнес</option>
+                        <option value="Другое">Другое</option>
+                    </select>
+                </div>
+
+                <div class="modal-form-group">
+                    <label for="business-fleet-size">Планируемый размер парка <span style="color: #e53e3e;">*</span></label>
+                    <select id="business-fleet-size" class="form-input" required>
+                        <option value="">Выберите размер парка</option>
+                        <option value="1-5 велосипедов">1-5 велосипедов</option>
+                        <option value="5-10">5-10</option>
+                        <option value="10-20">10-20</option>
+                        <option value="20-50">20-50</option>
+                        <option value="50+">50+</option>
+                    </select>
+                </div>
+
+                <div class="modal-form-group">
+                    <label for="business-purpose">Цель аренды <span style="color: #e53e3e;">*</span></label>
+                    <select id="business-purpose" class="form-input" required>
+                        <option value="">Выберите цель</option>
+                        <option value="Для курьеров">Для курьеров</option>
+                        <option value="Для сотрудников">Для сотрудников</option>
+                        <option value="Для организации проката">Для организации проката</option>
+                        <option value="Другое">Другое</option>
+                    </select>
+                </div>
+
+                <div class="modal-form-group">
+                    <label for="business-comment">Комментарий</label>
+                    <textarea id="business-comment" class="form-input" rows="4" placeholder="Ваши вопросы и пожелания" style="resize: vertical; min-height: 100px;"></textarea>
+                </div>
+
+                <p style="font-size: 0.85rem; color: #556f6b; margin-bottom: 20px;">
+                    Поля, помеченные звездочкой (<span style="color: #e53e3e;">*</span>) — обязательные.
+                </p>
+
+                <button type="submit" class="btn btn-primary" id="business-submit-btn" style="width: 100%;">
+                    Отправить заявку
+                </button>
+            </form>
+        </div>
+    </div>
+
     <div id="card-saved-toast" class="toast-container toast-success hidden"><p class="toast-message">Карта успешно привязана!</p></div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.41.0/dist/umd/supabase.min.js"></script>
@@ -842,18 +948,18 @@
             modal.style.backgroundColor = 'rgba(0,0,0,0.5)';
             modal.style.zIndex = '1000';
             
-            if (modalId === 'card-modal') updateCardView();
-            if (modalId === 'payment-settings-modal') updatePaymentSettingsView();
-            if (modalId === 'notifications-modal') loadNotifications();
+            if (modalId === 'card-modal' && typeof updateCardView === 'function') updateCardView();
+            if (modalId === 'payment-settings-modal' && typeof updatePaymentSettingsView === 'function') updatePaymentSettingsView();
+            if (modalId === 'notifications-modal' && typeof loadNotifications === 'function') loadNotifications();
             if (modalId === 'rewards-modal') {
                 console.log('Initializing rewards...');
-                initializeRewards();
+                if (typeof initializeRewards === 'function') initializeRewards();
             }
             if (modalId === 'subscription-modal') {
-                loadSubscriptionStatus();
-                initSubscriptionHandlers();
+                if (typeof loadSubscriptionStatus === 'function') loadSubscriptionStatus();
+                if (typeof initSubscriptionHandlers === 'function') initSubscriptionHandlers();
             }
-            if (modalId === 'support-modal') initializeSupportChat();
+            if (modalId === 'support-modal' && typeof initializeSupportChat === 'function') initializeSupportChat();
 
             // Убираем класс hidden и добавляем явные стили
             modal.classList.remove('hidden');
@@ -1554,6 +1660,58 @@
         // === КОНЕЦ ВОССТАНОВЛЕННОГО БЛОКА: НАСТРОЙКИ ОПЛАТЫ ============
         // ===============================================================
 
+
+        // === ОБРАБОТЧИК ФОРМЫ "ДЛЯ БИЗНЕСА" ===
+        const businessForm = document.getElementById('business-form');
+        if (businessForm) {
+            businessForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const submitBtn = document.getElementById('business-submit-btn');
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Отправка...';
+
+                const userId = localStorage.getItem('userId');
+                const userName = localStorage.getItem('userName');
+
+                const formData = {
+                    user_id: userId,
+                    user_name: userName,
+                    contact_name: document.getElementById('business-contact-name').value.trim(),
+                    company_name: document.getElementById('business-company-name').value.trim(),
+                    inn: document.getElementById('business-inn').value.trim(),
+                    phone: document.getElementById('business-phone').value.trim(),
+                    email: document.getElementById('business-email').value.trim(),
+                    industry: document.getElementById('business-industry').value,
+                    fleet_size: document.getElementById('business-fleet-size').value,
+                    purpose: document.getElementById('business-purpose').value,
+                    comment: document.getElementById('business-comment').value.trim(),
+                    status: 'pending',
+                    created_at: new Date().toISOString()
+                };
+
+                try {
+                    const { data, error } = await supabase
+                        .from('business_requests')
+                        .insert([formData]);
+
+                    if (error) throw error;
+
+                    // Успешная отправка
+                    businessForm.reset();
+                    closeModal(document.getElementById('business-modal'));
+                    
+                    showToast('Ваша заявка принята! Наш менеджер свяжется с вами в течение 2 часов в рабочее время.', 'success');
+                    
+                } catch (error) {
+                    console.error('Ошибка отправки заявки:', error);
+                    showToast('Ошибка отправки заявки. Пожалуйста, попробуйте позже.', 'error');
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Отправить заявку';
+                }
+            });
+        }
 
         // Первичный запуск функций при загрузке страницы
         updateNotificationsCount();
