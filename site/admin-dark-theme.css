@@ -125,19 +125,29 @@ input::placeholder, textarea::placeholder {
     font-weight: 600;
 }
 
-.status-badge.active {
-    background: rgba(34, 197, 94, 0.2);
-    color: #22c55e;
+.status-badge.active,
+.status-badge.succeeded,
+.status-badge.approved,
+span.status-approved,
+span.status-succeeded {
+    background: rgba(255, 107, 53, 0.2) !important;
+    color: var(--accent) !important;
+    border: 1px solid var(--accent);
 }
 
-.status-badge.inactive {
-    background: rgba(239, 68, 68, 0.2);
-    color: #ef4444;
+.status-badge.inactive,
+.status-badge.cancelled,
+span.status-cancelled {
+    background: rgba(239, 68, 68, 0.2) !important;
+    color: #ef4444 !important;
+    border: 1px solid #ef4444;
 }
 
-.status-badge.pending {
-    background: rgba(255, 107, 53, 0.2);
-    color: var(--accent);
+.status-badge.pending,
+span.status-pending {
+    background: rgba(255, 139, 66, 0.2) !important;
+    color: #ff8b42 !important;
+    border: 1px solid #ff8b42;
 }
 
 /* Scrollbar */
