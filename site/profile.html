@@ -282,18 +282,6 @@
                     <p style="font-size: 0.9rem; color: #556f6b; margin-top: 5px;">Статус: Подписка активна до <span id="profile-subscription-expiry">дата</span></p>
                 </div>
             </div>
-
-            <!-- ТЕСТОВАЯ ПАНЕЛЬ ДЛЯ ДИАГНОСТИКИ -->
-            <div style="background: #f0f0f0; padding: 10px; margin: 10px; border-radius: 8px; font-size: 12px;">
-                <strong>🧪 ТЕСТОВАЯ ПАНЕЛЬ:</strong>
-                <div style="margin: 5px 0;">
-                    <button onclick="testOpenModal('subscription-modal')" style="margin: 2px; padding: 5px 10px; background: #ff6b35; color: white; border: none; border-radius: 4px;">🔥 Подписка Bad Fox</button>
-                    <button onclick="testOpenModal('rewards-modal')" style="margin: 2px; padding: 5px 10px; background: #4ecdc4; color: white; border: none; border-radius: 4px;">⭐ Мои награды</button>
-                    <button onclick="testOpenModal('card-modal')" style="margin: 2px; padding: 5px 10px; background: #45b7d1; color: white; border: none; border-radius: 4px;">💳 Карта</button>
-                </div>
-                <div>Активное окно: <span id="active-modal-test" style="font-weight: bold;">нет</span></div>
-            </div>
-
             <div class="profile-menu">
                 <div class="menu-item" data-modal-target="card-modal" style="cursor: pointer;">
                     <div class="menu-item-left">
@@ -524,19 +512,6 @@
                         <div class="benefit-text">
                             <strong>+25% бонусных очков</strong>
                             <p>За каждую завершенную аренду, чистый возврат, отсутствие повреждений и своевременный возврат АКБ</p>
-                        </div>
-                    </div>
-
-                    <div class="benefit-item">
-                        <div class="benefit-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M9 12l2 2 4-4"/>
-                                <circle cx="12" cy="12" r="10"/>
-                            </svg>
-                        </div>
-                        <div class="benefit-text">
-                            <strong>Приоритетный доступ</strong>
-                            <p>Свободные велосипеды отображаются на 5 минут раньше, значок "Bad Fox" в профиле</p>
                         </div>
                     </div>
 
@@ -932,51 +907,6 @@
         }
         
         console.log('=== КОНЕЦ ДИАГНОСТИКИ ===');
-
-        // Добавляем временную диагностическую панель
-        addDiagnosticsPanel();
-
-        function addDiagnosticsPanel() {
-            const panel = document.createElement('div');
-            panel.style.cssText = `
-                position: fixed;
-                top: 50px;
-                right: 10px;
-                background: rgba(0,0,0,0.8);
-                color: white;
-                padding: 15px;
-                border-radius: 8px;
-                z-index: 1001;
-                font-family: monospace;
-                font-size: 12px;
-                max-width: 300px;
-            `;
-            panel.innerHTML = `
-                <strong>🔧 Диагностика модальных окон:</strong><br>
-                <button onclick="window.testOpenModal('subscription-modal')" style="margin: 5px 2px; padding: 5px 10px;">Подписка</button>
-                <button onclick="window.testOpenModal('rewards-modal')" style="margin: 5px 2px; padding: 5px 10px;">Награды</button>
-                <button onclick="window.testOpenModal('card-modal')" style="margin: 5px 2px; padding: 5px 10px;">Карта</button>
-                <button onclick="panel.remove()" style="margin: 5px 2px; padding: 5px 10px; background: #e53e3e;">Закрыть</button>
-                <div style="margin-top: 10px; font-size: 10px;">
-                    <div>Активное окно: <span id="active-modal">нет</span></div>
-                </div>
-            `;
-            document.body.appendChild(panel);
-            
-            // Делаем функции глобально доступными
-            window.testOpenModal = function(modalId) {
-                console.log('🧪 Тестируем открытие модального окна:', modalId);
-                openModal(modalId);
-                const activeModal = document.querySelectorAll('.modal-overlay:not(.hidden)');
-                const activeModalText = activeModal.length > 0 ? activeModal[0].id : 'нет';
-                
-                // Обновляем оба индикатора
-                const activeModalSpan = document.getElementById('active-modal');
-                const activeModalTestSpan = document.getElementById('active-modal-test');
-                if (activeModalSpan) activeModalSpan.textContent = activeModalText;
-                if (activeModalTestSpan) activeModalTestSpan.textContent = activeModalText;
-            };
-        }
 
         // --- ПРОВЕРКА АВТОРИЗАЦИИ И ДАННЫЕ ПОЛЬЗОВАТЕЛЯ ---
         if (localStorage.getItem('isRegistered') !== 'true') {
