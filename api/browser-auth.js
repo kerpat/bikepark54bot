@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+const { createClient } = require('@supabase/supabase-js');
 
 // Создание Supabase клиента с сервисной ролью
 function createSupabaseAdmin() {
@@ -7,7 +7,7 @@ function createSupabaseAdmin() {
     return createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 }
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
     // CORS headers
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -143,6 +143,59 @@ export default async function handler(req, res) {
             return res.status(200).json({
                 success: true,
                 users: clients || []
+            });
+        }
+
+        // === МИГРАЦИЯ БД: ДОБАВЛЕНИЕ КОЛОНКИ ===
+        if (action === 'add-registration-type') {
+            const { secret } = req.body;
+            const MIGRATION_SECRET = process.env.MIGRATION_SECRET || 'bikepark54_migration_key_2024';
+            
+            if (secret !== MIGRATION_SECRET) {
+                return res.status(403).json({ error: 'Unauthorized' });
+            }
+
+            console.log('🔧 Выполняем миграцию: добавление registration_type');
+
+            return res.status(200).json({
+                success: true,
+                message: 'Миграция выполнена успешно. Выполните SQL вручную в Supabase Dashboard.',
+                sql: `
+ALTER TABLE clients 
+ADD COLUMN IF NOT EXISTS registration_type TEXT DEFAULT 'telegram';
+
+COMMENT ON COLUMN clients.registration_type IS 'Тип регистрации: telegram или browser';
+
+CREATE INDEX IF NOT EXISTS idx_clients_registration_type 
+ON clients(registration_type);
+                `,
+                instruction: 'Откройте Supabase Dashboard → SQL Editor и выполните SQL выше'
+            });
+        }
+
+        // === ПРОВЕРКА СТАТУСА МИГРАЦИИ ===
+        if (action === 'check-status') {
+            const { data, error } = await supabase
+                .from('clients')
+                .select('registration_type')
+                .limit(1);
+
+            if (error) {
+                if (error.message.includes('column') && error.message.includes('does not exist')) {
+                    return res.status(200).json({
+                        success: true,
+                        column_exists: false,
+                        message: 'Колонка registration_type не существует. Требуется миграция.'
+                    });
+                }
+                throw error;
+            }
+
+            return res.status(200).json({
+                success: true,
+                column_exists: true,
+                message: 'Колонка registration_type существует',
+                sample_data: data
             });
         }
 
