@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         ymaps.ready(() => {
             myMap = new ymaps.Map("admin-map-container", {
-                center: [55.028682, 82.903748], // Новосибирск
+                center: [55.746081, 37.882548], // Москва
                 zoom: 10,
                 controls: [] // Отключаем все стандартные элементы управления
             });
@@ -994,7 +994,7 @@ document.addEventListener('DOMContentLoaded', () => {
             bikeFormTitle.textContent = 'Новый велосипед';
             bikeForm.reset();
             bikeIdInput.value = '';
-            bikeCitySelect.value = 'Новосибирск'; // default city
+            bikeCitySelect.value = 'Москва'; // default city
             bikeFrameNumberInput.value = '';
             bikeBatteryNumbersInput.value = '';
             bikeRegistrationNumberInput.value = '';
@@ -1528,7 +1528,7 @@ clientsTableBody.addEventListener('click', async (e) => {
         if (metricsContainer) {
             metricsContainer.innerHTML = '<p>Загрузка метрик...</p>';
             try {
-                const { data, error } = await supabase.from('bikes').select('status').eq('city', 'Новосибирск');
+                const { data, error } = await supabase.from('bikes').select('status').eq('city', 'Москва');
                 if (error) throw error;
 
                 const stats = data.reduce((acc, bike) => {

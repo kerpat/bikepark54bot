@@ -287,22 +287,24 @@
         script.onload = () => {
             ymaps.ready(async function() {
                 const userId = localStorage.getItem('userId');
-                let userCity = 'Москва'; // default
+                let userCity = 'Москва'; // default - always use Moscow
 
-                if (userId && supabase) {
-                    try {
-                        const { data: client, error } = await supabase
-                            .from('clients')
-                            .select('city')
-                            .eq('id', userId)
-                            .single();
-                        if (!error && client && client.city) {
-                            userCity = client.city;
-                        }
-                    } catch (err) {
-                        console.error('Error fetching user city:', err);
-                    }
-                }
+                // TEMP: Comment out DB check to always use Moscow coordinates
+                // if (userId && supabase) {
+                //     try {
+                //         const { data: client, error } = await supabase
+                //             .from('clients')
+                //             .select('city')
+                //             .eq('id', userId)
+                //             .single();
+                //         if (!error && client && client.city) {
+                //             userCity = client.city;
+                //         }
+                //     } catch (err) {
+                //         console.error('Error fetching user city:', err);
+                //     }
+                // }
+                
                 initMapWithData(userCity);
             });
         };
